@@ -1,0 +1,92 @@
+//A
+#include <stdio.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+struct Node{
+	__int64 tel;
+	int supt,t;
+}a[50005];
+
+int cmp(Node a,Node b){
+	if(a.tel==b.tel)
+		return a.t < b.t;
+	return a.tel < b.tel;
+}
+
+int main()
+{
+	int n,i,k,count[15],h,m,s;
+	char str[20];
+	while(scanf("%d",&n)==1){
+		k=0;
+		while(1)
+		{
+			scanf("%s",str);
+			if(strcmp(str,"#end")==0)break;
+			scanf("%I64d %d",&a[k].tel,&a[k].supt);
+			sscanf(str,"%d:%d:%d",&h,&m,&s);
+			a[k].t = h*3600+m*60+s;
+			k++;
+		}
+		sort(a,a+k,cmp);
+		memset(count,0,sizeof(count));
+		count[a[0].supt]++;
+		for(i=1 ; i < k ; i++)
+			if(a[i].tel!=a[i-1].tel)count[a[i].supt]++;
+			else if(a[i].t-a[i-1].t >= 60)
+					count[a[i].supt]++;
+		printf("The result is :\n");
+		for(i=1 ; i <= n ; i++){
+			printf("%02d : ",i);
+			for(int j=0 ; j < count[i] ; j++)
+				printf("*");
+			printf("\n");
+		}
+	}
+	return 0;
+}
+//J
+#include <stdio.h>
+#include <iostream>
+#include <algorithm>
+#define ll __int64
+#define inf 1<<30
+#define M 1000003
+
+__int64 exGcd(__int64 a,__int64 b,__int64 &x,__int64 &y){
+    if(b==0){
+        x=1;
+        y=0;
+        return a;
+    }
+    __int64 d=exGcd(b,a%b,x,y);
+    __int64 temp=x;
+    x=y;
+    y=temp-(a/b)*y;
+    return d;
+}
+int main()
+{
+	int t,cs=1;
+	ll sum,x,y,n,a,i;
+	scanf("%d",&t);
+	while(t--)
+	{
+		scanf("%I64d",&n);
+		for(i=0,sum=0 ; i < n ; i++){
+			scanf("%I64d",&a);
+			ll ans=1,now=2;
+			while(a>0){
+				if(a&1)ans = ans*now%M;
+				now = now*now%M;
+				a >>= 1;
+			}
+			sum = (sum+ans)%M;
+		}
+		exGcd(n,M,x,y);
+		printf("Case %d:%I64d\n",cs++,(((x*sum)%M)+M)%M);
+	}
+	return 0;
+}

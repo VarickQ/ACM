@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <iostream>
+#include <algorithm>
+#include <string.h>
+using namespace std;
+#define N 20005
+
+__int64 tot[N],c[N];
+struct Cow{
+	int v,pos;
+}a[N];
+bool cmp(Cow a,Cow b){
+	return a.v < b.v;
+}
+int Lowbit(int t){
+    return t & ( -t );
+}
+void Plus(__int64 tmp[],int pos,int num){
+	while(pos <= N){
+		tmp[pos] += num;
+		pos += Lowbit(pos);
+	}
+}
+__int64 Sum(__int64 tmp[],int end){
+	__int64 sum = 0;
+	while(end > 0){
+		sum += tmp[end];
+		end -= Lowbit(end);
+	}
+	return sum;
+}
+int main()
+{
+	int i,n;
+	__int64 alltot=0,ans=0,total,count;
+	scanf("%d",&n);
+	for(i=1 ; i <= n ; i++)
+		scanf("%d%d",&a[i].v,&a[i].pos);
+	sort(a+1,a+n+1,cmp);
+	for(i=1 ; i <= n ; i++){
+		alltot= Sum(tot,N)+a[i].pos;
+		total = Sum(tot,a[i].pos);
+		count = Sum(c,a[i].pos);
+		ans+=a[i].v*(count*a[i].pos-total+alltot-total-(i-count)*a[i].pos);	
+		Plus(tot,a[i].pos,a[i].pos);
+		Plus(c,a[i].pos,1);
+	}
+	printf("%I64d\n",ans);
+	return 0;
+}

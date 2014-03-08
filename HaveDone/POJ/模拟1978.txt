@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int card[55];
+int main()
+{
+	int n,r,p,c,i,j,k;
+	while(scanf("%d%d", &n, &r) && (n+r))
+	{
+		memset(card,0,sizeof(card));
+		for(i=1 ; i <= n ; i++)card[i]=i;
+		for(i=0 ; i < r ; i++){
+			scanf("%d%d", &p, &c);
+			for(j=n-p+2-c,k=1 ; k <= c ; j++,k++)
+				card[n+k] = card[j];
+			for(j=n-p+2-c,k=1 ; k <= p-1+c ; j++,k++)
+				card[j] = card[j+c];
+		}
+		printf("%d\n", card[n]);
+	}
+	return 0;
+}

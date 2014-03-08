@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <set>
+using namespace std;
+const int inf=2000000000;
+const int N = 750000;
+const int M = 100000;
+string spam[] = { "4", "|3", "(", "|)", "3", "|=", "6", "#", "|","_|", "|<", "|_", "|\\/|", "|\\|", "0", "|0", "(,)", "|?", "5","7", "|_|", "\\/", "\\/\\/", "><", "-/", "2" };
+int dp[500];
+set<string> is;
+int main()
+{
+	string str;
+	for(int i=0 ; i < 26 ; ++i)//存入set
+		is.insert(spam[i]);
+	while(cin >> str)
+	{
+		if(str == "end") break;
+		string s;
+		for(int i=0 ; str[i] ; ++i)
+			s += spam[str[i]-'A'];//转换
+		memset(dp,0,sizeof(dp));
+		dp[0] = 1;
+		for(int i=0 ; i < s.length() ; ++i){
+			for(int j=1 ; j <= 4 ; ++j){//每个字母转换后的长度
+				if(i+1-j < 0) break;
+				if(is.count(s.substr(i+1-j,j)))//存在该字串
+					dp[i+1] += dp[i+1-j];//加上该字串的计数
+			}
+		}
+		printf("%d\n",dp[s.length()]);
+	}
+	return 0;
+}

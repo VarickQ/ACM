@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <string.h>
+using namespace std;
+#define N 10010
+#define inf 100000000
+struct Node{
+	int v,next,len;
+}edge[N*10];
+
+int edgehead[N],k,du[N],visted[N];
+int ans;
+
+int dfs(int u,int l){
+	visted[u] = 1;
+	if(du[u]==1) return l;
+	int i,temp,min=inf,e=0;
+	for(i=edgehead[u] ; i!=-1 ; i=edge[i].next)
+	{
+		if(!visted[edge[i].v])
+		{
+			temp=dfs(edge[i].v,edge[i].len);
+			if(e&&ans>min+temp)ans = min+temp;
+			if(temp<min)min = temp;
+			e++;
+		}
+	}
+	return min+l;
+}
+
+int main()
+{
+	int n,i,u,v,l;
+	while(scanf("%d",&n) && n)
+	{
+		memset(edgehead,-1,sizeof(edgehead));
+		memset(du,0,sizeof(du));
+		k = 0;
+		for(i=0 ; i < n-1 ; i++){
+			scanf("%d%d%d",&u,&v,&l);
+			edge[k].v = v;
+			edge[k].len=l;
+			edge[k].next= edgehead[u];
+			edgehead[u] = k++;
+			edge[k].v = u;
+			edge[k].len=l;
+			edge[k].next= edgehead[v];
+			edgehead[v] = k++;
+			du[u]++;
+			du[v]++;
+		}
+		memset(visted,0,sizeof(visted));
+		int max=0,pos=0;
+		for(i=1 ; i <= n ; i++)
+			if(du[i]>max){
+				max = du[i];
+				pos = i;
+			}
+		if(n==2)
+			printf("%d\n",l);
+		else{
+			ans = inf;
+			dfs(pos,0);
+			printf("%d\n",ans);
+		}
+	}
+	return 0;
+}

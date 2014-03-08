@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <string.h>
+#include <string>
+#include <iostream>
+#include <map>
+#include <algorithm>
+using namespace std;
+#define inf 1<<30
+
+map<string,int> ma;
+
+struct Haab{
+	int day,year;
+	char month[10];
+}a[5005];
+char Tday[20][20]={"ahau","imix","ik","akbal","kan","chicchan","cimi","manik","lamat","muluk","ok","chuen","eb","ben","ix","mem","cib","caban","eznab","canac"};
+int main()
+{
+	int n,i,temp;
+	ma["pop"]=0;
+	ma["no"]=1;
+	ma["zip"]=2;
+	ma["zotz"]=3;
+	ma["tzec"]=4;
+	ma["xul"]=5;
+	ma["yoxkin"]=6;
+	ma["mol"]=7;
+	ma["chen"]=8;
+	ma["yax"]=9;
+	ma["zac"]=10;
+	ma["ceh"]=11;
+	ma["mac"]=12;
+	ma["kankin"]=13;
+	ma["muan"]=14;
+	ma["pax"]=15;
+	ma["koyab"]=16;
+	ma["cumhu"]=17;
+	ma["uayet"]=18;
+	while(scanf("%d",&n) == 1)
+	{
+		printf("%d\n",n);
+		for(i=0 ; i < n ; i++){
+			scanf("%d. %s %d",&a[i].day,a[i].month,&a[i].year);
+			temp = a[i].year*365+ma[a[i].month]*20+a[i].day+1;
+			int d,y,k;
+			if(temp%260==0 && a[i].year!=0){
+				y=temp/260-1;
+				temp=260;
+			}
+			else y=temp/260;
+			k=temp%13;
+			if(k==0)d=13;
+			else d=k;
+			printf("%d %s %d\n",d,Tday[temp%20],y);
+		}
+	}
+	return 0;
+}

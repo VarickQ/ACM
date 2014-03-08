@@ -1,0 +1,95 @@
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+vector<int> dp[110];
+int val[15],use[110][1024],p[15];  
+//use[i][j] 表示j状态能否表示i年龄
+int num(int state){
+    int ans=0;
+    while(state){
+        if(state&1) ans++;
+        state>>=1;
+    }
+    return ans;
+}
+int n;
+int ok(int state){
+    for(int i=0;i<n;++i)
+        if(!use[val[i]][state]) return 0;
+    return 1;
+}
+void solve(int state){
+    int k=0,nn=0;
+    while(state){
+        if(state&1) p[nn++]=k;
+        k++;
+        state>>=1;
+    } 
+    for(int i=nn-1;i>=0;--i)
+        printf("%d",p[i]);
+    printf("\n");
+}
+int main(){
+    int T,m,cs=0;
+    memset(use,0,sizeof(use));
+    for(int i=0;i<=100;++i) dp[i].clear();
+    for(int i=0;i<10;++i){
+        use[i][1<<i]=1;
+        dp[i].push_back(1<<i);
+    }
+    for(int i=0;i<10;++i) for(int j=0;j<10;++j){
+        if(i!=j&&!use[i*10+j][1<<i|1<<j]){
+            use[i*10+j][1<<i|1<<j]=1;
+            dp[i*10+j].push_back(1<<i|1<<j);
+        }
+    }
+    for(int i=1;i<=100;++i){
+        for(int j=0;j<dp[i].size();++j){
+            int v=dp[i][j];
+            for(int k=1;k<=100-i;++k) for(int l=0;l<dp[k].size();++l){
+                int t=dp[k][l];
+                if(t&v) continue;
+                if(!use[i+k][t|v])
+                    use[i+k][t|v]=1;
+            }
+        }
+    }
+	
+	//以上都是初始化  
+    for(int i=1;i<=100;++i) for(int j=1;j<1<<10;++j){
+        if(use[i][j]) continue;
+        if(num(j)==1) continue;
+        for(int k=0;k<10;++k){
+            if(((1<<k)&j)==0) continue;
+            int temp=j^(1<<k);
+            if(use[i][temp]){
+                use[i][j]=1;
+                break;
+            }
+        }
+    }
+    while(scanf("%d",&n)&&n){
+        for(int i=0;i<n;++i)
+            scanf("%d",&val[i]);
+        int flag=0,nn,ans;
+        printf("Case %d: ",++cs);
+        for(int i=1;i<1<<10;++i){
+            if(ok(i)){
+                if(!flag){
+                    flag=1;
+                    ans=i;
+                    nn=num(ans);
+                }
+                else if(num(i)<nn||num(i)==nn&&i<ans){
+                    ans=i;
+                    nn=num(ans);
+                }
+            }
+        }
+        solve(ans);
+    }
+}

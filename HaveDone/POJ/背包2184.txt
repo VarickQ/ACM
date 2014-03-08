@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <queue>
+using namespace std;
+#define N 100005
+#define inf 1<<30
+int dp[N*2],s[105],f[105];
+int main()
+{
+	int n,i,j;
+	while(scanf("%d",&n) == 1)
+	{
+		for(i=0 ; i < n ; i++)
+			scanf("%d%d",&s[i],&f[i]);
+		for(i=0 ; i <= 200000 ; i++)
+			dp[i] = -inf;
+		dp[100000]=0;
+		for(i=0 ; i < n ; i++){
+			if(s[i] > 0){
+				for(j=200000 ; j >= s[i] ; j--)
+					if(dp[j-s[i]] > -inf)
+						if(dp[j-s[i]]+f[i] > dp[j])
+							dp[j] = dp[j-s[i]]+f[i];
+			} else {
+				for(j=s[i] ; j <= 200000+s[i] ; j++)
+					if(dp[j-s[i]] > -inf)
+						if(dp[j-s[i]]+f[i] > dp[j])
+							dp[j] = dp[j-s[i]]+f[i];
+			}
+		}
+		int ans=0;
+		for(i=100000 ; i <= 200000 ; i++)
+			if(dp[i] > 0)
+				if(dp[i]+i-100000 > ans)
+					ans = dp[i]+i-100000;
+		printf("%d\n",ans);
+	}
+	return 0;
+}

@@ -1,0 +1,31 @@
+#include <iostream>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <algorithm>
+#include <string.h>
+#include <limits.h>
+#include <map>
+#include <math.h>
+#include <string>
+
+using namespace std;
+
+int main(void)
+{
+	int t;
+	while(scanf("%d", &t) != EOF)
+	{
+		int ca = 0;
+		while(t--)
+		{
+			int a, b, c;
+			scanf("%d %d %d", &a, &b, &c);
+			printf("Case %d: ", ++ca);
+			if(a > 20 || b > 20 || c > 20)
+				printf("bad\n");
+			else
+				printf("good\n");
+		}
+	}
+}

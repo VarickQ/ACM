@@ -1,0 +1,37 @@
+#include <map>
+#include <string>
+#include <cstring>
+#include <iostream>
+using namespace std;
+
+char in[]={'2','2','2','3','3','3','4','4','4','5','5','5','6','6','6','7','0','7','7','8','8','8','9','9','9'};
+int main(){
+	typedef map<string, int> Map;
+	Map ans;
+	Map::iterator iter;
+	int n, j, flag=1;
+	char c, a[9];
+	scanf("%d", &n);
+	getchar();
+	while(n--){
+		j = 0;
+		while((c = getchar()) != '\n'){
+			if(j == 3) a[j++] = '-';
+			if(c >= 'A' && c < 'Q')
+				a[j++] = in[ c-'A' ];
+			else if(c > 'Q' && c < 'Z')
+				a[j++] = in[ c-'A' ];
+			else if(c != '-') a[j++] = c;
+		}
+		a[8] = '\0';
+		iter = ans.find(a);
+		if(iter == ans.end())
+			ans.insert(Map::value_type(a, 1));
+		else
+			iter->second++;
+	}
+	for(iter=ans.begin(); iter!=ans.end(); iter++)
+		if(iter->second > 1){cout<<iter->first<<' '<<iter->second<<endl;flag = 0;}
+	if(flag) printf("No duplicates.\n");
+	return 0;
+}

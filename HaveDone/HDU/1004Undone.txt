@@ -1,0 +1,32 @@
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+	struct colors
+	{
+		char color[20];
+		int counts;
+	};
+	long int n,i,j,max;
+	struct colors name[10];
+	while(scanf("%ld",&n) == 1)
+	{
+		for(i=0;i<n;i++)
+		{
+			scanf("%s",&name[i].color);
+			name[i].counts=0;
+		}
+		for(i=0;i<n;i++)
+			for(j=0;j<n;j++)
+				if(strcmp(name[i].color,name[j].color) == 0)
+					name[i].counts++;
+		max=0;
+		for(i=0;i<n;i++)
+			for(j=0;j<n-1-i;j++)
+				if(name[j].counts < name[j+1].counts)
+					max=j+1;
+		if(n!=0)
+			printf("%s\n",name[max].color);
+	}
+	return 0;
+}

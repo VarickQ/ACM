@@ -1,0 +1,32 @@
+#include <map>
+#include <string>
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	map<string,string> Map;
+	string a,b;
+	char c;
+	while(1)//输入是个问题，要注意
+	{
+		cin >> a;
+		c = getchar();
+		if(c == '\n')
+			break;
+		cin >> b;
+		Map[b] = a;
+	}
+	if( !Map[a].empty() )
+		cout << Map[a] << endl;
+	else
+		cout << "eh" << endl;
+	while( cin >> a )
+	{
+		if( !Map[a].empty() )
+			cout << Map[a] << endl;
+		else
+			cout << "eh" << endl;
+	}
+	return 0;
+}

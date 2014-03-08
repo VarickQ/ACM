@@ -1,0 +1,42 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	int n,t[1001],k[1001],i,j,p;
+	while(scanf("%d", &n) && n)
+	{
+		for(i=0 ; i < n ; i++)
+			scanf("%d", &t[i]);
+		for(i=0 ; i < n ; i++)
+			scanf("%d", &k[i]);
+		sort(t,t+n);
+		sort(k,k+n);
+
+		i=0;j=0;
+		int endt=n-1,endk=n-1,ans = 0;
+		bool flag=true;
+
+		while(flag)
+		{
+			if(endt==i)flag=false;
+			if(t[endt] > k[endk])
+			{
+				endt--;endk--; ans+=200;
+			}
+			else if(t[i] > k[j])
+			{
+				i++;j++; ans+=200;
+			}
+			else
+			{
+				if(t[i] < k[endk])
+					ans-=200;
+				i++; endk--;
+			}
+		}
+		printf("%d\n",ans);
+	}
+	return 0;
+}

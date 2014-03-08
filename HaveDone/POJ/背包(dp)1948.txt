@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <queue>
+using namespace std;
+
+bool dp[810][810];//周长最多1600，边长最多不到800
+int a[45];
+int main()
+{
+	int n,i,j,k,c;
+	while(scanf("%d",&n) == 1)
+	{
+		for(i=0,c=0 ; i < n ; i++){
+			scanf("%d",&a[i]);
+			c += a[i];//周长
+		}
+		memset(dp,false,sizeof(dp));
+		dp[0][0]=true;
+		for(i=0 ; i < n ; i++)
+			for(j=c/2 ; j >= 0 ; j--)
+				for(k=j ; k >= 0 ; k--)
+					if(j>=a[i]&&dp[j-a[i]][k] || k>=a[i]&&dp[j][k-a[i]])
+						dp[j][k] = true;//能够组成的两条边标记
+		int ans=0;
+		for(i=0 ; i < n ; i++)
+			for(j=c/2 ; j >= 0 ; j--)
+				for(k=j ; k >= 0 ; k--)
+					if(dp[j][k])
+					{
+						int temp = c-j-k;
+						if(temp>c/2||temp==0)break;
+						double p = 1.0*(j+k+temp)/2;
+						int area=(int)(sqrt(p*(p-j)*(p-k)*(p-temp))*100.0);//先乘再转化为int型
+						if(area > ans)ans=area;
+					}
+		if(ans!=0)printf("%d\n",ans);
+		else printf("-1\n");
+	}
+	return 0;
+}

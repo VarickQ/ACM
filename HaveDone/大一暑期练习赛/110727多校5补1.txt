@@ -1,0 +1,130 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <queue>
+using namespace std;
+#define inf 1<<30
+
+double x[10005],y[10005];
+int main()
+{
+	int p,n,i;
+	double mx,my,tot,totl,sd,se,pop;
+	while(scanf("%d%d",&p,&n) == 2)
+	{
+		if(p==1){
+			tot = 0;
+			for(i=0 ; i < n ; i++){
+				scanf("%lf",&x[i]);
+				tot += x[i];
+			}
+			mx = tot/n;
+			totl = 0;
+			for(i=0 ; i < n ; i++)
+				totl += (x[i]-mx)*(x[i]-mx);
+			sd = sqrt(totl/n);
+			for(i=0 ; i < n ; i++)
+				if(!i)printf("%.2lf",(x[i]-mx)/sd);
+				else printf(" %.2lf",(x[i]-mx)/sd);
+			printf("\n");
+		}
+		else if(p==2){
+			scanf("%lf",&pop);
+			tot = 0;
+			for(i=0 ; i < n ; i++){
+				scanf("%lf",&x[i]);
+				tot += x[i];
+			}
+			mx = tot/n;
+			totl = 0;
+			for(i=0 ; i < n ; i++)
+				totl += (x[i]-mx)*(x[i]-mx);
+			sd = sqrt(totl/(n-1));
+			se = sd/sqrt(1.0*n);
+			printf("%.2lf\n",(mx-pop)/se);
+		}
+		else if(p==3){
+			double totx=0,toty=0;
+			for(i=0 ; i < n ; i++){
+				scanf("%lf",&x[i]);
+				totx += x[i];
+			}
+			mx = 1.0*totx/n;
+			for(i=0 ; i < n ; i++){
+				scanf("%lf",&y[i]);
+				toty += y[i];
+			}
+			my = 1.0*toty/n;
+			double sdx,sdy,totlx=0,totly=0;
+			for(i=0 ; i < n ; i++)
+				totlx += (x[i]-mx)*(x[i]-mx);
+			sdx = sqrt(totlx/(1.0*n));
+			for(i=0 ; i < n ; i++)
+				totly += (y[i]-my)*(y[i]-my);
+			sdy = sqrt(totly/(1.0*n));
+			totl = 0;
+			for(i=0 ; i < n ; i++)
+				totl += (x[i]-mx)*(y[i]-my);
+			printf("%.2lf\n",totl/(n*sdx*sdy));
+		}
+		else if(p==4){
+			double totx=0,toty=0;
+			for(i=0 ; i < n ; i++){
+				scanf("%lf",&x[i]);
+				totx += x[i];
+			}
+			mx = 1.0*totx/n;
+			for(i=0 ; i < n ; i++){
+				scanf("%lf",&y[i]);
+				toty += y[i];
+			}
+			my = 1.0*toty/n;
+			double sdx,sdy,totlx=0,totly=0;
+			for(i=0 ; i < n ; i++)
+				totlx += (x[i]-mx)*(x[i]-mx);
+			sdx = sqrt(totlx/(1.0*n));
+			for(i=0 ; i < n ; i++)
+				totly += (y[i]-my)*(y[i]-my);
+			sdy = sqrt(totly/(1.0*n));
+			totl = 0;
+			for(i=0 ; i < n ; i++)
+				totl += (x[i]-mx)*(y[i]-my);
+			double r = totl/(n*sdx*sdy);
+			double b = r*sdy/sdx;
+			printf("%.2lf %.2lf\n",my-b*mx,b);
+		}
+	}
+	return 0;
+}
+//ฒน long long WA __int64 AC
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <queue>
+using namespace std;
+
+int main()
+{
+	__int64 a,b,M,k,ans,i;
+	while(scanf("%I64d%I64d%I64d",&a,&b,&M)==3)
+	{
+		k = a>b?a:b;
+		if(k==1)ans=M;
+		else{
+			ans = 0;
+			int f=1;
+			for(i=k ; M/i > 0 ; i=i*k){
+				ans += f*M/i;
+				f = -f;
+			}
+		}
+		printf("%I64d\n",ans);
+	}
+	return 0;
+}

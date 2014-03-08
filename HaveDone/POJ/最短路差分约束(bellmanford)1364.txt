@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+#include <string>
+using namespace std;
+#define N 105
+struct Node{
+	int u,v,c;
+}e[N];
+int n,m;
+int d[N];
+void bellmanford(){
+	int i,j;
+	for(i=0 ; i <= n ; i++)d[i]=0;
+	bool flag;
+	for(i=0 ; i <= n ; i++){
+		flag = true;
+		for(j=0 ; j < m ; j++){
+			if(d[e[j].v] > d[e[j].u]+e[j].c){
+				d[e[j].v] = d[e[j].u]+e[j].c;
+				flag = false;
+			}
+		}
+		if(flag)break;
+	}
+	if(flag)
+		printf("lamentable kingdom\n");
+	else
+		printf("successful conspiracy\n");
+}
+int main()
+{
+	int si,ni,ki;
+	char oi[3];
+	while(scanf("%d",&n) && n)
+	{
+		scanf("%d",&m);
+		for(int i=0 ; i < m ; i++)
+		{
+		//a[si]глa[si+1]глa[si+2]гл......глa[si+ni] < ki(lt)
+		//sigma(si+ni) - sigma(si-1) < ki <= ki - 1
+		//a[si]глa[si+1]глa[si+2]гл......глa[si+ni] > ki(gt)
+		//sigma(si-1) - sigma(si+ni) < -ki <= -ki-1
+			scanf("%d%d%s%d",&si,&ni,oi,&ki);
+			if(oi[0]=='g'){
+				e[i].u = si-1;
+				e[i].v = si+ni;
+				e[i].c = -ki-1;
+			} else {
+				e[i].u = si+ni;
+				e[i].v = si-1;
+				e[i].c = ki-1;
+			}
+		}
+		bellmanford();
+	}
+	return 0;
+}

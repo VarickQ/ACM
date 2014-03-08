@@ -1,0 +1,42 @@
+#include <iostream>
+using namespace std;
+
+int n,k,res,sum;
+char map[10][10];
+bool row[10],col[10];
+bool check(int i,int j){
+	if(map[i][j]=='#' && row[i] && col[j]) return true;
+	else return false;
+}
+void dfs(int i)
+{
+	if(sum==k){++res; return ;}
+	if(i==n+1) return ;
+	for(int j=1 ; j<=n ; j++)
+		if(check(i,j))
+		{
+			row[i] = col[j] = false;
+			sum++;
+			dfs(i+1);
+			sum--;
+			row[i] = col[j] = true;
+		}
+	dfs(i+1);
+}
+
+int main()
+{
+	while(scanf("%d%d",&n,&k) == 2)
+	{
+		if(n==-1 && k==-1) break;
+		memset( row, true, sizeof(row));
+		memset( col, true, sizeof(col));
+		for(int i=1 ; i <= n ; i++)
+			for(int j=1 ; j <= n ; j++)
+				scanf(" %c", &map[i][j]);
+		res = 0;sum=0;
+		dfs(1);
+		printf("%d\n", res);
+	}
+	return 0;
+}

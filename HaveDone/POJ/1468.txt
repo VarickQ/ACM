@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define inf 100000000
+
+struct Point{
+	int xmin,xmax;
+	int ymin,ymax;
+}a[5005];
+
+int main()
+{
+	int n,i,j,ans;
+	while(scanf("%d",&n) == 1)
+	{
+		for(i=0 ; i < n ; i++)
+			scanf("%d %d %d %d",&a[i].xmin,&a[i].xmax,&a[i].ymin,&a[i].ymax);
+		for(i=0,ans=0 ; i < n ; i++)
+			for(j=0 ; j < n ; j++)
+				if(i!=j && a[i].xmin>=a[j].xmin && a[i].xmax<=a[j].xmax
+					&& a[i].ymin>=a[j].ymin && a[i].ymax<=a[j].ymax){
+					ans++; break;
+				}
+		printf("%d\n",ans);
+	}
+	return 0;
+}

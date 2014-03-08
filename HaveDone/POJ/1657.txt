@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+	char a[5],b[5];
+	int n,x,y,i;
+	int k,q,c,e;
+
+	scanf("%d",&n);
+	for(i=0 ; i < n ; i++){
+		int flag = 0;
+		scanf("%s %s", a, b);
+		x = abs(b[0]-a[0]);
+		y = abs(b[1]-a[1]);
+		if(x==0 && y==0){
+			printf("0 0 0 0\n"); continue;
+		}
+		k = x>y?x:y;
+		if( x==y || x==0 || y==0) q = 1;
+		else q = 2;
+		if(x==0 || y==0) c=1;
+		else c = 2;
+		if( x==y ) e = 1;
+		else if( abs(x-y)%2 == 0 ) e = 2;
+		else{
+			printf("%d %d %d Inf\n",k,q,c); flag=1;
+		}
+		if(!flag) printf("%d %d %d %d\n",k,q,c,e);
+	}
+	return 0;
+}

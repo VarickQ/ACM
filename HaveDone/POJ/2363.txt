@@ -1,0 +1,21 @@
+#include <iostream>
+#define INF 1 << 31-1
+using namespace std;
+
+int main()
+{
+	int c,n,min;
+	scanf("%d", &c);
+	while(c--)
+	{
+		scanf("%d", &n);
+		min = INF;
+		for(int i=1 ; i*i <= n ; i++ )
+			for(int j=i ; j*j <= n ; j++ )
+				for(int h=j ; h <= n ; h++ )
+					if(i*j*h==n && min > 2*(i*h+i*j+h*j))
+						min = 2*(i*h+i*j+h*j);
+		printf("%d\n", min);
+	}
+	return 0;
+}

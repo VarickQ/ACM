@@ -1,0 +1,32 @@
+#include<stdio.h>
+#include<set>
+using namespace std;
+struct cmp{
+    bool operator()(const int & a,const int & b){
+        return dist[a]<dist[b]||dist[a]==dist[b]&&a<b;
+    }
+};
+set<int,cmp> S;
+int dijkstra(int s,int t){
+    memset(vis,0,sizeof(vis));//标记已知最短路集合 
+    memset(dist,0x7f,sizeof*(dist));
+    dist[s]=0;
+    S.clear();
+    S.insert(s);
+    while(!S.empty()){
+        i=*S.begin();
+        S.erase(i);
+        if(i==t)return dist[t];
+        vis[i]=true;
+        for(j=0;j<n;++j){
+            if(!vis[j]&&G[i][j]){//G是邻接矩阵 
+                if(dist[j]>dist[i]+G[i][j]){
+                    S.erase(j);
+                    dist[j]=dist[i]+G[i][j];
+                    S.insert(j);
+                }
+            }
+        }
+    }
+    return -1;
+}

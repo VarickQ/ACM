@@ -1,0 +1,29 @@
+#include<stdio.h>
+#include<math.h>
+
+int main()
+{
+	int i,j,temp,n,max;
+	int a,b,c;
+	while(scanf("%d", &n) == 1){
+		max = 1<<30;
+		for(i=1 ; i*i <= n ; i++){
+			if(n%i == 0){
+				for(j=1 ; j <= n/i ; j++){
+					temp = i*j;
+					if(n%temp == 0){
+						temp = n/temp;
+						if(i*j+i*temp+j*temp < max){
+							max = i*j + i*temp + j*temp;
+							a = i;
+							b = j;
+							c = temp;
+						}
+					}
+				}
+			}
+		}
+		printf("%d %d %d\n",a,b,c);
+	}
+	return 0;
+}

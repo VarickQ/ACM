@@ -1,0 +1,29 @@
+#include <stdio.h>
+int main()
+{
+	int m,w,h,maxW,maxH,c,temp,sum;
+	while(scanf("%d",&m) && m)
+	{
+		maxW = maxH = c = sum = temp = 0;
+		while(scanf("%d%d", &w, &h) == 2){
+			if(w==-1 && h==-1){
+				if(temp < maxW)	temp = maxW;
+				sum += maxH;
+				break;
+			}
+			if(maxW+w <= m){
+				maxW += w;
+				if(h > maxH)
+					maxH = h;
+			}
+			else{
+				if(temp < maxW)	temp = maxW;
+				maxW = w;
+				sum += maxH;
+				maxH = h;
+			}
+		}
+		printf("%d x %d\n", temp, sum);
+	}
+	return 0;
+}

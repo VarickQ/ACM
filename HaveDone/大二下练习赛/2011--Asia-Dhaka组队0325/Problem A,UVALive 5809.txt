@@ -1,0 +1,101 @@
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+int n,m,ans,Z;
+int row[1010],tt[1010];
+char v[1010][1010],a[1010][1010];
+void srow(){
+    memset(row,0,sizeof(row));
+    for(int i=0;i<n;++i) for(int j=0;j<m;++j)
+        row[i]+=v[i][j]-'0';
+}
+void solve(){
+    srow();
+    int tr=ans/n;
+    int temp,zz;
+
+	//正
+    for(int i=0;i<n;++i){   //枚举起点
+        for(int j=0;j<n;++j) tt[j]=row[j];
+        temp=0;
+        for(int j=0;j<n;++j){
+            int u=(i+j)%n;
+            if(tt[(u+n-1)%n]<tr){
+                temp+=tr-tt[(u+n-1)%n];
+                tt[u]-=tr-tt[(u+n-1)%n];
+            }
+            else if(tt[(u+n-1)%n]>tr){
+                temp+=tt[(u+n-1)%n]-tr;
+                tt[u]+=tt[(u+n-1)%n]-tr;
+            }
+        }
+        if(!i) zz=temp;
+        else zz=min(temp,zz);
+    }
+	//反
+	for(int i=0;i<n;++i){
+        for(int j=0;j<n;++j) tt[j]=row[j];
+        temp=0;
+        for(int j=0;j<n;++j){
+            int u=(i-j+n)%n;
+            if(tt[(u+1)%n]<tr){
+                temp+=tr-tt[(u+1)%n];
+                tt[u]-=tr-tt[(u+1)%n];
+            }
+            else if(tt[(u+1)%n]>tr){
+                temp+=tt[(u+1)%n]-tr;
+                tt[u]+=tt[(u+1)%n]-tr;
+            }
+        }
+        if(!i) zz=temp;
+        else zz=min(temp,zz);
+    }
+    Z+=zz;
+}
+int main(){
+    int T,cs=0;
+    scanf("%d",&T);
+    while(T--){
+        ans=0;
+        scanf("%d%d",&n,&m);
+        for(int i=0;i<n;++i){
+            scanf("%s",v[i]);
+            for(int j=0;j<m;++j) ans+=v[i][j]-'0';
+        }
+        printf("Case %d: ",++cs);
+        if(ans%n&&ans%m){
+            printf("impossible\n");
+            continue;
+        }
+        Z=0; //最终答案
+        if(ans%n==0&&ans%m==0){
+            solve();
+			
+			//行列交换
+            for(int i=0;i<n;++i) for(int j=0;j<m;++j)
+                a[j][i]=v[i][j];
+            swap(n,m);
+            for(int i=0;i<n;++i) for(int j=0;j<m;++j)
+                v[i][j]=a[i][j];
+            solve();
+            printf("both %d\n",Z);
+        }
+        else if(ans%n==0){
+            solve();
+            printf("row %d\n",Z);
+        }
+        else{
+            for(int i=0;i<n;++i) for(int j=0;j<m;++j)
+                a[j][i]=v[i][j];
+            swap(n,m);
+            for(int i=0;i<n;++i) for(int j=0;j<m;++j)
+                v[i][j]=a[i][j];
+            solve();
+            printf("column %d\n",Z);
+        }
+    }
+}

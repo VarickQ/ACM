@@ -1,0 +1,65 @@
+//##求大斐波那契数##
+#include<stdio.h>
+#include<iostream>
+#include<algorithm>
+using namespace std;
+#define inf 1000000000
+long long Fibonacci(long long n,long long &next)
+{
+    long long a=0,b=1,c=1;
+    for(long long i=1; i<n; ++i)
+        c=a+b,a=b,b=c;
+    next = a+b;
+    return c;
+}
+long long MyFibonacci(long long n, long long k)
+{
+    long long a=n,count=0;
+    long long data[6400],Fib[6400];
+	if(a<=16)
+	{
+		long long c=1,b=1;
+		if(a==0) return 0;
+		if(a==2||a==1) return 1%k;
+		for(long long i=3;i<=n;i++)
+		{
+			a=(c+b)%k;
+			c=b;
+			b=a;
+		}
+		return a;
+	}
+    while(a>16)
+    {
+        a>>=1;
+        data[count++] = a+1;
+        data[count++] = a;
+    }
+    Fib[count-1] = Fibonacci(data[count-1],Fib[count-2]);
+    for(count-=4;count>=0;count-=2)
+    {
+        if(data[count+1]&1)
+        {
+            Fib[count+1] = (Fib[count+2]*Fib[count+2] + Fib[count+3]*Fib[count+3])%k;
+            Fib[count] = ((2*Fib[count+3] + Fib[count+2])*Fib[count+2])%k;
+        }
+        else
+        {
+            Fib[count+1] = ((2*Fib[count+2] - Fib[count+3]+2*k)%k*Fib[count+3])%k;
+            Fib[count] = (Fib[count+2]*Fib[count+2] + Fib[count+3]*Fib[count+3])%k;
+        }
+    }
+    if(n&1) return (Fib[0]*Fib[0] + Fib[1]*Fib[1])%k;
+    else return ((2*Fib[0] - Fib[1]+2*k)*Fib[1])%k;
+}
+int main()
+{
+	long long ans;
+	long long a,b;
+	while(scanf("%lld%lld",&a,&b)!=EOF)
+	{
+		ans = MyFibonacci(a,b);
+		printf("%lld\n",ans);
+	}
+	return 0;
+}

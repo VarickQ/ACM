@@ -1,0 +1,51 @@
+#include <iostream>
+#include <queue>
+using namespace std;
+
+
+char sa[4],ed[4];
+struct node{
+	int x,y,d;
+}st,end;
+int s[10][10],vis[10][10];
+int v[8][2]={{1,2},{2,1},{1,-2},{2,-1},{-1,-2},{-2,-1},{-2,1},{-1,2}};
+
+void bfs(){
+	queue<node> q;
+	st.d=0;
+	q.push(st);
+	vis[st.x][st.y]=1;
+	while(!q.empty())
+	{
+		node f=q.front(); q.pop();
+		node ff;
+		for(int i=0 ; i<8 ; i++)
+		{
+			ff.x=f.x+v[i][0]; ff.y=f.y+v[i][1]; ff.d=f.d+1;
+			if(ff.x==end.x && ff.y==end.y){
+				printf("To get from %s to %s takes %d knight moves.\n",sa,ed,ff.d); return ;
+			}
+			if(ff.x>=0 && ff.x<8 && ff.y>=0 && ff.y<8 && !vis[ff.x][ff.y])
+			{
+				vis[ff.x][ff.y]=1;
+				q.push(ff);
+			}
+		}
+	}
+}
+
+int main()
+{
+	while(scanf("%s %s", sa, ed) != EOF)
+	{
+		memset(vis,0,sizeof(vis));
+		st.x  = sa[0]-'a';
+		st.y  = sa[1]-'1';
+		end.x = ed[0]-'a';
+		end.y = ed[1]-'1';
+		if(st.x==end.x && st.y==end.y)
+			printf("To get from %s to %s takes 0 knight moves.\n",sa,ed);
+		else bfs();
+	}
+	return 0;
+}

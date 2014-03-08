@@ -1,0 +1,9 @@
+	We can compare two substrings using hash (s[0]*(p^0)+s[1]*(p^1)+...+s[i]*(p^i), where ^ means power).
+Let's n be 1+max(l1, l2). For i (l1<=i and i<n) put s1[i]='1', j (l2<=j and j<n) s2[j]='2'.
+We can build segment tree for each string (now they have length n).
+In each node we save hash of substring [l..r].
+So if vertex v has 2 sons l and r than t[v]=t[l]+t[r]*p^(length of l).
+For 1-st query just go down and modify t (see solution).
+For 2-nd - go upper in tree until substrings in right vertex are not equal. Then add to current length, the length of the largest common prefix in right vertex (easily going down in tree, see solution).
+It's O(n+Q*log(n)).
+	Another solution without hashes is to recalc values f[], g[], where f[i]==j is minimum j, that s1[j..i]==s2[j..i]. And g[i]==j is maximum j, that s1[i..j]==s2[i..j]. It's O(n+Q*log(n)) too.

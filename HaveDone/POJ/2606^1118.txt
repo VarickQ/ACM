@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+struct point{
+	int x,y;
+}a[705];
+int num[10000];
+int main()
+{
+	int n;
+	int i,j,k,sum;
+	while(scanf("%d",&n) && n){
+		memset(num,0,sizeof(num));
+		for(i=0 ; i < n ; i++)
+			scanf("%d %d",&a[i].x,&a[i].y);
+		if(n==1){
+			printf("1\n"); continue;
+		}
+		for(i=0 ; i < n ; i++){
+			for(j=i+1 ; j < n ; j++){
+				sum = 2;
+				for(k=j+1 ; k < n ; k++)
+					if((a[k].x-a[i].x)*(a[j].y-a[i].y)==(a[k].y-a[i].y)*(a[j].x-a[i].x))
+						sum++;
+				if(sum > num[i]) num[i]=sum;
+			}
+		}
+		int max = -1;
+		for(i=0 ; i < n ; i++)
+			if(num[i] > max)
+				max = num[i];
+		printf("%d\n",max);
+	}
+	return 0;
+}

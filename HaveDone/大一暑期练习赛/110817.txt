@@ -1,0 +1,131 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <set>
+using namespace std;
+const int N = 10010;
+
+int main()
+{
+	char B[10];
+	double vx,vy,time,temp1,temp2,h,boom,ans,z1,z2,z3;
+	double g=9.8;
+	memset(B,0,sizeof(B));
+	while(scanf("%lf%s",&h,B)!=EOF)
+	{
+		
+		ans=0;
+		if(!strcmp(B,"Red"))
+		{
+			scanf("%lf%lf",&vx,&vy);
+			temp1=(-vy+sqrt(vy*vy+2*g*h))*1.0/(-g);
+			temp2=(-vy-sqrt(vy*vy+2*g*h))*1.0/(-g);
+			time=temp1>temp2?temp1:temp2;
+			ans=time*vx;
+			printf("%.3lf\n",ans);
+		}
+		else if(!strcmp(B,"Yellow"))
+		{
+			scanf("%lf%lf%lf",&vx,&vy,&boom);
+			
+			temp1=(-vy+sqrt(vy*vy+2*g*h))*1.0/(-g);
+			temp2=(-vy-sqrt(vy*vy+2*g*h))*1.0/(-g);
+			time=temp1>temp2?temp1:temp2;
+			if(time<boom)
+			{
+				ans=time*vx;
+				printf("%.3lf\n",ans);
+			} else {
+				h=h+vy*boom-0.5*9.8*boom*boom;
+				vy=vy-boom*g;
+				ans+=boom*vx;
+				vx=vx*2;
+				vy=vy*2;
+				temp1=(-vy+sqrt(vy*vy+2*g*h))*1.0/(-g);
+				temp2=(-vy-sqrt(vy*vy+2*g*h))*1.0/(-g);
+				time=temp1>temp2?temp1:temp2;
+				{
+					ans+=time*vx;
+				}
+				printf("%.3lf\n",ans);
+			}
+		} else {
+			scanf("%lf%lf%lf%lf%lf%lf",&vx,&vy,&boom,&z1,&z2,&z3);
+			temp1=(-vy+sqrt(vy*vy+2*g*h))*1.0/(-g);
+			temp2=(-vy-sqrt(vy*vy+2*g*h))*1.0/(-g);
+			time=temp1>temp2?temp1:temp2;
+			if(time<boom)
+			{
+				ans=time*vx;
+				printf("%.3lf\n",ans);
+			} else {
+				h=h+vy*boom-0.5*9.8*boom*boom;
+				vy=vy-boom*g;
+				ans+=boom*vx;
+
+				//--------------
+				temp1=(-vy+sqrt(vy*vy+2*g*h))*1.0/(-g);
+				temp2=(-vy-sqrt(vy*vy+2*g*h))*1.0/(-g);
+				time=temp1>temp2?temp1:temp2;
+			
+	
+				printf("%.3lf ",(ans+time*z1));
+				printf("%.3lf ",(ans+time*z2));
+				printf("%.3lf\n",(ans+time*z3));
+			}
+		}
+		memset(B,0,sizeof(B));
+	}
+	return 0;
+}
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <set>
+using namespace std;
+const int N = 10010;
+
+int a[N],b[N];
+bool cmp(int a,int b){
+	return a > b;
+}
+int main()
+{
+	int T,n,m,n1,n2,cs=1,val1,val2,i,j,ans,num;
+	scanf("%d",&T);
+	while(T--)
+	{
+		scanf("%d%d%d%d",&n,&m,&n1,&n2);
+		for(i=1 ; i <= n1 ; ++i)
+			scanf("%d",&a[i]);
+		for(i=1 ; i <= n2 ; ++i)
+			scanf("%d",&b[i]);
+		b[0] = 0;
+		sort(a+1,a+n1+1,cmp);
+		sort(b+1,b+n2+1,cmp);
+		if(n==2&&m%3==2 || m==2&&n%3==2)
+			num = n*m/3-1;
+		else num = n*m/3;
+		if(num > n2) num = n2;
+		val2 = 0;
+		ans = 0;
+		for(i=0 ; i <= num ; ++i){
+			val2 += b[i];
+			val1 = 0;
+			j = 1;
+			int book = (n*m-3*i)/2;
+			if(book > n1)book = n1;
+			while(book >= j)
+				val1 += a[j++];
+			if(val1+val2 > ans)ans = val1+val2;
+		}
+		printf("Case #%d: %d\n",cs++,ans);
+	}
+	return 0;
+}

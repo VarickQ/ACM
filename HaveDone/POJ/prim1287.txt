@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define inf 100000000
+
+int map[200][200];
+void Prim(int n)
+{
+	int i,j,min_i,min,sum=0;
+	int dis[200],flag[200];
+	for(i=1 ; i <= n ; i++)
+		dis[i] = map[i][1];
+	memset(flag,0,sizeof(flag));
+	flag[1] = 1;
+	for(i=2 ; i <= n; i++){
+		min = inf; min_i=i;
+		for(j=2 ; j <= n ; j++)
+			if(!flag[j] && dis[j]<min){
+				min = dis[j];
+				min_i = j;
+			}
+		if(min == inf)break;
+		sum += min;
+		flag[min_i] = 1;
+		for(j=2 ; j <= n ; j++)
+			if(!flag[j] && dis[j] > map[min_i][j])
+				dis[j] = map[min_i][j];
+	}
+	printf("%d\n", sum);
+}
+int main()
+{
+	int i,j,p,r,a,b,c;
+	while(scanf("%d",&p) && p)
+	{
+		scanf("%d",&r);
+		for(i=1 ; i <= p ; i++)
+			for(j=1 ; j <= p ; j++)
+				map[i][j] = inf;
+		for(i=1 ; i <= r ; i++){
+			scanf("%d%d%d",&a,&b,&c);
+			if(map[a][b]>c || map[b][a]>c)
+				map[a][b]=map[b][a] = c;
+		}
+		Prim(p);
+	}
+	return 0;
+}

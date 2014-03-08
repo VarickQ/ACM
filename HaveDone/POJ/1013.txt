@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+int fabs(int a){if(a<0)a=-a;return a;}
+
+int r[30],c[30];
+int main()
+{
+	int n,i,j,len;
+	char left[30],right[30],con[5];
+	scanf("%d",&n);
+	while(n--)
+	{
+		memset(r,0,sizeof(r));
+		memset(c,0,sizeof(c));
+		for(i=0 ; i < 3 ; i++){
+			scanf("%s %s %s",left,right,con);
+			if(strcmp(con,"even") == 0){
+				len = strlen(left);
+				for(j=0 ; j < len ; j++)
+					r[left[j]-'A'] = 1;
+				len = strlen(right);
+				for(j=0 ; j < len ; j++)
+					r[right[j]-'A'] = 1;
+			}
+			if(strcmp(con,"up") == 0){
+				len = strlen(left);
+				for(j=0 ; j < len ; j++)
+					c[left[j]-'A'] ++;
+				len = strlen(right);
+				for(j=0 ; j < len ; j++)
+					c[right[j]-'A'] --;
+			}
+			else if(strcmp(con,"down") == 0){
+				len = strlen(left);
+				for(j=0 ; j < len ; j++)
+					c[left[j]-'A'] --;
+				len = strlen(right);
+				for(j=0 ; j < len ; j++)
+					c[right[j]-'A'] ++;
+			}
+		}
+		for(i=0 ; i < 12 ; i++)
+			if(r[i])c[i]=0;
+		int max=0,pos=0,f;
+		for(i=0 ; i < 12 ; i++)
+			if(fabs(c[i]) > max){
+				max=fabs(c[i]);
+				pos=i;
+				if(c[i]>0)f=1;
+				else f=0;
+			}
+		printf("%c is the counterfeit coin and it is ",pos+'A');
+		if(f)printf("heavy.\n");
+		else printf("light.\n");
+	}
+	return 0;
+}

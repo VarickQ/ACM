@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define inf 1000000000
+const int N = 301;
+const int M = 500000;
+int mat[N][N],n;
+int Min[N][N][9][9];
+void init_rmq(){
+	int i,j,x,y;
+	for(i=0 ; i < n ; i++)
+		for(j=0 ; j < n ; j++)
+			Min[i][j][0][0] = mat[i][j];
+	for(i=0 ; (1<<i) <= n ; i++)
+		for(j=0 ; (1<<j) <= n ; j++){
+			if(i==0&&j==0) continue;
+			for(x=0 ; x+(1<<i)-1 < n ; x++){
+				for(y=0 ; y+(1<<j)-1 < n ; y++){
+					if(j==0){
+						Min[x][y][i][j]=min(Min[x][y][i-1][j],Min[x+(1<<(i-1))][y][i-1][j]);
+					} else {
+						Min[x][y][i][j]=min(Min[x][y][i][j-1],Min[x][y+(1<<(j-1))][i][j-1]);
+					}
+				}
+			}
+		}
+}
+int rmq(int x1,int y1,int x2,int y2){
+	int kx = log(x2-x1+1.0)/log(2.0);
+	int ky = log(y2-y1+1.0)/log(2.0);
+	int t1 = Min[x1][y1][kx][ky];
+	int t2 = Min[x2-(1<<kx)+1][y1][kx][ky];
+	int t3 = Min[x1][y2-(1<<ky)+1][kx][ky];
+	int t4 = Min[x2-(1<<kx)+1][y2-(1<<ky)+1][kx][ky];
+	return min(t1,min(t2,min(t3,t4)));
+}
+int main()
+{
+	int T,i,j,q,r1,r2,c1,c2;
+	scanf("%d",&T);
+	while(T--)
+	{
+		scanf("%d",&n);
+		for(i=0 ; i < n ; i++)
+			for(j=0 ; j < n ; j++)
+				scanf("%d",&mat[i][j]);
+		init_rmq();
+		scanf("%d",&q);
+		for(i=0 ; i < q ; i++){
+			scanf("%d%d%d%d",&r1,&c1,&r2,&c2);
+			r1--; r2--; c1--; c2--;
+			printf("%d\n",rmq(r1,c1,r2,c2));
+		}
+	}
+	return 0;
+}

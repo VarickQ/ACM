@@ -1,0 +1,171 @@
+#include <stdio.h>
+#include <string.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define inf 1000000000
+const int N = 808;
+const int M = 200000;
+
+int gcd(int a,int b){
+	return b?gcd(b,a%b):a;
+}
+int a[N],hz[N],bhz[N];
+int main()
+{
+	int T,n,i,j;
+	scanf("%d",&T);
+	while(T--)
+	{
+		memset(hz,0,sizeof(hz));
+		memset(bhz,0,sizeof(bhz));
+		scanf("%d",&n);
+		for(i=0 ; i < n ; i++)
+			scanf("%d",&a[i]);
+		for(i=0 ; i < n ; i++)
+			for(j=0 ; j < n ; j++)
+				if(i != j){
+					if(gcd(a[i],a[j])==1)hz[i]++;
+					else bhz[i]++;
+				}
+		int ans = n*(n-1)*(n-2)/6,num=0;
+		for(i=0 ; i < n ; i++)
+			num += hz[i]*bhz[i];
+		printf("%d\n",ans-num/2);
+	}
+	return 0;
+}
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <string.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define inf 1000000000
+const int N = 808;
+const int M = 200000;
+bool check(__int64 n){
+	__int64 k = sqrt(n*1.0);
+	if(k*k==n) return true;
+	else return false;
+}
+int main()
+{
+	int T;
+	__int64 a,b,c,n,m,k;
+	__int64 sa,sb,sc;
+	scanf("%d",&T);
+	while(T--)
+	{
+		scanf("%I64d%I64d%I64d%I64d%I64d%I64d",&a,&b,&c,&n,&m,&k);
+		sa = (2*b*c)*(2*b*c)-(b*b+c*c-a*a)*(b*b+c*c-a*a);
+		sb = (2*a*c)*(2*a*c)-(a*a+c*c-b*b)*(a*a+c*c-b*b);
+		sc = (2*a*b)*(2*a*b)-(a*a+b*b-c*c)*(a*a+b*b-c*c);
+		if(check(sa) && check(sb) && check(sc))
+			printf("YES\n");
+		else printf("NO\n");
+	}
+	return 0;
+}
+//补
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <string.h>
+#include <iostream>
+#include <algorithm>
+#include <map>
+using namespace std;
+#define inf 1000000000
+const int N = 20005;
+#define MAXN 20005
+#define offset 10000
+#define eps 1e-8
+#define zero(x) (((x)>0?(x):-(x))<eps)
+#define _sign(x) ((x)>eps?1:((x)<-eps?2:0))
+struct point{double x,y;};
+struct line{point a,b;};
+
+int n;
+double xmult(point p1,point p2,point p0){
+	return (p1.x-p0.x)*(p2.y-p0.y)-(p2.x-p0.x)*(p1.y-p0.y);
+}
+point intersection(line u,line v){
+	point ret=u.a;
+	double t=((u.a.x-v.a.x)*(v.a.y-v.b.y)-(u.a.y-v.a.y)*(v.a.x-v.b.x))
+			/((u.a.x-u.b.x)*(v.a.y-v.b.y)-(u.a.y-u.b.y)*(v.a.x-v.b.x));
+	ret.x+=(u.b.x-u.a.x)*t;
+	ret.y+=(u.b.y-u.a.y)*t;
+	return ret;
+}
+point barycenter(point a,point b,point c){
+	line u,v;
+	u.a.x=(a.x+b.x)/2;
+	u.a.y=(a.y+b.y)/2;
+	u.b=c;
+	v.a.x=(a.x+c.x)/2;
+	v.a.y=(a.y+c.y)/2;
+	v.b=b;
+	return intersection(u,v);
+}
+//多边形重心
+point barycenter(int n,point* p){
+	point ret,t;
+	double t1=0,t2;
+	int i;
+	ret.x=ret.y=0;
+	for (i=1;i<n-1;i++)
+		if (fabs(t2=xmult(p[0],p[i],p[i+1]))>eps){
+			t=barycenter(p[0],p[i],p[i+1]);
+			ret.x+=t.x*t2;
+			ret.y+=t.y*t2;
+			t1+=t2;
+		}
+	if (fabs(t1)>eps)
+		ret.x/=t1,ret.y/=t1;
+	return ret;
+}
+point a[N],zx;
+map<int,int> ma;
+map<int,int>::iterator ok;
+double dis(point a,point b){
+	return sqrt((a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y));
+}
+int main()
+{
+	int i;
+	while(scanf("%d",&n) == 1)
+	{
+		ma.clear();
+		for(i=0 ; i < n ; i++)
+			scanf("%lf%lf",&a[i].x,&a[i].y);
+		double temp;
+		zx = barycenter(n,a);
+		for(i=0 ; i < n ; i++)
+		{
+			temp = dis(zx,a[i])*1000000.0+0.5;
+			ma[(int)temp]++;
+		}
+		bool f = true;
+		if(n%2==0){
+			for(ok=ma.begin() ; ok!=ma.end() ; ok++)
+				if(ok->second%2 == 1){
+					f = false;
+					break;
+				}
+			if(f)printf("YES\n");
+			else printf("NO\n");
+		} else {
+			int cnt = 0;
+			for(ok=ma.begin() ; ok!=ma.end() ; ok++)
+				if(ok->second%2 == 1){
+					cnt++;
+					if(cnt>1)f = false;
+				}
+			if(f)printf("YES\n");
+			else printf("NO\n");
+		}
+	}
+	return 0;
+}

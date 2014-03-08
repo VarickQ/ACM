@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <string.h>
+using namespace std;
+#define N 100005
+struct Node{
+	int v,next;
+}edge[N*2];
+int edgehead[N],k,c[N],n;
+//始末位置之间即代表了以该结点为根的子树的所有结点
+int low[N],high[N],dep;
+bool vis[N],pick[N];
+
+void dfs(int u)
+{
+	//第一次搜到第u个节点时的深度dep，为这个节点管辖区间的上限low[i]
+	low[u] = ++dep;
+	vis[u] = true;
+	for(int i=edgehead[u] ; i ; i=edge[i].next)
+		if(!vis[edge[i].v])
+			dfs(edge[i].v);
+	//最后搜回来后的深度dep，为这个节点管辖区间的下限high[i]
+	high[u]=dep;
+}
+int Lowbit(int t){//计算lowbit
+    return t & ( -t );
+}
+void Plus(int pos,int num){//将第i个元素更改为val
+	while(pos <= n){
+		c[pos] += num;
+		pos += Lowbit(pos);
+	}
+}
+int Sum(int end){//求前i项和
+	int sum = 0;
+	while(end > 0){
+		sum += c[end];
+		end -= Lowbit(end);
+	}
+	return sum;
+}
+void add(int u,int v){
+	edge[k].v = v;
+	edge[k].next= edgehead[u];
+	edgehead[u] = k++;
+}
+
+int main()
+{
+	int i,u,v,m,x;
+	char ch[2];
+	//memset(edgehead,-1,sizeof(edgehead));
+	//memset(vis,0,sizeof(vis));
+	scanf("%d",&n);
+	for(k=1,i=1 ; i < n ; i++){
+		scanf("%d %d",&u,&v);
+		add(u,v);
+	}
+	for(i=1 ; i <= n ; i++)
+		Plus(i,1);
+	dep = 0;
+	dfs(1);
+
+	scanf("%d",&m);
+	for(i=0 ; i < m ; i++)
+	{
+		scanf("%s %d",ch,&u);
+		if(ch[0]=='C'){
+			if(pick[u]){
+				Plus(low[u],1);
+				pick[u] = false;
+			} else {
+				Plus(low[u],-1);
+				pick[u] = true;
+			}
+		} else {
+			int ans=Sum(high[u])-Sum(low[u]-1);
+			printf("%d\n",ans);
+		}
+	}
+	return 0;
+}

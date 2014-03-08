@@ -1,0 +1,18 @@
+/*输入一个字符串（以换行符结尾），它的最大长度为1000。统计这个字符串中空格数的个数。
+本题只有一组数据。*/
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+ char ch[1000];
+ int ilen,i,k=0;
+ while(gets(ch))
+ {
+  ilen=strlen(ch);
+  for(i=0;i<ilen;i++)
+	  if(ch[i] == 32)
+         k++;
+  printf("%d\n",k);
+ }
+ return 0;
+}

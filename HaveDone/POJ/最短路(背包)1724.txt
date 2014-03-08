@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <math.h>
+#include <queue>
+#include <string.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define inf 1<<30
+#define N 10005
+struct A{
+	int cost,len,v,next;
+}e[N];
+int heade[N],k;
+void add(int u,int v,int l,int c){
+	e[k].cost = c;
+	e[k].len = l;
+	e[k].v = v;
+	e[k].next = heade[u];
+	heade[u] = k++;
+}
+int qu[N],d[105][N],m,n,r;
+bool inqu[N];
+void spfa(int s){
+	int i,j,head=0,tail=0;
+	memset(inqu,false,sizeof(inqu));
+	for(i=1 ; i <= n ; i++)//每个城市
+		for(j=0 ; j <= m ; j++)//有的钱
+			d[i][j] = inf;
+	d[s][0] = 0;
+	inqu[s] = true;//入队
+	qu[tail++] = s;
+	while(tail > head){//队列非空
+		int u = qu[head++];
+		inqu[u] = false;//出队
+		for(i=heade[u] ; i!=-1 ; i=e[i].next){
+			int v = e[i].v;
+			for(j=m ; j >= e[i].cost ; j--){//松弛操作，是花费也尽量少
+				if(d[v][j] > d[u][j-e[i].cost]+e[i].len){
+					d[v][j] = d[u][j-e[i].cost]+e[i].len;
+					if(!inqu[v]){//如果该点不在队列中
+						inqu[v] = true;//那么入队
+						qu[tail++] = v;
+					}
+				}
+			}
+		}
+	}
+}
+int main()
+{
+	int i,u,v,c,l;
+	while(scanf("%d%d%d",&m,&n,&r) == 3)
+	{
+		memset(heade,-1,sizeof(heade));
+		for(i=0,k=0 ; i < r ; i++){
+			scanf("%d%d%d%d",&u,&v,&l,&c);
+			add(u,v,l,c);
+		}
+		spfa(1);
+		int ans = inf;
+		for(i=1 ; i <= m ; i++)
+			if(d[n][i] < ans)
+				ans = d[n][i];
+		if(ans==inf)printf("-1\n");
+		else printf("%d\n",ans);
+	}
+	return 0;
+}

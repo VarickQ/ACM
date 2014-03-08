@@ -1,0 +1,23 @@
+/*密码
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+原文
+V W X Y Z A B C D E F G H I J K L M N O P Q R S T U
+密码中只出现大写字母，每组字母小于80个。*/
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+	int i,ilen;
+	char ch[88];
+	while(gets(ch))
+	{
+		ilen=strlen(ch);
+		for(i=0;i<ilen;i++)
+		{	if(ch[i]>=65 && ch[i]<=69)
+				ch[i]=ch[i]+21;
+			else
+				ch[i]=ch[i]-5;}
+		puts(ch);
+	}
+	return 0;
+}

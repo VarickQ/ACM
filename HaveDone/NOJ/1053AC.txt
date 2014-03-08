@@ -1,0 +1,20 @@
+/*设F(n,m)为三角阵中第n列从下往上数起的第m行.
+第一行输入一个整数N(0<N<100),下面有和N行,每行都有两个整数n,m.(0<m<2*n)
+输出共N行,每行输出F(n,m)的值.(F(n,m)<2*10^9)*/
+#include<stdio.h>
+int main()
+{
+ int a,i,m,n;
+ while(scanf("%d",&a) == 1)
+ {
+  for(i=0;i<a;i++)
+  {
+   scanf("%d %d",&n,&m);
+   if(m<0 || m>=2*n)
+    printf("wrong\n");
+   else
+    printf("%d\n",n*n-m+1);
+  } 
+ }
+ return 0;
+}

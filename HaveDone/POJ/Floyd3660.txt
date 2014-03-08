@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <string.h>
+
+int map[101][101];
+
+int main()
+{
+	int n,m,x,y;
+	while(scanf("%d%d",&n,&m) == 2)
+	{
+		memset(map,0,sizeof(map));
+
+		for(int i=0 ; i < m ; i++){
+			scanf("%d%d",&x,&y);
+			map[x][y] = 1;
+		}
+
+		for(int k=1 ; k <= n ; k++)
+			for(int i=1 ; i <= n ; i++)
+				for(int j=1 ; j <= n ; j++)
+					if(map[i][k]+map[k][j] == 2)
+						map[i][j] = 1;
+
+		int ans = 0;
+		for(int i=1 ; i <= n ; i++){
+			int sum = 0;
+			for(int j=1 ; j <= n ; j++)
+				if(map[i][j] || map[j][i])
+					sum++;
+			if(sum == n-1) ans++;
+		}
+		printf("%d\n", ans);
+	}
+	return 0;
+}

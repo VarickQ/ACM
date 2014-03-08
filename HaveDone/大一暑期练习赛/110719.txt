@@ -1,0 +1,180 @@
+//A
+#include <stdio.h>
+#include <iostream>
+#include <algorithm>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
+using namespace std;
+
+int main()
+{
+	int n,i;
+	while(scanf("%d",&n) == 1)
+	{
+		printf("%I64d\n",2*n+1);
+	}
+	return 0;
+}
+//B
+#include <stdio.h>
+#include <iostream>
+#include <algorithm>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
+using namespace std;
+
+char str[105][120];
+int main()
+{
+	int n,m,i;
+	while(scanf("%d%d",&n,&m) == 2)
+	{
+		for(i=1 ; i <= m ; i++)
+			scanf("%s",str[i]);
+		if(n%m==0)
+			printf("%s\n",str[m]);
+		else printf("%s\n",str[n%m]);
+	}
+	return 0;
+}
+//C
+#include <stdio.h>
+#include <iostream>
+#include <algorithm>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
+using namespace std;
+
+int main()
+{
+	int n,m,i,j,a,b,t1,t2,ans[110];
+	while(scanf("%d%d",&n,&m)==2)
+	{
+		memset(ans,0,sizeof(ans));
+		for(i=0 ; i < m ; i++){
+			scanf("%d%d",&t1,&t2);
+			for(j=0 ; j < n ; j++){
+				scanf("%d%d",&a,&b);
+				if(t1==t2 && a==b)
+					ans[j] += 2;
+				if(t1>t2&&a>b || t1<t2&&a<b)
+					ans[j] += 2;
+				if(t2-t1==b-a)
+					ans[j] += 3;
+				if(t1==a)
+					ans[j] += 1;
+				if(t2==b)
+					ans[j] += 1;
+			}
+		}
+		for(i=0 ; i < n ; i++)
+			if(!i)printf("%d",ans[i]);
+			else printf(" %d",ans[i]);
+		printf("\n");
+	}
+	return 0;
+}
+//D
+#include <stdio.h>
+#include <iostream>
+#include <algorithm>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
+using namespace std;
+
+int date[110][110];
+int main()
+{
+	int n,m,i,j,k,ck[110],f,q,p;
+	bool out[110];
+	while(scanf("%d%d",&n,&m) == 2)
+	{
+		for(i=0 ; i < n ; i++)
+		{
+			scanf("%d",&date[i][0]);
+			for(j=1 ; j <= date[i][0] ; j++)
+				scanf("%d",&date[i][j]);
+		}
+		for(i=0 ; i < m ; i++)
+		{
+			memset(out,0,sizeof(out));
+			scanf("%d",&k);
+			for(j=0 ; j < k ; j++)
+				scanf("%d",&ck[j]);
+			int tot=0,ff=1,t=0;
+			for(j=0 ; j < n ; j++)
+			{
+				t = 0; ff = 1;
+				for(p=0 ; p < k ; ){
+					if(ck[p]>0){
+						for(q=1;q<=date[j][0];q++){
+							if(ck[p]==date[j][q]){
+								t++; break;
+							}
+						}
+						p++;
+					}
+					else if(ck[p]<0){
+						for(q=1;q<=date[j][0];q++)
+							if(ck[p]+date[j][q]==0){
+								ff=0; break;
+							}
+						if(ff==0)break;
+						p++; t++;
+					}
+				}
+				if(ff=0){
+					out[j]=false;
+					ff = 1;
+				}
+				if(t==k){
+					out[j]=true;
+					tot++;
+				}
+			}
+			printf("%d\n",tot);
+			for(j=0 ; j < n ; j++){
+				if(out[j]){
+					for(q=0 ; q <= date[j][0] ; q++)
+						if(!q)printf("%d",date[j][q]);
+						else printf(" %d",date[j][q]);
+					printf("\n");
+				}
+			}
+		}
+	}
+	return 0;
+}
+//F
+#include <stdio.h>
+#include <iostream>
+#include <algorithm>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
+using namespace std;
+
+int main()
+{
+	int dp[1005],n;
+	dp[0]=0;
+	dp[1]=1;
+	dp[2]=5;
+	dp[3]=11;
+	dp[4]=20;
+	for(int i=5 ; i <= 1000 ; i++){
+		if((i+2)%2==0)
+			dp[i] = dp[i-1] + ((i+2)/2)*((i+2)/2);
+		else
+			dp[i] = dp[i-1] + ((i+2)/2)*((i+3)/2);
+	}
+	while(scanf("%d",&n) == 1)
+	{
+		printf("%d.000\n",dp[n]);
+	}
+	return 0;
+}

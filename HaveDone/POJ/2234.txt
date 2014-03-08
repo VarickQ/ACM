@@ -1,0 +1,22 @@
+//有N堆火柴，每次可以从任意堆拿出任意数量的火柴，谁拿走最后的谁就win，
+//我没有办法证明算法的正确性，用异或可以解决此类问题。
+
+#include <stdio.h>
+#include <string.h>
+int main()
+{
+	int a[22];
+	int m,i;
+	while(scanf("%d",&m)==1)
+	{
+		memset(a,0,sizeof(a));
+		for( i=0 ; i < m ; i++ )
+			scanf("%d", &a[i]);
+		for( i=1 ; i < m ; i++ )
+			a[i] = a[i-1] ^ a[i];
+
+		if( a[m-1] ) printf("Yes\n");
+		else printf("No\n");
+	}
+return 0;
+}

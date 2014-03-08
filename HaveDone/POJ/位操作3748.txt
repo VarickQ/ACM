@@ -1,0 +1,19 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+
+#define setbit(x,y) x|=(1 << (y))//将X的第Y位置1
+#define clebit(x,y) x&=~(1 << (y))//将X的第Y位清0
+int main()
+{
+	int r,x,y;
+	while(scanf("%x,%d,%d",&r,&x,&y) == 3)
+	{
+		clebit(r,x);
+		setbit(r,y);
+		setbit(r,y-1);
+		clebit(r,y-2);
+		printf("%x\n",r);
+	}
+	return 0;
+}

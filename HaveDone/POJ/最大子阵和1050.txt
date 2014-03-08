@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#define MAXN 120
+typedef int elem_t;
+
+elem_t maxsum(int m,int n,elem_t mat[][MAXN]){
+	elem_t matsum[MAXN][MAXN+1],ret,sum;
+	int i,j,k;
+	for (i=0;i<m;i++)
+		for (matsum[i][j=0]=0;j<n;j++)
+			matsum[i][j+1]=matsum[i][j]+mat[i][j];
+	for (ret=mat[0][j=0];j<n;j++)
+		for (k=j;k<n;k++)
+			for (sum=0,i=0;i<m;i++)
+				sum=(sum>0?sum:0)+matsum[i][k+1]-matsum[i][j],ret=(sum>ret?sum:ret);
+	return ret;
+}
+int mat[120][120];
+int main()
+{
+	int n,i,j;
+	while(scanf("%d",&n) == 1)
+	{
+		for(i=0 ; i < n ; i++)
+			for(j=0 ; j < n ; j++)
+				scanf("%d", &mat[i][j]);
+		printf("%d\n", maxsum(n,n,mat));
+	}
+	return 0;
+}

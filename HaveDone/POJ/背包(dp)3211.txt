@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+#include <string>
+using namespace std;
+#define N 105
+
+struct C{
+	int t,c;
+	char col[15];
+}a[N];
+int sum[N];
+int main()
+{
+	int m,n,t[N],time,i,j,k;
+	char col[15][15];
+	while(scanf("%d%d",&m,&n) && (m+n))
+	{
+		memset(sum,0,sizeof(sum));
+		for(i=0 ; i < m ; i++)
+			scanf("%s",col[i]);
+		for(i=0 ; i < n ; i++){
+			scanf("%d %s",&a[i].t,a[i].col);
+			for(j=0 ; j < m ; j++)
+				if(strcmp(col[j],a[i].col)==0){
+					a[i].c = j;
+					sum[j] += a[i].t;
+				}
+		}
+		bool dp[10001];
+		int ans = 0;
+		for(i=0 ; i < m  ; i++){
+			memset(dp,false,sizeof(dp));
+			dp[0] = true;
+			for(j=0 ; j < n ; j++)
+				if(i == a[j].c)
+					for(k=sum[i] ; k >= a[j].t ; k--)
+						if(dp[k-a[j].t])
+							dp[k] = true;
+			int mid = (sum[i]+1)/2;
+			for(j=mid ; j <= sum[i] ; j++)
+				if(dp[j]){
+					ans += j;
+					break;
+				}
+		}
+		printf("%d\n",ans);
+	}
+	return 0;
+}

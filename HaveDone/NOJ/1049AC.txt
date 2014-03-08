@@ -1,0 +1,35 @@
+#include<stdio.h>
+int qmax(int a,int b)
+{
+ int max;
+ if(a>b)
+  max=a;
+ else
+  max=b;
+ return max;
+}
+int main()
+{
+ long int n,s,ps,leftsum,leftpsum,sum=0,psum=0,max,min;
+ int i,j;
+ while(scanf("%ld %ld %ld",&n,&s,&ps) == 3)
+ {
+  for(i=1;i<=n;i++)
+  {
+   sum=sum+i;
+   psum=psum+i*i;
+  }
+  leftsum=sum-s;
+  leftpsum=psum-ps;
+  for(i=1;i<=n;i++)
+   for(j=1;j<=n;j++)
+    if((i+j)==leftsum && (i*i+j*j)==leftpsum)
+    {
+     max=qmax(i,j);
+     min=leftsum-max;
+    }
+  printf("%ld %ld\n",min,max);
+  max=0;min=0;sum=0;psum=0;leftsum=0;leftpsum=0;
+ }
+ return 0;
+}

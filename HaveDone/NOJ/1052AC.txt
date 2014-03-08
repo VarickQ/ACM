@@ -1,0 +1,49 @@
+/*给你一个由大写字母组成的字符串， 统计大写字母的个数。 
+每一行输入一个字符串（长度最长为1024）。 
+每一行输出统计结果；*/
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+	char ch[1024];
+	int a=0,b=0,c=0,d=0,e=0,f=0,g=0,h=0,i=0,j=0,k=0,l=0,m=0,n=0,o=0,p=0,q=0,r=0,s=0,t=0,u=0,v=0,w=0,x=0,y=0,z=0;
+	int il,ilen;
+	while(gets(ch))
+	{
+		ilen=strlen(ch);
+		a=0;b=0;c=0;d=0;e=0;f=0;g=0;h=0;i=0;j=0;k=0;l=0;m=0;n=0;o=0;p=0;q=0;r=0;s=0;t=0;u=0;v=0;w=0;x=0;y=0;z=0;
+		for(il=0;il<ilen;il++)
+		{	switch(ch[i])
+		{
+			case 65:a++;break;
+			case 66:b++;break;
+			case 67:c++;break;
+			case 68:d++;break;
+			case 69:e++;break;
+			case 70:f++;break;
+			case 71:g++;break;
+			case 72:h++;break;
+			case 73:i++;break;
+			case 74:j++;break;
+			case 75:k++;break;
+			case 76:l++;break;
+			case 77:m++;break;
+			case 78:n++;break;
+			case 79:o++;break;
+			case 80:p++;break;
+			case 81:q++;break;
+			case 82:r++;break;
+			case 83:s++;break;
+			case 84:t++;break;
+			case 85:u++;break;
+			case 86:v++;break;
+			case 87:w++;break;
+			case 88:x++;break;
+			case 89:y++;break;
+			case 90:z++;break;
+		}
+		}
+		printf("%dA%dB%dC%dD%dE%dF%dG%dH%dI%dJ%dK%dL%dM%dN%dO%dP%dQ%dR%dS%dT%dU%dV%dW%dX%dY%dZ\n",a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z);
+	}
+	return 0;
+}

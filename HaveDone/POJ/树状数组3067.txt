@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <string.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define ll __int64
+
+int N,M,K;
+struct Node{
+	int e,w;
+}rr[1000005];
+
+int cmp(Node a,Node b){
+	if(a.e==b.e)
+		return a.w < b.w;
+	return a.e < b.e;
+}
+int Lowbit(int t){
+    return t & ( -t );
+}
+ll c[1005];
+void Plus(int pos,int num){
+	while(pos <= M){
+		c[pos] += num;
+		pos += Lowbit(pos);
+	}
+}
+ll Sum(int end){
+	ll sum = 0;
+	while(end > 0){
+		sum += c[end];
+		end -= Lowbit(end);
+	}
+	return sum;
+}
+int main()
+{
+	int t,i,cs=1;
+	scanf("%d",&t);
+	while(t--)
+	{
+		memset(c,0,sizeof(c));
+		scanf("%d%d%d",&N,&M,&K);
+		for(i=0 ; i < K ; i++)
+		{
+			scanf("%d%d",&rr[i].e,&rr[i].w);
+		}
+		sort(rr,rr+K,cmp);
+		ll ans=0;
+		for(i=0 ; i < K ; i++){
+			ans += Sum(M) - Sum(rr[i].w);
+			Plus(rr[i].w,1);
+		}
+		printf("Test case %d: %I64d\n",cs++,ans);
+	}
+	return 0;
+}

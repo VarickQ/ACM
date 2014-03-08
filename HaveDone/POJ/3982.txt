@@ -1,0 +1,44 @@
+#include <iostream>
+#define MAX 100000000
+#define max(a,b) a > b ? a : b
+using namespace std;
+
+int d[101][1001];
+void add(int k1,int k2,int k0)
+{
+	int i,num,carry = 0;
+	int len = max( d[k1][0], d[k2][0]);
+	for(int i=1 ; i <= len ; i++ )
+	{
+		num = d[k1][i] + d[k2][i] + carry;
+		d[k0][i] = num % MAX;
+		carry = num / MAX;
+	}
+	if( carry > 0 )
+		d[k0][++len] = carry;
+	d[k0][0] = len;
+}
+
+int main()
+{
+	int a,b,c;
+	while(scanf("%d %d %d", &a, &b, &c) == 3)
+	{
+		memset(d,0,sizeof(d));
+		d[1][0] = d[2][0] = d[3][0] = 1;
+		d[1][1] = a;
+		d[2][1] = b;
+		d[3][1] = c;
+		for(int i=4 ; i <= 100 ; i++ )
+		{
+			add( i-1, i-2, 0);
+			add( 0, i-3, i);
+		}
+		int l = d[100][0];
+		printf("%d", d[100][l]);
+		for(int i=l-1 ; i >= 1 ; i-- )
+			printf("%08d", d[100][i]);
+		printf("\n");
+	}
+	return 0;
+}

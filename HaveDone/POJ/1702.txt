@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int Pow(int n,int k){
+	int a=1;
+	for(int i=0 ; i < k ; i++)
+		a *= n;
+	return a;
+}
+int main()
+{
+	int i,w,t,lt,rt;
+	long long l[25],r[25],v[25];
+	for(i=0;i<=20;i++) v[i]=Pow(3,i);
+
+	scanf("%d",&t);
+	while(t--){
+		scanf("%d",&w);
+
+		memset(l,0,sizeof(l));
+		memset(r,0,sizeof(r));
+		lt = rt = i = 0;
+		while(w){
+			if(w%3==2) l[lt++]=v[i];
+			if(w%3==1) r[rt++]=v[i];
+			w = (w+1)/3;
+			i++;
+		}
+		sort(l,l+lt);
+		sort(r,r+rt);
+		if(lt==0)printf("empty");
+		else
+			for(i=0 ; i < lt ; i++)
+				if(i==0)printf("%d",l[i]);
+				else printf(",%d",l[i]);
+		printf(" ");
+		if(rt==0)printf("empty");
+			for(i=0 ; i < rt ; i++)
+				if(i==0)printf("%d",r[i]);
+				else printf(",%d",r[i]);
+		printf("\n");
+
+	}
+	return 0;
+}

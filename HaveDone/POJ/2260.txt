@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <string.h>
+int map[101][101];
+int row[101],col[101];
+int main()
+{
+	int n;
+	while(scanf("%d", &n) && n)
+	{
+		memset(row,0,sizeof(row));
+		memset(col,0,sizeof(col));
+		for(int i=1 ; i <= n ; i++)
+			for(int j=1 ; j <= n ; j++)
+			{
+				scanf("%d", &map[i][j]);
+				row[i] += map[i][j];
+				col[j] += map[i][j];
+			}
+		int Ncol=0;int Nrow=0;
+		int Ecol=0;int Erow=0;
+		for(int i=1 ; i <= n ; i++)
+		{
+			if(row[i]%2){
+				Nrow++; Erow=i;
+			}
+			if(col[i]%2){
+				Ncol++; Ecol=i;
+			}
+		}
+		if(Nrow==0 && Ncol==0) printf("OK\n");
+		else
+		{
+			if(Nrow==1 && Ncol==1)
+				printf("Change bit (%d,%d)\n", Erow, Ecol);
+			else
+				printf("Corrupt\n");
+		}
+	}
+	return 0;
+}

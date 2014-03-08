@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <string.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define inf 1000000000
+const int N = 50005;
+
+int s[N];
+int main()
+{
+	int n,i,j,max,ans;
+	while(scanf("%d",&n)==1)
+	{
+		for(i=0 ; i < n ; i++)
+			scanf("%d",&s[i]);
+		ans = -1;
+		for(i=0 ; i < n-1 ; i++)
+		{
+			if(s[i] < s[i+1])
+			{
+				max = i;
+				j = i++;
+				while(s[i] > s[j]){
+					if(s[i] > s[max])
+						max = i;
+					i++;
+				}
+				if(max-j > ans)ans=max-j;
+				i = max;
+			}
+		}
+		printf("%d\n",ans);
+	}
+	return 0;
+}

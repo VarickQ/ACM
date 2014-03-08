@@ -1,0 +1,40 @@
+/*（1） 如果访问到字符A，W，F就转化成I； 
+（2） 如果访问到字符C，M，S就分别转化成L，o，v； 
+（3） 如果访问到字符D，P，G，B就转化成e； 
+（4） 如果访问到字符L，X就分别转化成Y，u； 
+（5） 其他字符均保持不变。 
+（6） 遇到END就结束！*/
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+	int i,ilen,K=1;
+	char ch[1000];
+	while(gets(ch))
+	{
+		ilen=strlen(ch);
+		for(i=0;i<ilen;i++)
+		{
+			if(ch[i]=='E'&&ch[i+1]=='N'&&ch[i+2]=='D')
+			{	K=0;break;}
+			if(ch[i]=='L')
+				ch[i]='Y';
+			if(ch[i]=='A'||ch[i]=='W'||ch[i]=='F')
+				ch[i]='I';
+			if(ch[i]=='C')
+				ch[i]='L';
+			if(ch[i]=='M')
+				ch[i]='o';
+			if(ch[i]=='S')
+				ch[i]='v';
+			if(ch[i]=='D'||ch[i]=='P'||ch[i]=='G'||ch[i]=='B')
+				ch[i]='e';
+			
+			if(ch[i]=='X')
+				ch[i]='u';
+		}
+		if(K)
+			puts(ch);
+	}
+	return 0;
+}

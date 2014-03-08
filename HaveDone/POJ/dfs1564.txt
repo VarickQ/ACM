@@ -1,0 +1,43 @@
+#include <iostream>
+#include <vector>
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
+using namespace std;
+
+int count,f,next;
+int sum,n,a[20],temp[20];
+void dfs(int sum,int next){
+	if(sum==0){
+		for(int i=0 ; i < count ; i++)
+			if(i==0)printf("%d",temp[i]);
+			else printf("+%d",temp[i]);
+		printf("\n");
+		f = 1;
+		return ;
+	}
+	if(sum<0)return ;
+	for(int i=next ; i < n ; i++){
+		if(next==i || a[i]!=a[i-1]){
+			temp[count++] = a[i];
+			dfs(sum-a[i],i+1);
+			count--;	//»ØËÝ
+		}
+	}
+}
+int main()
+{
+	while(scanf("%d%d",&sum,&n) == 2)
+	{
+		if(sum==0 && n==0) break;
+		for(int i=0 ; i < n ; i++)
+			scanf("%d",&a[i]);
+		printf("Sums of %d:\n",sum);
+		f = next = 0;
+		memset(temp,0,sizeof(temp));
+		dfs(sum,0);
+		if(!f) puts("NONE");
+	}
+	return 0;
+}

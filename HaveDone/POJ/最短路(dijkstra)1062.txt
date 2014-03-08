@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <string.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define inf 100000000
+#define N 105
+
+int m,n,d[N],l[N];
+int mat[N][N];
+bool vis[N],mark[N];
+void dijkstra(){
+	memset(vis,0,sizeof(vis));
+	for(int i=1 ; i <= n ; i++)d[i] = inf;
+	d[1] = 0;
+	for(int i=1 ; i <= n ; i++)
+	{
+		int x=0,min = inf;
+		for(int y=1 ; y <= n ; y++)
+			if(!vis[y] && d[y] <= min && mark[y]){
+				min = d[y];
+				x = y;
+			}
+		vis[x] = true;
+		for(int y=1 ; y <= n ; y++)
+			if(!vis[y] && d[x]+mat[x][y] < d[y] && mark[y])
+				d[y] = d[x] + mat[x][y];
+	}
+}
+int main()
+{
+	int i,j,x,t,v;
+	while(scanf("%d%d",&m,&n)!=EOF)
+	{
+		for(i=0 ; i <= n ; i++)
+			for(j=0 ; j <= n ; j++)//自己出发到自己的花费为0
+				if(i == j)mat[i][j] = 0;
+				else mat[i][j] = inf;
+		for(i=1 ; i <= n ; i++)
+		{
+			scanf("%d%d%d",&mat[0][i],&l[i],&x);
+			for(j=0 ; j < x ; j++){
+				scanf("%d%d",&t,&v);
+				mat[i][t] = v;
+			}
+		}
+		//此题的关键在于等级限制的处理,
+		//最好的办法是采用枚举，即假设酋长等级为5，
+		//等级限制为2，那么需要枚举等级从3~5,4~6,5~7
+		int ans = inf;
+		for(i=0 ; i <= m ; i++)
+		{
+			memset(mark,0,sizeof(mark));
+			for(j=1 ; j <= n ; j++)//枚举等级允许范围的结点
+				if(l[j]>=l[1]-m+i && l[j]<=l[1]+i)
+					mark[j] = true;//满足等级限制
+			dijkstra();
+			for(j=1 ; j <= n ; j++){	
+				d[j] += mat[0][j];//对于每个d[i]值，还需加上进入该结点的花费，再进行比较
+				if(ans > d[j])
+					ans = d[j];
+			}
+		}
+		printf("%d\n",ans);
+	}
+	return 0;
+}

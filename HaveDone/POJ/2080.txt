@@ -1,0 +1,40 @@
+#include <iostream>
+using namespace std;
+
+int day[13]={0,31,0,31,30,31,30,31,31,30,31,30,31};
+
+int isleap(int n){
+	if((n%4==0 && n%100!=0) || n%400==0)return 366;
+	else return 365;
+}
+int getday(int n,int y){
+	if(n!=2) return day[n];
+	else return (isleap(y)==366) ? 29:28;
+}
+
+int main()
+{
+	int n,y,m;
+	while(scanf("%d", &n) == 1)
+	{
+		if(n==-1) break;
+		int t = n-1;
+		n ++; m = 1; y = 2000;
+
+		while(n > isleap(y)) n-=isleap(y++);
+		while(n > getday(m,y)) n-=getday(m++,y);
+
+		printf("%04d-%02d-%02d ",y,m,n);
+		switch(t%7)
+		{
+		case 0:printf("Sunday\n");break;
+		case 1:printf("Monday\n");break;
+		case 2:printf("Tuesday\n");break;
+		case 3:printf("Wednesday\n");break;
+		case 4:printf("Thursday\n");break;
+		case 5:printf("Friday\n");break;
+		case 6:printf("Saturday\n");break;
+		}
+	}
+	return 0;
+}

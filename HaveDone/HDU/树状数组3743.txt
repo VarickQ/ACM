@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <iostream>
+#include <algorithm>
+#include <string.h>
+using namespace std;
+#define N 1000001
+
+struct Node{
+	int num,id;
+}a[N];
+int c[N],n;
+bool cmp(Node a,Node b){
+	return a.num < b.num;
+}
+int Lowbit(int t){return t&(-t);}
+void Plus(int i,int num){
+	while(i <= n){
+		c[i] += num;
+		i += Lowbit(i);
+	}
+}
+int Sum(int i){
+	int s = 0;
+	while(i > 0){
+		s += c[i];
+		i -= Lowbit(i);
+	}
+	return s;
+}
+int main()
+{
+	int i;
+	__int64 ans;
+	while(scanf("%d",&n) == 1)
+	{
+		memset(c,0,sizeof(c));
+		for(i=1 ; i <= n ; i++){
+			scanf("%d",&a[i].num);
+			a[i].id = i;
+		}
+		sort(a+1,a+n+1,cmp);
+
+		ans = 0;
+		for(i=1 ; i <= n ; i++){
+			Plus(a[i].id,1);
+			ans += Sum(n)-Sum(a[i].id);
+		}
+		printf("%I64d\n",ans);
+	}
+	return 0;
+}

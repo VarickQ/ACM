@@ -1,0 +1,14 @@
+/*输入有多组数据，每组数据占一行，仅有一个整数n，表示对折的次数。输入以文件结束为结尾*/
+#include<stdio.h>
+int main()
+{
+	int n,i,s;
+	while(scanf("%d",&n) == 1)
+	{
+		s=1;
+		for(i=1;i<=n;i++)
+			s=s*2;
+		printf("%d\n",s+1);
+	}
+	return 0;
+}

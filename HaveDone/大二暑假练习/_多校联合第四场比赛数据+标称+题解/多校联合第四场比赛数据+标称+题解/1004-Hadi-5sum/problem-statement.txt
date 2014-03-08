@@ -1,0 +1,27 @@
+Hassan is in trouble. His mathematics teacher has given him a very difficult problem called 5-sum. Please help him.
+The 5-sum problem is defined as follows: Given 5 sets S_1,...,S_5 of n integer numbers each, is there a_1 in S_1,...,a_5 in S_5 such that a_1+...+a_5=0?
+
+Input
+First line of input contains a single integer N (1≤N≤50). N test-cases follow. First line of each test-case contains a single integer n (1<=n<=200). 5 lines follow each containing n integer numbers in range [-10^15,1 0^15]. i’th line denotes set S_i for 1<=i<=5.
+
+Output
+For each test-case output "Yes" (without quotes) if there are a_1 in S_1,...,a_5 in S_5 such that a_1+...+a_5=0, otherwise output "No".
+
+Sample Input
+2
+2
+1 -1
+1 -1
+1 -1
+1 -1
+1 -1
+3
+1 2 3
+-1 -2 -3
+4 5 6
+-1 3 2
+-4 -10 -1
+
+Sample Output
+No
+Yes

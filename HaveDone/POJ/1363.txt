@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define inf 100000000
+
+int stark[1005];
+int main()
+{
+	int n,i,j,t,len,f;
+	while(scanf("%d",&n) && n)
+	{
+		while(scanf("%d",&t))
+		{
+			if(t == 0){
+				printf("\n");
+				break;
+			}
+			memset(stark,0,sizeof(stark));
+			len  = 0;
+			f = 0;
+			int last = 1,max;
+
+			while(last < t){
+				stark[len] = last;
+				len++,last++;
+			}
+			max = last;
+			for(i=1 ; i < n ; i++){
+				scanf("%d",&t);
+				if(!f){
+					if(last < t){
+						for(j=max+1 ; j < t ; j++)
+							stark[len++] = j;
+						max = last = t;
+					}else if(len>0 && stark[len-1] == t){
+						len--;
+						last = t;
+					} else {
+						f = 1;
+					}
+				}
+			}
+			if(f) printf("No\n");
+			else printf("Yes\n");
+		}
+	}
+	return 0;
+}

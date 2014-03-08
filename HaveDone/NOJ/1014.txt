@@ -1,0 +1,30 @@
+/*求a,b之间的素数个数
+每行输入a和b（0<=a,b<=500000） 
+每行输出包括a和b在内的素数个数*/
+#include<stdio.h>
+#include<math.h>
+int main()
+{
+	int a,b,i,n,m=0;
+	double x;
+	while(scanf("%d %d",&a,&b)!= EOF)
+	{
+		if(a>b)
+			printf("a must smaller than b!");
+		if(b<=3)
+		{m=2;
+		printf("%d\n",m);}
+		else
+		{	for(i=a;i<=b;i++)
+			{
+			    x=sqrt(i);
+			    for(n=2;n<=x;n++)
+			        if(i%n==0)
+				       break;
+			    if(n>=x+1)
+				    m++;
+			}
+		printf("%d\n",m);}
+	}
+	return 0;
+}

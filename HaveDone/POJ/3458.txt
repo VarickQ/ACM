@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+#include <queue>
+using namespace std;
+
+int main()
+{
+	int n,i,j;
+	char so[105],su[105],sd[105];
+	scanf("%d",&n);
+	while(n--){
+		scanf("%s%s%s",so,su,sd);
+		int l = strlen(su);
+		i = j = 0;
+		for( ; ; ){
+			if(su[j]=='*'&&sd[j]=='*'){
+				i++; j++;
+			}
+			else if(so[i]==su[j] || so[i]==sd[j]){
+				i++; j++;
+			}
+			else j++;
+
+			if(i == strlen(so)){
+				printf("win\n"); break;
+			}else if(j > l){
+				printf("lose\n"); break;
+			}
+		}
+	}
+	return 0;
+}

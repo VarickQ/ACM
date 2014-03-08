@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <string.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define inf 2000000000
+#define N 1000005
+int p,q;
+struct A{
+	int v,next,p;
+}e[N];
+int heade[N],k,qu[N*10];
+__int64 d[N];
+bool vis[N];
+void add(int u,int v,int p){
+	e[k].v = v;
+	e[k].p = p;
+	e[k].next = heade[u];
+	heade[u] = k++;
+}
+void spfa(int s){
+	int head=0,tail=1;
+	memset(vis,0,sizeof(vis));
+	for(int i=0 ; i <= p ; i++)d[i]=inf;
+	d[s] = 0;
+	qu[0] = s;
+	while(head < tail){
+		int u = qu[head++];
+		vis[u] = true;
+		for(int i=heade[u] ; i!=-1 ; i=e[i].next){
+			int v = e[i].v;
+			if(d[v] > d[u] + e[i].p){
+				d[v] = d[u] + e[i].p;
+				if(!vis[v]){
+					qu[tail++] = v;
+					vis[v] = true;
+				}
+			}
+		}
+		vis[u] = false;
+	}
+}
+int a[N],b[N],c[N];
+int main()
+{
+	int T,i;
+	scanf("%d",&T);
+	while(T--)
+	{
+		memset(heade,-1,sizeof(heade));
+		scanf("%d%d",&p,&q);
+		for(i=0,k=0 ; i < q ; i++){
+			scanf("%d%d%d",&a[i],&b[i],&c[i]);
+			add(a[i],b[i],c[i]);
+		}
+		__int64 ans=0;
+		spfa(1);
+		for(i=2 ; i <= p ; i++)
+			ans += d[i];
+		
+		memset(heade,-1,sizeof(heade));
+		for(i=0,k=0 ; i < q ; i++)
+			add(b[i],a[i],c[i]);
+		spfa(1);
+		for(i=2 ; i <= p ; i++)
+			ans += d[i];
+
+		printf("%I64d\n",ans);
+	}
+	return 0;
+}

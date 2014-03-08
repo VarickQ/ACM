@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <queue>
+using namespace std;
+
+int c[105],v[105],f[105][1010];
+int main()
+{
+	int T,n,m,l,i,j,k;
+	scanf("%d",&T);
+	while(T--)
+	{
+		scanf("%d%d%d",&n,&m,&l);
+		for(i=1 ; i <= n ; i++)
+			scanf("%d%d",&c[i],&v[i]);
+
+		memset(f,-1,sizeof(f));
+		for(i=0 ; i <= l ; i++)f[0][i]=0;
+		for(k=1 ; k <= n ; k++)
+			for(i=m ; i >= 1 ; i--)
+				for(j=l ; j >= c[k] ; j--)
+					if(f[i-1][j-c[k]] != -1)
+						if(f[i][j] < f[i-1][j-c[k]]+v[k])
+							f[i][j] = f[i-1][j-c[k]]+v[k];
+		if(f[m][l]==-1)
+			f[m][l] = 0;
+		printf("%d\n",f[m][l]);
+	}
+	return 0;
+}

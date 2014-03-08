@@ -1,0 +1,30 @@
+#include <iostream>
+#include <map>
+#include <string>
+using namespace std;
+
+map<string,int> col;
+map<string,int>::iterator ok;
+int main()
+{
+	int n;
+	string a;
+	while(scanf("%d", &n) && n)
+	{
+		col.clear();
+		for(int i=0 ; i < n ; i++){
+			cin >> a;
+			col[a]++;
+		}
+		int max = 0;
+		for(ok=col.begin() ; ok!=col.end() ; ok++)
+		{
+			if(ok->second > max){
+				max = ok->second;
+				a = ok->first;
+			}
+		}
+		cout << a << endl;
+	}
+	return 0;
+}

@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define inf 100000000
+#define PI 3.14159265358979323846
+
+int mi(int n){
+	int a=1;
+	for(int i=0 ; i < n ; i++)
+		a *= 3;
+	return a;
+}
+void fun(int n){
+	if(n==0){
+		printf("-");
+		return ;
+	} else {
+		fun(n-1);
+		for(int i=0 ; i < mi(n-1) ; i++)
+			printf(" ");
+		fun(n-1);
+	}
+}
+int main()
+{
+	int n;
+	while(scanf("%d",&n) == 1)
+	{
+		fun(n);
+		printf("\n");
+	}
+	return 0;
+}

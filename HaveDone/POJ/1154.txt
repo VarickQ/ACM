@@ -1,0 +1,37 @@
+#include <iostream>
+using namespace std;
+
+bool can[30];
+char map[30][30];
+int r,c,ans;
+int v[4][2]={{1,0},{0,1},{-1,0},{0,-1}};
+void dfs(int res,int x,int y)
+{
+	int i,a,b;
+	if(res > ans) ans=res;
+	for(i=0;i<4;i++)
+	{
+		a=x+v[i][0];
+		b=y+v[i][1];
+		if(a>=1 && a<=r && b>=1 && b<=c && !can[map[a][b]-'A'])
+		{
+			can[map[a][b]-'A'] = true;
+			dfs(res+1,a,b);
+			can[map[a][b]-'A'] = false;
+		}
+	}
+}
+int main()
+{
+	while(scanf("%d%d", &r, &c) == 2)
+	{
+		memset(can,false,sizeof(can));
+		for(int i=1 ; i <= r ; i++)
+			for(int j=1 ; j <= c ; j++)
+				scanf(" %c", &map[i][j]);
+		can[map[1][1]-'A']=true;
+		dfs(1,1,1);
+		printf("%d\n", ans);
+	}
+	return 0;
+}

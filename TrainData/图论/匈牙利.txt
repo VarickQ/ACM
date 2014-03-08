@@ -1,0 +1,23 @@
+int find(int i){
+    for(int j=0;j<n;++j){
+        if(!vis[j]&&G[i][j]){//如果没有查询过并且有边
+            vis[j]=true;//记录已经查询过
+            if(pre[j]==-1||find(pre[j])){//如果当前点没有匹配或者所匹配的点还可以连到没有匹配的点（即有增广路）
+                pre[j]=i;//修改标记
+                return true;
+             }
+        }
+    }
+    return false;
+}
+
+int main(){
+.....
+int ans=0;
+memset(pre,-1,sizeof(pre));
+for(int i=0;i<n;++i){
+    memset(vis,0,sizeof(vis));//标志清空
+    if(find(i))++ans;//如果匹配成功那么匹配数增加
+}
+.....
+}

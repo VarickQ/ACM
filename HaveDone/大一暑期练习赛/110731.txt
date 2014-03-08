@@ -1,0 +1,252 @@
+//A
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define inf 100000000.0
+#define N 300
+
+int main()
+{
+	int n;
+	while(scanf("%d",&n) == 1)
+	{
+		if(n>=1 && n<=4)printf("few\n");
+		else if(n>=5 && n<=9)printf("several\n");
+		else if(n>=10 && n<=19)printf("pack\n");
+		else if(n>=20 && n<=49)printf("lots\n");
+		else if(n>=50 && n<=99)printf("horde\n");
+		else if(n>=100 && n<=249)printf("throng\n");
+		else if(n>=250 && n<=499)printf("swarm\n");
+		else if(n>=500 && n<=999)printf("zounds\n");
+		else if(n>=1000)printf("legion\n");
+	}
+	return 0;
+}
+//B
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+#include <string>
+using namespace std;
+#define inf 100000000
+
+int main()
+{
+	int i,j,ans,count;
+	string str;
+	string s="Sandro";
+	while(cin >> str)
+	{
+		ans = inf;
+		for(i=0 ; i < str.length()-5 ; i++)
+		{
+			count=0;
+			string a(str,i,6);
+			if(a[0]>=65 && a[0]<=90){
+				if(a[0] != 'S')count++;
+			}
+			else if(a[0]>=97 && a[0]<=122){
+				if(a[0]=='s')count++;
+				else count+=2;
+			}
+			for(j=1 ; j < 6 ; j++)
+				if(s[j] != a[j]){
+					if(a[j]>=65 && a[j]<=90)
+					{
+						if(a[j]+32==s[j])count++;
+						else count+=2;
+					}
+					else count++;
+				}
+			if(count < ans)ans=count;
+		}
+		printf("%d\n",ans*5);
+	}
+	return 0;
+}
+//C
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+#include <string>
+using namespace std;
+#define inf 100000000
+
+int main()
+{
+	int k,n,i,car,left;
+	while(scanf("%d%d",&k,&n)==2)
+	{
+		left=0;
+		for(i=0 ; i < n ; i++){
+			scanf("%d",&car);
+			if(car+left >= k)
+				car = car+left-k;
+			else{
+				left = 0;
+				car = 0;
+			}
+			left = car;
+		}
+		printf("%d\n",left);
+	}
+	return 0;
+}
+//D
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+#include <string>
+using namespace std;
+#define inf 100000000
+
+int g[105],b[105];
+bool cmp(int a,int b){
+	return a>b;
+}
+int main()
+{
+	int n,m,i,j;
+	while(scanf("%d%d",&n,&m) == 2)
+	{
+		for(i=0 ; i < n ; i++)
+			scanf("%d",&g[i]);
+		sort(g,g+n,cmp);
+		for(i=0 ; i < m ; i++)
+			scanf("%d",&b[i]);
+		sort(b,b+m,cmp);
+		int ans = inf,max=0,k=(n<m?n:m);
+		for(i=0 ; i <= k ; i++){
+			max = 0;
+			for(j=i ; j < n ; j++)
+				max += g[j];
+			for(j=i ; j < m ; j++)
+				max += b[j]*i;
+			if(max<ans)ans=max;
+		}
+		
+		printf("%d\n",ans);
+	}
+	return 0;
+}
+//H
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <map>
+using namespace std;
+#define inf 100000000
+
+int main()
+{
+	int a[7],t0,t1,t2;
+	while(scanf("%d%d%d%d",&a[0],&a[1],&a[2],&a[3])==4)
+	{
+		int f = 0;
+		t0 = t1 = t2 = -1;
+		scanf("%d%d%d",&a[4],&a[5],&a[6]);
+		for(int i=0 ; i < 7 ; i++){
+			a[i] = 1-a[i];
+			for(int j=0 ; j < 7 ; j++){
+				t0 = (a[1]+a[2]+a[3])%2;
+				t1 = (a[0]+a[2]+a[3])%2;
+				t2 = (a[0]+a[1]+a[3])%2;
+				if(t0==a[4] && t1==a[5] && t2==a[6]) break;
+			}
+			if(t0==a[4] && t1==a[5] && t2==a[6]) break;
+			else a[i] = 1-a[i];
+		}
+		for(int i=0 ; i < 7 ; i++)
+			if(!i)printf("%d",a[i]);
+			else printf(" %d",a[i]);
+		printf("\n");
+	}
+	return 0;
+}
+//J
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <map>
+using namespace std;
+#define inf 100000000
+
+map<int,int> ma;
+map<int,int>::iterator ok;
+int main()
+{
+	int n,i,pos,k;
+	while(scanf("%d",&n) == 1)
+	{
+		ma.clear();
+		for(i=1 ; i <= n ; i++){
+			scanf("%d",&pos);
+			k=i-pos;
+			if(k<0)k+=n;
+			ma[k]++;
+		}
+		pos = 0;
+		int ans = 0;
+		for(ok=ma.begin() ; ok!=ma.end() ; ok++)
+			if(ok->second > pos){
+				pos = ok->second;
+				ans = ok->first;
+			}
+		printf("%d\n",ans+1);
+	}
+	return 0;
+}
+//L
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+#include <string>
+using namespace std;
+#define inf 100000000
+int ans[1000000];
+int num[6]={10,50,100,500,1000,5000};
+int main()
+{
+	int a[7],p;
+	int have,min;
+	while(scanf("%d%d%d%d%d%d",&a[0],&a[1],&a[2],&a[3],&a[4],&a[5])!=EOF)
+	{
+		scanf("%d",&p);
+		for(int i=0 ; i < 6 ; i++)
+			if(a[i] != 0){
+				min = num[i];
+				break;
+			}
+		have=0;
+		for(int i=0 ; i < 6 ; i++)
+			have += a[i]*num[i];
+		int k = 0;
+		double temp = 1.0*(have-min)/(1.0*p);
+		int i=(temp==ceil(temp)?(int)temp+1:ceil(temp));
+		for( ; i <= have/p ; i++)
+			ans[k++] = i;
+		printf("%d\n",k);
+		for(int i=0 ; i < k ; i++)
+			if(!i)printf("%d",ans[i]);
+			else printf(" %d",ans[i]);
+		printf("\n");
+	}
+	return 0;
+}

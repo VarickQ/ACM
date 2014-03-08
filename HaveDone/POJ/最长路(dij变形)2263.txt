@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+#include <map>
+#include <string>
+using namespace std;
+#define inf 2000000000
+const int M = 10005;
+
+map<string,int> ma;
+int mat[205][205],d[205],vis[205],k,n;
+int dijkstra(int s,int t){
+	memset(vis,0,sizeof(vis));
+	d[s] = inf;
+	for(int i=1 ; i <= n ; i++)
+	{
+		int x,max = 0;
+		for(int y=1 ; y <= n ; y++)
+			if(!vis[y] && d[y] >= max){
+				max = d[y];
+				x = y;
+			}
+		vis[x] = true;
+		for(int y=1 ; y <= n ; y++)
+			if(!vis[y] && min(d[x],mat[x][y]) > d[y])
+				d[y] = min(d[x],mat[x][y]);
+		if(x==t)break;
+	}
+	return d[t];
+}
+int main()
+{
+	int m,w,cs=1;
+	char s1[35],s2[35];
+	while(scanf("%d%d",&n,&m) && (n+m))
+	{
+		ma.clear();
+		memset(mat,0,sizeof(mat));
+		memset(d,0,sizeof(d));
+		k = 1;
+		for(int i=0 ; i < m ; i++){
+			scanf("%s%s%d",s1,s2,&w);
+			if(ma[s1]==0)
+				ma[s1] = k++;
+			if(ma[s2]==0)
+				ma[s2] = k++;
+			mat[ma[s1]][ma[s2]]=mat[ma[s2]][ma[s1]] = w;
+		}
+		k--;
+		scanf("%s%s",s1,s2);
+		printf("Scenario #%d\n%d tons\n\n",cs++,dijkstra(ma[s1],ma[s2]));
+	}
+	return 0;
+}

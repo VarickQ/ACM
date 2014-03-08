@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+const int N = 10000;
+
+int gcd(int a,int b){
+	return b?gcd(b,a%b):a;
+}
+char s[N],str[N];
+int main()
+{
+	int len1,len2,d;
+	bool f;
+	while(scanf("%s",s) != EOF)
+	{
+		if(!strcmp(s,"-1")) break;
+		scanf("%s",str);
+		len1 = strlen(s);
+		len2 = strlen(str);
+		int max = 0;
+		for(int i=0 ; i < len1 ; i++){
+			for(int j=0 ; j < len2 ; j++){
+				int num = 0;
+				for(int l1=i,l2=j ; l1<len1 && l2<len2 ; l1++,l2++)
+					if(s[l1]==str[l2]) num++;
+				if(num > max)max=num;
+			}
+		}
+		printf("appx(%s,%s) = ",s,str);
+		if(max==0)printf("0\n");
+		else if(max*2==len1+len2)printf("1\n");
+		else {
+			d = gcd(max*2,len1+len2);
+			printf("%d/%d\n",max*2/d,(len1+len2)/d);
+		}
+	}
+	return 0;
+}

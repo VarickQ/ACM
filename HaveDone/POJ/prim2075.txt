@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <string.h>
+#define INF 999999.9
+
+double len,w;
+int n,m,x,y;
+char sx[255],sy[255];
+char name[255][22];
+double map[255][255];
+double sum;
+void Prim()
+{
+    int i,j,min_i,num=0;
+    double dis[255],min;
+    int flag[255];
+	sum = 0.0;
+    memset( flag, 0, sizeof(flag));
+    for( i=1 ; i <= n ; i++ )
+		dis[i] = map[1][i];
+	dis[1] = 0.0;
+	flag[1] = 1;
+    for( i=2 ; i <= n ; i++ )
+    {
+        min = INF;min_i=i;
+        for( j=2 ; j <= n ; j++ )
+            if(flag[j]==0 && dis[j]<min)
+            {
+                min = dis[j];
+                min_i = j;
+            }
+		sum += min;
+        flag[min_i] = 1;
+        for( j=2 ; j <= n ; j++ )
+        {
+            if(flag[j]==0 && dis[j]>map[min_i][j])
+                dis[j] = map[min_i][j];
+        }
+    }
+	if(sum > len)
+		printf("Not enough cable\n");
+	else
+		printf("Need %.1lf miles of cable\n", sum);
+}
+
+int main()
+{
+	scanf("%lf", &len);
+	scanf("%d", &n);
+	for(int i=1 ; i <= n ; i++ )
+		for(int j=1 ; j <= n ; j++ )
+			map[i][j] = INF;
+
+	for(int i=1 ; i<=n ; i++)
+		scanf("%s", name[i]);
+
+	scanf("%d", &m);
+	for(int i=0 ; i<m ; i++)
+	{
+		scanf("%s", sx);
+		for(int j=1 ; j<=n ; j++)
+			if(strcmp(sx,name[j])==0)
+				x = j;
+		scanf("%s", sy);
+		for(int j=1 ; j<=n ; j++)
+			if(strcmp(sy,name[j])==0)
+				y = j;
+		scanf("%lf", &w);
+		map[x][y] = map[y][x] = w;
+	}
+
+	Prim();
+
+	return 0;
+}

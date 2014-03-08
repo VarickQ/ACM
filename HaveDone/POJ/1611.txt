@@ -1,0 +1,41 @@
+#include <iostream>
+using namespace std;
+
+int fa[30001];
+int getfather(int x){
+	if(fa[x] == x)
+		return x;
+	else
+		return fa[x]=getfather(fa[x]);
+}
+void Union(int x,int y){
+    int fx = getfather(x);
+    int fy = getfather(y);
+    if(fy != fx)
+       fa[fx] = fy;
+}
+
+int main()
+{
+	int n,m,k,a,b;
+	while(scanf("%d%d",&n,&m) && (n+m))
+	{
+		for(int i=0 ; i < 30001 ; fa[i]=i,i++ );
+		for(int i=0 ; i < m ; i++ )
+		{
+			scanf("%d", &k);
+			scanf("%d", &a);
+			for(int j=0 ; j < k-1 ; j++ )
+			{
+				scanf("%d", &b);
+				Union(a,b);
+			}
+		}
+		int count = 0;
+		for(int i=0 ; i < n ; i++ )
+			if(getfather(0)==getfather(i))
+				count ++;
+		printf("%d\n", count);
+	}
+	return 0;
+}

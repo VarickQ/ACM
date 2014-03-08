@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <string.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define inf 100000000
+#define M 5505
+
+struct Node{
+	int t,u,v,next;
+}edge[M];
+int heade[M],k,n,m;
+void add(int u,int v,int t){
+	edge[k].t = t;
+	edge[k].u = u;
+	edge[k].v = v;
+	edge[k].next = heade[u];
+	heade[u] = k++;
+}
+int d[M];
+void bellmanford(){
+	int i,j;
+	for(i=1 ; i <= n ; i++)d[i]=inf;
+	d[1]=0;
+	for(j=0 ; j < n-1 ; j++){
+		int f = 0;
+		for(i=0 ; i < k ; i++)
+		{
+			int u=edge[i].u,v=edge[i].v;
+			if(d[u]!=inf && d[u]+edge[i].t < d[v]){
+				d[v] = d[u]+edge[i].t;
+				f = 1;
+			}
+		}
+		if(!f)break;
+	}
+	if(j==n-1)
+		printf("YES\n");
+	else
+		printf("NO\n");
+}
+int main()
+{
+	int T,i,w,s,e,t;
+	scanf("%d",&T);
+	while(T--)
+	{
+		memset(heade,-1,sizeof(heade));
+		scanf("%d%d%d",&n,&m,&w);
+		for(i=0,k=0 ; i < m ; i++){
+			scanf("%d%d%d",&s,&e,&t);
+			add(s,e,t);
+			add(e,s,t);
+		}
+		for(i=0 ; i < w ; i++){
+			scanf("%d%d%d",&s,&e,&t);
+			add(s,e,-t);
+		}
+		bellmanford();
+	}
+	return 0;
+}

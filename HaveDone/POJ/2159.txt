@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <string.h>
+int main()
+{
+	char a[101],b[101];
+	int i,j,aa[26]={0},bb[26]={0};
+	scanf("%s", a);
+	scanf("%s", b);
+	for(i=0 ; a[i] ; i++)
+		aa[a[i]-'A']++;
+	for(i=0 ; b[i] ; i++)
+		bb[b[i]-'A']++;
+	for(i=0 ; i < 26 ; i++)
+	{
+		for(j=0 ; j < 26; j++)
+			if(aa[i]==bb[j]){
+				bb[j] = 0;
+				break;
+			}
+		if(j==26){
+			printf("NO\n");
+			break;
+			}
+	}
+	if(i==26)
+		printf("YES\n");
+	return 0;
+}

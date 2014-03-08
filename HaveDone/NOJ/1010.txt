@@ -1,0 +1,22 @@
+#include<stdio.h>
+void main()
+{
+	long a,b,c;
+	long min(long a,long b);
+	while(scanf("%ld %ld",&a,&b)!= EOF)
+	{
+		for(c=min(a,b);c>=1;c--)
+		if(a%c==0 && b%c==0)
+		{printf("%ld\n",c);break;}
+	}
+}
+
+long min(long a,long b)
+{
+	long min;
+	if(a>=b)
+		min=b;
+	else
+		min=a;
+	return min;
+}

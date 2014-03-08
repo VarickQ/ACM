@@ -1,0 +1,22 @@
+#include<stdio.h>
+void main()
+{
+	long a,b,c;
+	long max(long a,long b);
+	while(scanf("%ld %ld",&a,&b)!= EOF)
+	{
+		for(c=max(a,b); ;c+=max(a,b))
+		if(c%a==0 && c%b==0)
+		{printf("%ld\n",c);break;}
+	}
+}
+
+long max(long a,long b)
+{
+	long max;
+	if(a>=b)
+		max=a;
+	else
+		max=b;
+	return max;
+}

@@ -1,0 +1,29 @@
+#include<stdio.h>
+
+struct child{
+    char name[18];
+    bool flag;
+}na[66];
+
+int main()
+{
+	int n,w,s,i,sta,ou;
+	scanf("%d",&n);
+	for( i=1 ; i<=n ; i++ )
+	{
+		scanf("%s", na[i].name);
+		na[i].flag = true;
+	}
+	scanf("%d,%d",&w,&s);
+	for( sta=w-1,ou=0 ; ou<n ; ou++ )
+	{
+		for(i=0 ; i < s ; )
+		{
+			sta=(sta==n?1:sta+1);
+			if(na[sta].flag==true) i++;
+		}
+		puts(na[sta].name);
+		na[sta].flag = false;
+	}
+	return 0;
+}

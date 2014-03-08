@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define max(a,b) (a>b?a:b)
+
+int Pow(int n,int k){
+	int a=1;
+	for(int i=0 ; i < k ; i++)
+		a *= n;
+	return a;
+}
+int toTen(int n,int a){
+	int ans=0,i=0;
+	while(n){
+		ans += (n%10)*Pow(a,i);
+		i++;
+		n /= 10;
+	}
+	return ans;
+}
+int check(int temp){
+	int max=0,t;
+	while(temp){
+		t=temp%10;
+		if(t > max)max=t;
+		temp/=10;
+	}
+	return max;
+}
+int main()
+{
+	int t,p,q,r,i;
+	scanf("%d",&t);
+	while(t--){
+		scanf("%d%d%d",&p,&q,&r);
+		int max1 = check(p);
+		int max2 = check(q);
+		int max3 = check(r);
+		max1 = max(max1,max(max2,max3))+1;
+		int a,b,c;
+		for(i=max1 ; i <= 16 ; i++){
+			if(i==10 && p*q==r) break;
+			a = toTen(p,i);
+			b = toTen(q,i);
+			c = toTen(r,i);
+			if(a*b == c) break;
+		}
+		if(i==17)printf("0\n");
+		else printf("%d\n",i);
+	}
+	return 0;
+}

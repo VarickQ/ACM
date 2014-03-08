@@ -1,0 +1,43 @@
+Statement:
+	You are given two strings s1[0..l1], s2[0..l2] and Q - number of queries.
+	Your task is to answer next queries:
+		1) 1 a i c - you should set i-th character in a-th string to c;
+		2) 2 i - you should output the greatest j such that for all k (i<=k and k<i+j) s1[k] equals s2[k].
+Input:
+	The first line contains T - number of test cases (T<=25).
+	Next T blocks contain each test.
+	The first line of test contains s1.
+	The second line of test contains s2.
+	The third line of test contains Q.
+	Next Q lines of test contain each query:
+		1) 1 a i c (a is 1 or 2, 0<=i, i<length of a-th string, 'a'<=c, c<='z')
+		2) 2 i (0<=i, i<l1, i<l2)
+	All characters in strings are from 'a'..'z' (lowercase latin letters).
+	Q <= 100000.
+	l1, l2 <= 1000000.
+	
+Output:
+	For each test output "Case t:" in a single line, where t is number of test (numbered from 1 to T).
+	Then for each query "2 i" output in single line one integer j.
+
+Example:
+	input:
+		1
+		aaabba
+		aabbaa
+		7
+		2 0
+		2 1
+		2 2
+		2 3
+		1 1 2 b
+		2 0
+		2 3
+	output:
+		Case 1:
+		2
+		1
+		0
+		1
+		4
+		1

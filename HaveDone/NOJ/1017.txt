@@ -1,0 +1,24 @@
+/*判断一个数字是否为回文，数字位数在20位内。 
+每行输入数字n 
+每行输该数字出是否为回文，是则输出Yes,否则输出No. */
+#include<stdio.h>
+#include<string.h>
+void main()
+{
+	int i,ilen,iend;
+	char c[20];
+	while(gets(c))
+	{
+		ilen = strlen(c);
+		iend = ilen-1;
+		for(i=0;i<iend;i++,iend--)
+		{
+			if(c[i]!= c[iend])
+				break;
+		}
+		if(i<iend)
+			printf("No\n");
+		else
+			printf("Yes\n");
+	}
+}

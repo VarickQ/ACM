@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+const int N=100005;
+struct Node{
+	int e,s,id;
+}a[N];
+int MAX,n,c[N],b[N];
+int cmp(Node a,Node b){
+	if(a.e != b.e)
+		return a.e < b.e;
+	else
+		return a.s > b.s;
+}
+int Lowbit(int t){
+    return t & ( -t );
+}
+void Plus(int pos,int num){
+	while(pos <= MAX){
+		c[pos] += num;
+		pos += Lowbit(pos);
+	}
+}
+int Sum(int end){
+	int sum = 0;
+	while(end > 0){
+		sum += c[end];
+		end -= Lowbit(end);
+	}
+	return sum;
+}
+int main()
+{
+	int i;
+	while(scanf("%d",&n) && n)
+	{
+		for(i=0,MAX=0 ; i < n ; i++){
+			scanf("%d %d",&a[i].s,&a[i].e);
+			a[i].s++; a[i].e++;
+			a[i].id = i;
+			if(a[i].e>MAX)MAX=a[i].e;
+		}
+		sort(a,a+n,cmp);
+		memset(c,0,sizeof(c));
+
+		for(i=n-1; i >= 0; i--){
+			if(i != n-1 && a[i].e==a[i+1].e && a[i].s==a[i+1].s)
+				b[a[i].id] = b[a[i+1].id];
+			else
+				b[a[i].id] = Sum(a[i].s);
+			Plus(a[i].s,1);
+		}
+		for(i=0 ; i < n ; i++)
+			if(i==n-1)printf("%d\n",b[i]);
+			else printf("%d ",b[i]);
+	}
+	return 0;
+}

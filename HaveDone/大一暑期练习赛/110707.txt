@@ -1,0 +1,116 @@
+//A
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <map>
+#include <string>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define PI 3.141592653589793
+
+map<string,int> ma;
+map<string,int>::iterator ok;
+int main()
+{
+	int p,n,i;
+	char str[50];
+	scanf("%d",&p);
+	while(p--){
+		ma["TTT"] = 0;
+		ma["TTH"] = 0;
+		ma["THT"] = 0;
+		ma["THH"] = 0;
+		ma["HTT"] = 0;
+		ma["HTH"] = 0;
+		ma["HHT"] = 0;
+		ma["HHH"] = 0;
+		scanf("%d %s",&n,str);
+		for(i=0 ; i <= 37 ; i++)
+		{
+			string s(str,i,3);
+			for(ok=ma.begin() ; ok!=ma.end() ; ok++)
+				if(ok->first == s)
+					ma[s]++;
+		}
+		int out[50];
+		printf("%d",n);
+		i = 8;
+		for(ok=ma.begin() ; ok!=ma.end() ; ok++)
+			out[--i] = ok->second;
+		for(i=0 ; i < 8 ; i++)
+			printf(" %d",out[i]);
+		printf("\n");
+	}
+	return 0;
+}
+//B
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int a[32],bx[32],by[32];
+int fpow(int b,int n){
+	int a=1;
+	for(int i=0 ; i < n ; i++)
+		a *= b;
+	return a;
+}
+int f(int b,int n,int aa[]){
+	int i=0;
+	while(n){
+		aa[i++]=n%b;
+		n/=b;
+	}
+	return i;
+}
+int main()
+{
+	int p,n,i,cs,b,x,y,ans,lx,ly,l;
+	scanf("%d",&p);
+	while(p--)
+	{
+		memset(a,0,sizeof(a));
+		memset(bx,0,sizeof(bx));
+		memset(by,0,sizeof(by));
+		scanf("%d %d %d %d",&cs,&b,&x,&y);
+		lx = f(b,x,bx);
+		ly = f(b,y,by);
+		l = lx>ly?lx:ly;
+		for(i=0 ; i <= l ; i++)
+			a[i] = (bx[i]+by[i])%b;
+		for(i=0,ans=0 ; i < l ; i++)
+			ans += a[i]*fpow(b,i);
+		printf("%d %d\n",cs,ans);
+	}
+	return 0;
+}
+//E
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+long long dp[65][12];
+int main()
+{
+	int p,cs,n,i,j,k,q;
+	for(j=0;j<10;j++)
+		dp[0][j]=1;
+	for(i=1 ; i <= 64 ; i++)
+		for(j=0 ; j < 10 ; j++)
+			dp[i][j] += dp[i-1][j]+dp[i][j-1];
+
+	scanf("%d",&p);
+	while(p--)
+	{
+		scanf("%d%d",&cs,&n);
+		printf("%d %lld\n",cs,dp[n][9]);
+	}
+	return 0;
+}

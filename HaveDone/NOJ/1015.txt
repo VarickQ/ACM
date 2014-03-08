@@ -1,0 +1,23 @@
+/*将一个正整数因式分解并打印出来 
+每行输入正整数a(a < 10^6) 
+每行输出该整数的所有因子*/
+#include<stdio.h>
+int main()
+{
+	int a,n=2;
+	while(scanf("%d",&a) == 1)
+	{
+		printf("%d=",a);
+		for(n=2;n<=a;n++)
+			while(a%n==0)
+			{
+		        a=a/n;
+		        printf("%d",n);
+		    	if(a!=1)
+		 	        printf("*");
+			}
+		printf("\n");
+	}
+	return 0;
+}
+

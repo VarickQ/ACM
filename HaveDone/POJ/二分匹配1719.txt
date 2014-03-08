@@ -1,0 +1,67 @@
+#include <iostream>
+#include <vector>
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
+using namespace std;
+
+int mat[1002][1002],match[1002],rc[1002];
+bool vis[1002];
+int r,c;
+
+bool find(int t)
+{
+	for(int i=1 ; i <= c ; i++)
+	{
+		if(mat[t][i] && !vis[i])
+		{
+			vis[i] = true;
+			if(match[i]==-1 || find(match[i]))
+			{
+				match[i] = t;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+int main()
+{
+	int T,ra,rb,i,j;
+	scanf("%d",&T);
+	while(T--)
+	{
+		memset(mat,0,sizeof(mat));
+		memset(rc,0,sizeof(rc));
+		scanf("%d %d",&r,&c);
+		for(i=1 ; i <= c ; i++){
+			scanf("%d %d",&ra,&rb);
+			mat[ra][i] = 1;
+			mat[rb][i] = 1;
+			rc[i] = ra;
+		}
+		if(c < r){
+			printf("NO\n"); continue;
+		}
+		int ans = 0;
+		memset(match,-1,sizeof(match));
+		for(i=1 ; i <= r ; i++)
+		{
+			memset(vis,0,sizeof(vis));
+			if(find(i)) ans++;
+		}
+		if(ans >= r)
+		{
+			for(i=1 ; i <= c ; i++)
+			{
+				if(i!=1)printf(" ");
+				if(match[i]!=-1)printf("%d",match[i]);
+				else printf("%d",rc[i]);
+			}
+			printf("\n");
+		}
+		else printf("NO\n");
+	}
+	return 0;
+}

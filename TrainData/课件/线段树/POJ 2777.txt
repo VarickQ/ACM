@@ -1,0 +1,150 @@
+/*
+POJ 2777 Count Color
+题目描述：
+长度为L个单位的画板，有T种不同的颜料，现要求按序做O个操作，操作分两种：
+1.“C A B C”,即将A到B之间的区域涂上颜色C
+2.“P A B”，查询[A，B]区域内出现的颜色种类
+
+出现操作2时，请输出答案
+PS:初始状态下画板颜色为1
+思路分析：线段树
+*/
+
+#include<stdio.h>
+#include<string.h>
+const int N = 1000001;
+/*线段树的节点*/
+struct Node
+{	
+	//记录[left,right]区间内的颜色，若该区间内的颜色不止一种，则为-1
+	int clor;
+	int left,right;
+};
+Node node[N*3];
+//在查询时，若[A,B]区间内出现过某种颜色k,则color[k]=true;
+bool color[31];
+
+//建树
+void CreateTree(int L,int R,int id)
+{
+	node[id].clor=1;  //初始化颜色
+	node[id].left=L;
+	node[id].right=R;
+    
+	if(node[id].left==node[id].right) return;
+
+	int mid=(L+R)/2;
+	CreateTree(L,mid,2*id); //左子树
+	CreateTree(mid+1,R,2*id+1); //右子树
+	
+}
+
+
+//将[L,R]区间涂为col颜色
+void Insert(int L,int R,int col,int id)
+{
+	//该颜色将当前区域完全覆盖，即[left,right]属于[L,R];
+	if(node[id].left>=L&&node[id].right<=R)
+	{
+		node[id].clor=col;
+        return ;
+	}
+
+	int mid = (node[id].left+node[id].right)/2;
+
+    //若当前区域曾被某种颜色完全覆盖，则其左右子树也被同种颜色完全覆盖
+	if(node[id].clor>0)
+	{
+	  node[2*id].clor=node[id].clor;
+	  node[2*id+1].clor=node[id].clor;
+	}
+
+	node[id].clor = -1;//没有完全覆盖住
+
+	if(R<=mid)//部分覆盖左子树
+	  Insert(L,R,col,2*id);
+	else
+		if(L>mid) //右子树
+			Insert(L,R,col,2*id+1);
+		else//分布于左右子树
+		{
+			Insert(L,mid,col,2*id);
+			Insert(mid+1,R,col,2*id+1);
+		}
+}
+
+
+
+//统计[L,R]区间内的颜色，信息存入color[]数组中
+void statistic(int L,int R,int id)
+{
+	
+	if(node[id].clor>0)
+	{
+		color[node[id].clor]=true;
+		return;
+	}
+	
+	if(node[id].left==node[id].right)return;
+
+	
+	int mid=(node[id].left+node[id].right)/2;
+	if(R<=mid)//左子树
+	{
+		statistic(L,R,id*2);
+	}
+	else
+	if(L>mid) //右子树
+	{
+		statistic(L,R,id*2+1);
+	}
+	else 
+	{
+		statistic(L,mid,id*2);
+		statistic(mid+1,R,id*2+1);
+	}
+	
+}
+
+int Getans(int t)//得到最终颜色种数
+{
+	int ans=0;
+	for(int i=1;i<=t;i++)
+		if(color[i])ans++;
+	return ans;
+}
+
+int main()
+{
+	int l,t,o;
+	scanf("%d%d%d",&l,&t,&o);
+    CreateTree(1,l,1);
+	while(o--)
+	{
+       char op[2];
+	   scanf("%s",op);
+	   if(op[0]=='C')//上色
+	   {
+		   int x,y,c;
+		   scanf("%d%d%d",&x,&y,&c);
+		   if(x<=y)
+			   Insert(x,y,c,1);//上色
+		   else
+			   Insert(y,x,c,1);
+	   }
+      
+	   else
+	   {
+		   int x,y;
+		   scanf("%d%d",&x,&y);
+		   memset(color,false,sizeof(color));
+		   if(x<=y)
+			   statistic(x,y,1);
+		   else
+			   statistic(y,x,1);
+
+		   printf("%d\n",Getans(t));
+	   }
+	}
+	return 0;
+}

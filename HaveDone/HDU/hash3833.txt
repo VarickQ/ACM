@@ -1,0 +1,27 @@
+#include <iostream>
+using namespace std;
+
+int mark[100005];
+int main()
+{
+	int T,n,num;
+	scanf("%d",&T);
+	while(T--)
+	{
+		memset(mark,0,sizeof(mark));
+		scanf("%d",&n);
+		int f=0;
+		for(int i=0 ; i < n ; i++){
+			scanf("%d",&num);
+			mark[num] = 1;
+			for(int j=1 ; j<num&&num+j<=n ; j++)
+				if(mark[num-j]+mark[num+j]==1){
+					f = 1;
+					break;
+				}
+		}
+		if(f)printf("Y\n");
+		else printf("N\n");
+	}
+	return 0;
+}

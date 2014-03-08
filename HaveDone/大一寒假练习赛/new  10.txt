@@ -1,0 +1,92 @@
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <limits.h>
+#include <string>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define M 28
+int map[M][M],mx[M],mark[M];
+char str[5];
+int main()
+{
+	int p,T,n,m,t1,t2,l,i,j,k,f,num,t,ff,maa,sa,saa;
+	p=0;
+	scanf("%d",&T);
+	while(T--)
+	{
+		memset(map,0,sizeof(map));
+		memset(mark,0,sizeof(mark));
+		scanf("%d%d",&n,&m);
+		while(m--)
+		{
+			scanf("%s",str);
+			t1=int(str[0]-'A');
+			t2=int(str[2]-'A');
+			if(str[1]=='>')
+			{
+				map[t2][t1]=1;
+			}
+			else
+			{
+				map[t1][t2]=1;
+			}
+		}
+		for(saa=0,sa=0,ff=0,f=0,l=n;l>0;l--)
+		{
+			maa=-1;
+			for(num=0,i=0;i<n;i++)
+			{
+				if(mark[i])
+					continue;
+				for(t=0,j=0;j<n;j++)
+				{
+					if(!map[i][j]&&!mark[j])
+						t++;
+				}
+				if(t==l)
+				{
+					num++;
+					mx[n-l]=i;
+				}
+				if(t>maa)
+				{
+					sa=1;
+					maa=t;
+				}
+				else if(t==maa)
+					sa++;
+				/*printf("%d %d %d\n",t,sa,num);*/
+			}
+			mark[mx[n-l]]=1;
+			if(num>1)
+			{
+				ff=-1;
+			}
+			if(!num)
+			{
+				saa+=sa;
+				f=-1;
+			}
+		}
+		if(f==-1)
+		{
+			printf("Case %d: Inconsistency found after %d murmur.\n",++p,saa);
+		}
+		else if(ff==-1)
+		{
+			printf("Case %d: Mr.Box, please say something more.\n",++p);
+		}
+		else
+		{
+			printf("Case %d: Sorted sequence determined after %d murmurs: ",++p,n);
+			for(i=n-1;i>=0;i--)
+				printf("%c",mx[i]+'A');
+			printf(".\n");
+		}
+	}
+	return 0;
+}

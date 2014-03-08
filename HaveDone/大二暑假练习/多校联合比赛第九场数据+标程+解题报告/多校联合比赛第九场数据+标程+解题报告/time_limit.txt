@@ -1,0 +1,12 @@
+PROBLEM			DIFFICULTY	TIME LIMIT(Java)	TIME LIMIT(C++)
+Farmer Greedy		***		10s			5s
+grid			**		2s			1s
+Harry Potter бн		**		2s			1s
+How to paint a tree		****		10s			5s
+King Kong II		***		5s			2s
+Moving Bricks		**		5s			2s
+Quadrilateral		**		2s			1s
+Stone Game		***		1s			1s
+Stone Game II		**		1s			1s
+x mod f(x)			****		4s			2s
+

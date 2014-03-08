@@ -1,0 +1,106 @@
+//I
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <queue>
+using namespace std;
+
+int a[10001000];
+int main()
+{
+	int L,n1,n2,i,j,l,r;
+	while(scanf("%d%d%d",&L,&n1,&n2) == 3)
+	{
+		memset(a,0,sizeof(a));
+
+		for(i=0 ; i < n1 ; i++){
+			scanf("%d%d",&l,&r);
+			for(j=l ; j <= r ; j++)
+				a[j] = 1;
+		}
+		for(i=0 ; i < n2 ; i++){
+			scanf("%d%d",&l,&r);
+			for(j=l ; j <= r ; j++){
+				if(a[j]==1) a[j]=0;
+				else if(a[j]==0) a[j]=1;
+			}
+		}
+		int max = 0,t=0;
+		for(i=0 ; i < L ; i++)
+		{
+			if(a[i]==1)t++;
+			else{
+				if(t>max) max = t;
+				t = 0;
+			}
+		}
+		if(t>max)max=t;
+		printf("%d\n",max);
+	}
+	return 0;
+}
+//G
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <queue>
+using namespace std;
+#define N 10005
+
+struct Node{
+	int v,next;
+}e[N];
+int heade[N],k,val[N],ans[3];
+bool cmp(int a,int b){
+	return a>b;
+}
+void add(int u,int v){
+	e[k].v = v;
+	e[k].next = heade[u];
+	heade[u] = k++;
+}
+void dfs(int u){
+	int i;
+	for(i=heade[u] ; i != -1 ; i=e[i].next)
+	{
+		dfs(e[i].v);
+		if(val[e[i].v] > ans[0])
+			ans[0]=val[e[i].v];
+		sort(ans,ans+3);
+	}
+}
+int main()
+{
+	int i,n,m,x,q;
+	while(scanf("%d",&n) == 1)
+	{
+		memset(val,-1,sizeof(val));
+		memset(heade,-1,sizeof(heade));
+		scanf("%d",&val[0]);
+		for(i=1,k=0 ; i < n ; i++)
+		{
+			scanf("%d%d",&x,&val[i]);
+			add(x,i);
+		}
+		scanf("%d",&m);
+		for(i=0 ; i < m ; i++)
+		{
+			scanf("%d",&q);
+			ans[2]=val[q];
+			ans[0]=ans[1]=-1;
+			dfs(q);
+			sort(ans,ans+3,cmp);
+			if(ans[2]==-1)
+				printf("-1\n");
+			else
+				printf("%d %d %d\n",ans[0],ans[1],ans[2]);
+		}
+	}
+	return 0;
+}

@@ -1,0 +1,169 @@
+10 3
+1 2 1 2 1 2 3 2 3 3
+8
+1 2
+1 3
+1 4
+1 5
+2 5
+2 6
+6 9
+7 10
+#include <stdio.h>//1002
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int a[300005];
+int xcol[10005];
+int main()
+{
+	int n,c,m,i,j,x,y,max,out;
+	while(scanf("%d%d",&n,&c) == 2)
+	{
+		for(i=1 ; i <= n ; i++)
+			scanf("%d", &a[i]);
+		scanf("%d", &m);
+		for(i=0 ; i < m ; i++){
+			memset(xcol,0,sizeof(xcol));
+			max = 0;
+			out = 0;
+			scanf("%d%d", &x, &y);
+			for(j=x ; j <= y ; j++)
+			{
+				xcol[a[j]]++;
+				if(xcol[a[j]] > max){
+					max = xcol[a[j]];
+					out = a[j];
+				}
+			}
+			if(max > (y-x+1)/2)
+				printf("yes %d\n", out);
+			else
+				printf("no\n");
+		}
+	}
+	return 0;
+}
+#include <iostream>
+#include <cstdio>
+#define M 1e-10
+using namespace std;
+long long int Gcd(long long int x,long long int y)
+{
+	if(x==0) return y;
+	return Gcd(y%x,x);
+}
+char str[100];
+int main()
+{
+	long double p;
+	long long int n,now,g,i,j,f;
+	while(scanf("%s",str)!=EOF)
+	{
+		n=1ll;
+		now=0ll;
+		/*while(p-(long long int)(p)>M)
+		{
+			p*=10.0000000000000;
+			n*=10ll;
+		}*/
+		for(i=0;str[i];i++)
+		{
+			if(str[i]=='.')
+			{
+				for(j=i+1;str[j];j++)
+				{
+					now*=10ll;
+					now+=(long long)(str[j]-'0');
+					n*=10ll;
+				}
+				break;
+			}
+			now*=10ll;
+			now+=(long long)(str[i]-'0');
+		}
+		/*now=p;*/
+		g=Gcd(n,now);
+		n/=g;
+		now/=g;
+		for(f=0,i=5;i>0;i--)
+		{
+			if(i*n>=now&&(i-1ll)*n<now)
+			{
+				for(j=1;j<i-1;j++)
+				{
+					if(f)
+						printf(" ");
+					else
+						f=1;
+					printf("0");
+				}
+				if(f)
+					printf(" ");
+				else
+					f=1;
+				printf("%lld %lld",(i*n-now),(now-(i-1ll)*n));
+				for(j=i+1;j<=5;j++)
+				{
+					if(f)
+						printf(" ");
+					else
+						f=1;
+					printf("0");
+				}
+				printf("\n");
+				break;
+		}
+	}
+	}
+	return 0;
+}
+#include<stdio.h>
+#include<iostream>
+using namespace std;
+#include<algorithm>
+#include<map>
+#define M 100100
+long long MIN(long long x,long long y)
+{
+	if(x<y) return x;
+	return y;
+}
+struct B
+{
+	int num,sum;
+}w[M];
+
+long long a[M],mark[M];
+int main()
+{
+	long long sum,i,m,n,b,c;
+	while(scanf("%lld%lld",&m,&n)!=EOF)
+	{
+		map<long long,long long> v;
+		for(sum=0,i=1;i<=m;i++)
+		{
+			scanf("%lld%lld",&c,&b);
+			if(v.find(c)==v.end())
+			{
+				v[c]=b;
+			}
+			else
+			{
+				v[c]+=b;
+			}
+			mark[i]=c;
+		}
+		sort(mark+1,mark+m+1);
+		for(i=1;i<m;i++)
+		{
+			sum-=MIN(v[mark[i]],v[mark[i+1]]);
+		}
+		printf("%lld\n",sum);
+	}
+	return 0;
+}

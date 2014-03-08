@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define inf 100000000.0
+#define N 300
+double mat[N][N],d[N];
+bool vis[N];
+int n;
+struct point{
+	double x,y;
+}a[N],st,ed;
+double dis(point a,point b){
+	return sqrt((a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y));
+}
+void dijkstra(){
+	for(int i=0 ; i <= n ; i++)d[i]=inf;
+	d[0] = 0;
+	for(int i=0 ; i <= n ; i++)
+	{
+		int x=0;
+		double min = inf;
+		for(int y=0 ; y <= n ; y++)
+			if(!vis[y] && d[y] < min){
+				min = d[y];
+				x = y;
+			}
+		vis[x] = true;
+		for(int y=0 ; y <= n ; y++)
+			if(!vis[y] && d[y] > d[x]+mat[x][y])
+				d[y] = d[x]+mat[x][y];
+	}
+}
+int main()
+{
+	int i,j;
+	for(i=0 ; i <= 250 ; i++)
+		for(j=0 ; j <= 250 ; j++)
+			if(i!=j)mat[i][j] = inf;
+	scanf("%lf%lf%lf%lf",&st.x,&st.y,&ed.x,&ed.y);
+	n = 1;
+	i = 0;
+	while(scanf("%lf%lf",&a[n].x,&a[n].y)!=EOF)
+	{
+		if(a[n].x==-1 && a[n].y==-1){
+			i = 0; continue;
+		}
+		if(i == 1)
+			mat[n-1][n] = mat[n][n-1] = dis(a[n-1],a[n])/40000.0*60.0;
+		n++; i = 1;
+	}
+	a[0] = st;
+	a[n] = ed;
+	for(i=0 ; i <= n ; i++)
+		for(j=i+1 ; j <= n ; j++)
+			if(i != j){
+				double temp = dis(a[i],a[j])/10000.0*60.0;
+				if(temp < mat[i][j])
+					mat[i][j] = mat[j][i] = temp;
+			}
+	dijkstra();
+	printf("%.0lf\n",d[n]);
+	return 0;
+}

@@ -1,0 +1,19 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define inf 1000000000
+const int N = 100005;
+
+int main()
+{
+	int a,b,c;
+	while(scanf("%d%d%d",&a,&b,&c) == 3)
+	{
+		double x = 1.0*(b+c)/(a+b+2.0*c);
+		printf("%.6lf\n",x*x*a+b*(1-x)*(1-x)-2.0*x*(1-x)*c);
+	}
+	return 0;
+}

@@ -1,0 +1,35 @@
+/*输入：输入有多组，每组有2行，第一行是学生人数N（1<=N<10000）
+第二行有N个整数，分别表示每个学生的成绩（0到2^31）。
+输出：对于每组输入，输出只有一行，即第二名学生的成绩，如果找不到，则输出No such score !*/
+#include<stdio.h>
+int main()
+{
+	int n,i,j,k;
+	long int a[10005],max=0,temp;
+	while(scanf("%d",&n) == 1)
+	{
+		k=0;
+		for(i=0;i<n;i++)
+			scanf("%d",&a[i]);
+        for(i=0;i<n;i++)
+			for(j=0;j<n-i-1;j++)
+				if(a[j]<a[j+1])
+				{
+					temp=a[j+1];
+					a[j+1]=a[j];
+					a[j]=temp;
+				}
+		for(j=0;j<n-1;j++)
+		{
+			if(a[j]>a[j+1])
+			{
+				printf("%ld\n",a[j+1]);
+				break;
+			}
+			if(a[j]==a[j+1])k++;
+		}
+		if(k==n-1)
+			printf("No such score !\n");
+	}
+	return 0;
+} 

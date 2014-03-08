@@ -1,0 +1,47 @@
+#include <iostream>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+struct Job{
+	int num,id;
+}a[101];
+
+bool cmp(int a,int b){
+	return a > b;
+}
+
+int main()
+{
+	int t,n,m,p[101];
+	scanf("%d", &t);
+	while(t--)
+	{
+		memset(a,0,sizeof(a));
+		queue<Job> q;
+		scanf("%d %d", &n, &m);
+		a[m].id = 1;
+		for(int i=0 ; i < n ; i++)
+		{
+			scanf("%d", &p[i]);
+			a[i].num = p[i];
+			q.push(a[i]);
+		}
+		sort(p,p+n,cmp);
+
+		int k=0,time=1;
+		while(q.front().num != p[k] || !q.front().id )
+		{
+			Job temp;
+			temp = q.front();
+			q.pop();
+			if(temp.num == p[k])
+			{
+				k++; time++;
+			}
+			else q.push(temp);
+		}
+		printf("%d\n", time);
+	}
+	return 0;
+}

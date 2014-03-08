@@ -1,0 +1,26 @@
+/*求取N个数中的最大数。
+输入case数m(m<=20),
+每个case由两部分组成：
+1、数字个数n(n<=50000)
+2、n个数字，数字范围在0~2^32
+输出每个case中n个数字的最大的那个*/
+#include<stdio.h>
+int main()
+{
+	int m,n,i,j;
+	long int a[50000],max=0;
+	while(scanf("%d",&m) == 1)
+	{
+		for(j=0;j<m;j++)
+		{
+			scanf("%d",&n);
+		    for(i=0;i<n;i++)
+			    scanf("%ld",&a[i]);
+		    for(i=0;i<n;i++)
+			    if(a[i]>max)
+				    max=a[i];
+		    printf("%ld\n",max);
+		}
+	}
+	return 0;
+}

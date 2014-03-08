@@ -1,0 +1,22 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define inf 100000000
+
+int main()
+{
+	int n,m,k,i,a[25],ans;
+	while(scanf("%d%d%d",&n,&m,&k) == 3)
+	{
+		for(i=0 ; i < k*2 ; i++)
+			scanf("%d",&a[i]);
+		for(i=0,ans=0 ; i < k ; i++)
+			if(a[i] < a[i+k])
+				ans += a[i+k]-a[i];
+		printf("%d\n",ans);
+	}
+	return 0;
+}

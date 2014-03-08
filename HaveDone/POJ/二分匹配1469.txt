@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <iostream>
+#include <algorithm>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
+using namespace std;
+
+int mat[105][305],match[305];
+bool vis[305];
+int p,n;
+bool find(int i){
+	for(int j=1 ; j <= n ; j++)
+	{
+		if(mat[i][j] && !vis[j])
+		{
+			vis[j] = true;
+			if(match[j]==0 || find(match[j]))
+			{
+				match[j] = i;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+int main()
+{
+	int T,num,c;
+	scanf("%d",&T);
+	while(T--)
+	{
+		memset(mat,0,sizeof(mat));
+		scanf("%d%d",&p,&n);
+		for(int i=1 ; i <= p ; i++)
+		{
+			scanf("%d",&c);
+			for(int j=0 ; j < c ; j++){
+				scanf("%d",&num);
+				mat[i][num] = 1;
+			}
+		}
+
+		int ans=0;
+		memset(match,0,sizeof(match));
+		for(int i=1 ; i <= p ; i++)
+		{
+			memset(vis,false,sizeof(vis));
+			if(find(i)) ans++;
+		}
+		if(ans==p)
+			printf("YES\n");
+		else printf("NO\n");
+	}
+	return 0;
+}

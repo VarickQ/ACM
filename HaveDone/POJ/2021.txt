@@ -1,0 +1,92 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+#include <string>
+using namespace std;
+
+struct Node{
+	int age;
+	string Fname;
+	string Cname;
+}a[200];
+struct out{
+	int age;
+	string name;
+}p[200];
+bool vis[200];
+
+bool cmp(out a,out b){
+	if(a.age == b.age)
+		return a.name < b.name;
+	return a.age > b.age;
+}
+int main()
+{
+	int T,n,i,j,cs=1,k,tt;
+	scanf("%d",&T);
+	while(T--)
+	{
+		scanf("%d",&n);
+		memset(vis,false,sizeof(vis));
+		for(i=1,k=0,tt=0 ; i <= n ; i++){
+			cin >> a[i].Fname >> a[i].Cname >> a[i].age;
+			if(a[i].Fname == "Ted"){
+				p[tt].name=a[i].Cname;
+				p[tt].age = 100-a[i].age;
+				vis[i]=true;
+				tt++;
+			}
+		}
+		while(k<tt)
+		{
+			for(j=1 ; j <= n ; j++)
+			{
+				if(p[k].name == a[j].Fname && !vis[j]){
+					p[tt].name = a[j].Cname;
+					p[tt].age = p[k].age-a[j].age;
+					tt++;
+					vis[j]=true;
+				}
+				if(p[k].name == a[j].Cname && !vis[j]){
+					p[tt].name = a[j].Fname;
+					p[tt].age = p[k].age+a[j].age;
+					tt++;
+					vis[j]=true;
+				}
+			}
+			k++;
+		}
+		sort(p,p+tt,cmp);
+		printf("DATASET %d\n",cs++);
+		for(i=0 ; i < tt ; i++)
+			cout << p[i].name<<' '<< p[i].age << endl;
+	}
+	return 0;
+}
+/*
+5
+Ray James 40
+Ray Tom 40
+James Beelzebub 17
+Ray Mark 75
+Ted Ray 20
+4
+Ray James 40
+James Beelzebub 17
+Ray Mark 75
+Ted Ray 20
+1
+Ted Bill 25
+4
+Ray James 40
+James Beelzebub 17
+Ray Mark 75
+Ted Ray 20
+3
+Ted a 8
+Ted b 2
+b c 6
+1
+Ted Bill 25*/

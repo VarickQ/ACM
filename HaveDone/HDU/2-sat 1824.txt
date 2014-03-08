@@ -1,0 +1,82 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define inf 2000000000
+const int N = 6030;
+const int M = 20000;
+
+struct E{
+	int v,next;
+}e[M];
+int heade[N],k;
+int belong[N],bcnt,dfn[N],low[N],index;
+int stack[N],top;
+bool instack[N];
+
+void add(int u,int v){
+	e[k].v = v;
+	e[k].next = heade[u];
+	heade[u] = k++;
+}
+void tarjan(int u){
+	dfn[u] = low[u] = ++index;
+	instack[u] = true;
+	stack[top++] = u;
+	for(int i=heade[u] ; i!=-1 ; i=e[i].next){
+		if(!dfn[e[i].v]){
+			tarjan(e[i].v);
+			if(low[u] > low[e[i].v])
+				low[u] = low[e[i].v];
+		}else if(instack[e[i].v] && dfn[e[i].v] < low[u])
+			low[u] = dfn[e[i].v];
+	}
+	if(low[u] == dfn[u]){
+		bcnt++;
+		int temp;
+		do{
+			temp = stack[--top];
+			instack[temp] = false;
+			belong[temp] = bcnt;
+		}while(u != temp);
+	}
+}
+void init(){
+	memset(heade,-1,sizeof(heade));
+	memset(dfn,0,sizeof(dfn));
+	memset(low,0,sizeof(low));
+	memset(instack,0,sizeof(instack));
+	k = top = index = bcnt = 0;
+}
+int main()
+{
+	int t,m,a,b,c,i;
+	while(scanf("%d%d",&t,&m) != EOF)
+	{
+		init();
+		for( i=0 ; i < t ; ++i){
+			scanf("%d%d%d",&a,&b,&c);
+			++a; ++b; ++c;
+			add(a+3*t,b);
+			add(a+3*t,c);
+			add(b+t*3,a);
+			add(c+t*3,a);
+		}
+		for( i=0 ; i < m ; ++i)
+		{
+			scanf("%d%d",&a,&b);
+			++a; ++b;
+			add(a,b+3*t);
+			add(b,a+3*t);
+		}
+		for( i=1 ; i <= 2*3*t ; ++i)
+			if(!dfn[i]) tarjan(i);
+		for( i=1 ; i <= 3*t ; ++i)
+			if(belong[i]==belong[i+3*t])break;
+		if(i<=3*t)printf("no\n");
+		else printf("yes\n");
+	}
+	return 0;
+}

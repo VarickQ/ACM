@@ -1,0 +1,25 @@
+#include <map>
+#include <string>
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	char a[35];
+	typedef map<string,int> Map;
+	Map ans;
+	Map::iterator ok;
+	double sum = 0;
+	while(gets(a))
+	{
+		ans[a]++;
+		sum ++;
+	}
+
+	for(ok=ans.begin() ; ok!=ans.end() ; ok++){
+		cout << ok->first;
+		printf(" %.4lf\n", ok->second/sum*100.0);
+	}
+
+	return 0;
+}

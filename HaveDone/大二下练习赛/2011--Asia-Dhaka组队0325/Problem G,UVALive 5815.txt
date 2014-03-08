@@ -1,0 +1,125 @@
+#include <iostream>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <algorithm>
+#include <string.h>
+#include <limits.h>
+#include <map>
+#include <math.h>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+struct data
+{
+	long long x, y;
+};
+
+map<long long, long long> ma;
+vector<data> ve[2000];
+long long visit[2000];
+
+long long MAX(long long a, long long b)
+{
+	if(a > b)
+		return a;
+	else
+		return b;
+}
+
+void init()
+{
+	ma.clear();
+	memset(visit, 0, sizeof(visit));
+	int cnt = 0;
+	for(long long i = 1; i <= 1415; ++i)
+	{
+		ma[i * i] = i;
+	}
+	for(long long i = 1; i <= 1000; ++i)
+	{
+		for(long long j = i; j <= 1000; ++j)
+		{
+			long long now = i * i + j * j;
+			if(ma.find(now) == ma.end())
+				continue;
+			else
+			{
+				long long n = ma[now];
+				data nd;
+				nd.x = i;
+				nd.y = j;
+				ve[n].push_back(nd);
+				visit[n] = 1;
+				cnt++;
+			}
+		}
+	}
+//	printf("%d}", cnt);
+}
+
+int main(void)
+{
+	int t;
+	init();
+	while(scanf("%d", &t) != EOF)
+	{
+		long long ca = 0;
+		while(t--)
+		{
+			long long w, h;
+			scanf("%lld %lld", &w, &h);
+			long long b = MAX(w, h);
+			long long sum = 0;
+			for(long long i = 1; i <= b; ++i)
+			{
+				long long now1 = i * 2;
+				for(long long j = 1; j <= b; ++j)
+				{
+					long long now2 = j * 2;
+					long long l, c;
+					l = now1 + now2;
+					c = MAX(now1, now2);
+					if(w - l + 1 > 0 && h - c + 1 > 0)
+					{
+						sum += ((w - l + 1) * (h - c + 1));
+					}
+					if(h - l + 1 > 0 && w - c + 1 > 0)
+						sum += ((h - l + 1) * (w - c + 1));
+
+			//		printf("%d %d %lld]]", now1, now2, sum);
+				}
+			}
+			for(long long i = 1; i <= 1415; ++i)
+			{
+				if(visit[i])
+				{
+					for(long long j = 0; j < ve[i].size(); ++j)
+					{
+						long long x, y;
+						x = ve[i][j].x + i;
+						y = ve[i][j].y + i;
+						for(long long k = 1; k < i; ++k)
+						{
+							long long maxr = MAX(k, i - k);
+							long long l, c;
+							l = MAX(maxr * 2, x);
+							c = MAX(maxr * 2, y);
+							if(w >= l && h >= c)
+							{
+								sum += ((w - l + 1) * (h - c + 1) * 2);
+							}
+							if(h >= l && w >= c)
+								sum += ((h - l + 1) * (w - c + 1) * 2);
+						}
+			//			printf("%lld %lld %lld %lld||", x, y ,i, sum);
+					}
+				}
+			}
+			printf("Case %lld: %lld\n", ++ca, sum);
+		}
+	}
+	return 0;
+}

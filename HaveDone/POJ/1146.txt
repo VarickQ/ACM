@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	char temp[55],str[55];
+	int l;
+	while(scanf("%s",str) != EOF)
+	{
+		if(str[0]=='#') break;
+		memset(temp,0,sizeof(temp));
+		l = strlen(str);
+		strcpy(temp,str);
+		next_permutation(str,str+l);
+		if(strcmp(str,temp) <= 0)
+			printf("No Successor\n");
+		else
+			printf("%s\n",str);
+	}
+	return 0;
+}

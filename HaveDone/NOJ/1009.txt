@@ -1,0 +1,15 @@
+#include<stdio.h>
+#include<string.h>
+void main()
+{
+	int i,ilen;
+	char ch[1000];
+	while(gets(ch))
+	{
+		ilen = strlen(ch);
+		for(i=0;i<ilen;i++)
+			printf("%c",ch[i]);
+		printf("\n");
+	}
+	
+}

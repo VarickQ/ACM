@@ -1,0 +1,39 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int c[32001];
+int leave[15001];
+
+int Lowbit(int t){
+    return t & ( -t );
+}
+void plus(int pos,int num){
+	while(pos <= 32001){
+		c[pos] += num;
+		pos += Lowbit(pos);
+	}
+}
+int Sum(int end){
+	int sum = 0;
+	while(end > 0){
+		sum += c[end];
+		end -= Lowbit(end);
+	}
+	return sum;
+}
+
+int main()
+{
+	int n,x,y;
+	scanf("%d", &n);
+	for(int i=0 ; i<n ; i++){
+		scanf("%d %d",&x,&y);
+		leave[Sum(++x)]++;
+		plus(x,1);
+	}
+	for(int i=0 ; i<n ; i++)
+		printf("%d\n", leave[i]);
+	//system("pause");
+	return 0;
+}

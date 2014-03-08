@@ -1,0 +1,45 @@
+#include <iostream>
+#define INF 1<<30
+using namespace std;
+
+int n,res;
+int w[101][101];
+int d[101],v[101];
+void dijkstra(){
+	memset(v,0,sizeof(v));
+	for(int i=1 ; i<=n ; d[i]=INF,i++ );
+	d[1]=0;
+	for(int i=1 ; i<=n ; i++ )
+	{
+		int x,m = INF;
+		for(int y=1 ; y<=n ; y++)
+			if(!v[y] && d[y] < m)
+				m = d[x=y];
+		if(m > res) res = m;
+		v[x]=1;
+		for(int y=1 ; y<=n ; y++)
+			if(!v[y] && d[x]+w[x][y] < d[y])
+				d[y] = d[x]+w[x][y];
+	}
+	printf("%d\n", res);
+}
+
+int main()
+{
+	char in[101];
+	while(scanf("%d", &n) == 1)
+	{
+		for(int i=2 ; i <= n ; i++)
+			for(int j=1 ; j < i ; j++)
+			{
+				scanf("%s", in);
+				if(in[0]=='x')
+					w[i][j] = w[j][i] = INF;
+				else
+					w[i][j] = w[j][i] = atoi(in);//字符串转化为整型
+			}
+		res=0;
+		dijkstra();
+	}
+	return 0;
+}

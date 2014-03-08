@@ -1,0 +1,18 @@
+/*输入一个华氏温度F,要求输出摄氏温度C. 公式为: C = 5/9*(F-32) 
+第一行输入一个N,下面有N行,每行是一个一个华氏温度 
+输出共N行,每行输出C,取两位小数. */
+#include<stdio.h>
+void main()
+{
+	int n,i;
+	float F,c;
+	while(scanf("%d",&n)!=EOF)
+	{
+		for(i=0;i<n;i++)
+		{
+			scanf("%f",&F);
+		    c=5.0/9.0*(F-32);
+		    printf("%.2f\n",c);
+		}
+	}
+}

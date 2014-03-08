@@ -1,0 +1,39 @@
+#include <iostream>
+#include <string>
+using namespace std;
+#include <stdio.h>
+#include <string.h>
+#define inf 1<<30
+
+int f[10005];
+struct Node{
+	int weight,value;
+}coin[505];
+
+int main()
+{
+	int t,E,F,n,i,j;
+	scanf("%d",&t);
+	while(t--)
+	{
+		scanf("%d%d%d",&E,&F,&n);
+		for(i=0 ; i < n ; i++)
+			scanf("%d%d",&coin[i].value,&coin[i].weight);
+		int Max = F-E;
+		for(i=0 ; i <= Max ; i++)
+			f[i] = inf;
+		f[0]=0;
+
+		for(i=1 ; i <= Max ; i++)
+			for(j=0 ; j < n ; j++){
+				int temp=i-coin[j].weight;
+				if(temp>=0 && f[i] > f[temp]+coin[j].value)
+					f[i] = f[temp]+coin[j].value;
+			}
+
+		if(f[Max] < inf)
+			printf("The minimum amount of money in the piggy-bank is %d.\n",f[Max]);
+		else printf("This is impossible.\n");
+	}
+	return 0;
+}

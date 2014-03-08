@@ -1,0 +1,29 @@
+#include <iostream>
+#include <stdio.h>
+#include <string.h>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+    int n,m,i,j,v[200],f[2000],w[200];
+    while(scanf("%d", &n)==1)
+    {
+    	while(n--){
+			memset(f,0,sizeof(f));
+			scanf("\n%d", &m);
+			for(i=0 ; i < m ; i++){
+				scanf("%d", &v[i]);
+				w[i]=v[i];
+			}
+
+			for(i=0;i<m;i++)
+				for(j=1024;j>=w[i]; j--)
+					if(f[j-w[i]]+v[i] >= f[j]){
+						f[j] = f[j-w[i]]+v[i];
+					}
+			printf("%d\n", f[1024]);
+    	}
+    }
+    return 0;
+}

@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <string.h>/*
+#include <iostream>
+#include <algorithm>
+using namespace std;*/
+#define inf 1000000000
+const int M = 50005;
+const int N = 10005;
+
+struct A{
+	int v,next;
+}e[M];
+int heade[M],k,stack[N],top;
+bool instack[N],du[N];
+int dfn[N],low[N],belong[N],index,bcnt;
+
+void add(int u,int v){
+	e[k].v = v;
+	e[k].next = heade[u];
+	heade[u] = k++;
+}
+void tarjan(int u){
+	dfn[u] = low[u] = ++index;
+	instack[u] = true;
+	stack[top++] = u;
+	for(int i=heade[u] ; i!=-1 ; i=e[i].next){
+		if(!dfn[e[i].v]){
+			tarjan(e[i].v);
+			if(low[u] > low[e[i].v])
+				low[u] = low[e[i].v];
+		} else if(instack[e[i].v] && dfn[e[i].v] < low[u]){
+			low[u] = dfn[e[i].v];
+		}
+	}
+	if(dfn[u]==low[u]){
+		bcnt++;
+		int temp;
+		do{
+			temp = stack[--top];
+			instack[temp] = false;
+			belong[temp] = bcnt;
+		}while(u != temp);
+	}
+}
+void init(){
+	memset(heade,-1,sizeof(heade));
+	memset(dfn,0,sizeof(dfn));
+	memset(low,0,sizeof(low));
+	memset(instack,0,sizeof(instack));
+	memset(du,0,sizeof(du));
+	bcnt = index = top = k = 0;
+}
+
+int main()
+{
+	int n,m,i,a,b;
+	//freopen("in.txt","r",stdin);
+	//freopen("out.txt","w",stdout);
+	while(scanf("%d%d",&n,&m) == 2)
+	{
+		init();
+		for(i=0 ; i < m ; i++){
+			scanf("%d%d",&a,&b);
+			add(a,b);
+		}
+		for(i=1 ; i <= n ; i++)
+			if(!dfn[i])	tarjan(i);
+		if(bcnt==1){
+			printf("%d\n",n); continue;
+		}
+		//计算各个联通块的出度
+		for(i=1 ; i <= n ; i++)
+			for(int j=heade[i] ; j!=-1 ; j=e[j].next)
+				if(belong[i] != belong[e[j].v])
+					du[belong[i]] = true;
+		int count=0,pos=1;
+		for(i=1 ; i <= bcnt ; i++)
+			if(!du[i]){
+				count ++; pos = i;
+			}
+		//如果出度为0的联通块大于1，那么图不联通，输出0
+		if(count!=1)printf("0\n");
+		else{
+			int ans=0;
+			for(i=1 ; i <= n ; i++)
+				if(belong[i]==pos)ans++;
+			printf("%d\n",ans);
+		}
+	}
+	return 0;
+}

@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	int n,c;
+	long long t,ans1,ans2;
+	while(scanf("%d %d",&n,&c) == 2)	
+	{
+		//t*(c-t*n)=>-n*t^2+c*t=>t=c/(2*n)时取最大值
+		if(n==0) printf("0\n");
+		else{
+			t = c/(2*n);
+			ans1 = t*(c-t*n);
+			ans2 = (t+1)*(c-(t+1)*n);
+			if(ans1 >= ans2) printf("%lld\n",t);
+			else printf("%lld\n",t+1);
+		}
+	}
+	return 0;
+}

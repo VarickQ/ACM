@@ -1,0 +1,54 @@
+#include<stdio.h>
+#include<vector>
+using namespace std;
+
+
+//手写链表的使用
+
+struct point{
+	int v,w;
+	point* next;
+}pool[MAXN],*pp=pool,*adj[MAXV];//建池
+
+
+inline point* create(int v,int w,point* next){
+	pp->v=v;
+	pp->w=w;
+	pp->next=next;
+	return pp++;
+}
+	
+
+main(){
+
+	adj[s]=create(t,w,adj[s]);//添边
+
+	......
+		for(point* p=adj[i];p;p=p->next){//遍历
+			......
+		}
+
+//用vector代替的简单实现
+struct node{
+	int v,w;
+};
+
+vector<node> v[ss];
+
+
+int main(){
+
+
+
+......
+
+node temp;//添边
+node.v=v;
+node.w=w;
+V[i].push_back(node);
+
+........
+for(i=0;i<n;++i)//遍历
+	for(j=0;j<v[i].size();++j)
+		.....
+

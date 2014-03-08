@@ -1,0 +1,313 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+int num[21];
+int main()
+{
+	int k,i,min;
+	for(i=0 ; i <= 20 ; i++)
+		num[i] = 1<<i;
+	while(scanf("%d", &k) == 1)
+	{
+		for( i=0 ; i <= 20 ; i++)
+			if(k <= num[i]){
+				min = num[i];
+				break;
+			}
+		int temp = min;
+		if(min == k){
+			printf("%d 0\n", min);
+			continue;
+		}
+		int count = 0;
+		while(k){
+			if(min/2 <= k)
+				k -= min/2;
+			min /= 2;
+			count ++;
+		}
+		printf("%d %d\n", temp, count);
+	}
+	return 0;
+}
+
+#include <iostream>
+#include <memory.h>
+#include<algorithm>
+using namespace std;
+#define MXX 5000000
+
+int a[MXX],b[MXX],d[MXX],co,bian[MXX],father[MXX];
+int cmp(int g,int k)
+{
+	return d[g]<d[k];
+}
+typedef struct A 
+{
+	int x,y,z;
+} C;
+int dis(int a,int b,int c)
+{
+	if(a>b)
+		return b>c?c:b;
+	else
+		return a>c?c:b;
+}	
+int find(int H)
+{
+	return father[H]==H? H:father[H]=find(father[H]);
+}
+C p[100005];
+int main()
+{
+	int n,i,j,q;
+	while(scanf("%d",&n)!=EOF){
+	
+		for(i=1;i<=n;i++)
+			scanf("%d%d%d",&p[i].x,&p[i].y,&p[i].z);
+		for(q=1,i=1;i<=n-1;i++)
+			for(j=i+1;j<=n;j++)
+			{
+				a[q]=i;b[q]=j;
+				d[q]=dis(abs(p[i].x-p[j].x),abs(p[i].y-p[j].y),abs(p[i].z-p[j].z) );
+				bian[q]=q;
+				q++;
+				
+			}
+		for(i=1;i<=n;i++)
+			father[i]=i;
+		sort(bian+1,bian+q,cmp);
+		for(co=0,i=1;i<q;i++)
+			if(find(a[bian[i]])!=find(b[bian[i]]))
+				{
+					father[find(a[bian[i]])]=find(b[bian[i]]);
+					co+=d[bian[i]];
+				}
+		printf("%d\n",co);
+	}
+	return 0;
+}
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+struct A{
+	int x,y;
+}p[300001];
+int main()
+{
+	int co,n,i,j,x1,y1,x2,y2,m;
+	while(scanf("%d",&n) != EOF)
+	{
+		for(i=1 ; i <= n ; i++)
+			scanf("%d%d",&p[i].x,&p[i].y);
+		scanf("%d", &m);
+		for(i=1 ; i <= m ; i++)
+		{
+			scanf("%d%d%d%d",&x1,&y1,&x2,&y2);
+			for(co=0,j=1 ; j <= n ; j++){
+				if(p[j].x==x1 || p[j].x==x2){
+					if(p[j].y>=y1 && p[j].y<=y2)
+						co++;
+				}
+				else if(p[j].y==y1 || p[j].y==y2){
+					if(p[j].x>=x1 && p[j].x<=x2)
+						co++;
+				}
+			}
+			printf("%d\n", co);
+		}
+	}
+	return 0;
+}
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+#include <queue>
+using namespace std;
+#define M 100000
+int a[M],b[M],c[M],d[M],mark[M];
+int n;
+int dis(int x1,int x2,int y1,int y2,int z1,int z2)
+{
+	int a,b,c;
+	a=abs(x1-x2);
+	b=abs(y1-y2);
+	c=abs(z1-z2);
+	if(a<b)
+		b=a;
+	if(b<c) return b;
+	return c;
+}
+int prim()
+{
+	int i,ans,k,j,t,min;
+	mark[0]=1;
+	for(i=1;i<n;i++)
+		d[i]=dis(a[0],a[i],b[0],b[i],c[0],c[i]);
+	for(i=1;i<n;i++)
+	{
+		min=100000000;
+		for(j=1;j<n;j++)
+		{
+			if(!mark[j]&&min>d[j])
+			{
+				k=j;
+				min=d[j];
+			}
+		}
+		mark[k]=1;
+		for(j=1;j<n;j++)
+		{
+			t=dis(a[k],a[j],b[k],b[j],c[k],c[j]);
+			if(!mark[j]&&d[j]>t)
+				d[j]=t;
+		}
+	}
+	for(ans=0,i=1;i<n;i++)
+		ans+=d[i];
+	return ans;
+}
+int main()
+{
+	int i;
+	while(scanf("%d",&n)!=EOF)
+	{
+		memset(mark,0,sizeof(mark));
+		for(i=0;i<n;i++)
+			scanf("%d%d%d",&a[i],&b[i],&c[i]);
+		printf("%d\n",prim());
+	}
+	return 0;
+}
+
+#include <iostream>
+#include <memory.h>
+#include<algorithm>
+#include<map>
+using namespace std;
+#define Mxx 50000
+struct A 
+{
+	int x,y;
+}p[100005];
+bool cmp(const A &a,const A &b)
+{
+	if(a.x!=b.x)
+		return a.x<b.x;
+	return a.y<b.y;
+}
+map<int,int> xx,num,yy,nuy;
+int main()
+{
+	int n,i,j,q,x1,x3,y1,y3,s,m;
+	while(scanf("%d",&n)!=EOF)
+	{
+		for(i=1;i<=n;i++)
+			scanf("%d%d",&p[i].x,&p[i].y);
+		sort(p+1,p+n+1,cmp);
+		for(i=1;i<=n;i++)
+		{
+			if(xx.find(p[i].x)==xx.end())
+			{
+				xx[p[i].x]=i;
+				num[p[i].x]=1;
+			}
+			else
+				num[p[i].x]++;
+			if(xx.find(p[i].y)==xx.end())
+			{
+				yy[p[i].y]=i;
+				nuy[p[i].y]=1;
+			}
+			else
+				nuy[p[i].y]++;
+		}
+		scanf("%d",&m);
+		while(m--)
+		{
+			s=0;
+			scanf("%d%d%d%d",&x3,&y3,&x1,&y1);
+			if(xx.find(x1)!=xx.end())
+				for(i=xx[x1];i<=num[x1]+xx[x1];i++)
+				{
+					if(p[i].y>y1)
+						break;
+					if(p[i].y>=y3&&p[i].y<=y1)
+						s++;
+				}
+			if(xx.find(x3)!=xx.end())
+				for(i=xx[x3];i<=num[x3];i++)
+				{
+					if(p[i].y>=y3&&p[i].y<=y1)
+						s++;
+					if(p[i].y>y1)
+						break;
+				}
+			if(yy.find(y1)!=yy.end())
+				for(i=yy[y1];i<=nuy[y1]+yy[y1];i++)
+				{
+					if(p[i].x>x3&&p[i].x<x1)
+						s++;
+					if(p[i].x>=x1)
+						break;
+				}
+			if(yy.find(y3)!=yy.end())
+				for(i=yy[y3];i<=nuy[y3]+yy[y3];i++)
+				{
+					if(p[i].x>x3&&p[i].x<x1)
+						s++;
+					if(p[i].x>=x1)
+						break;
+				}
+			printf("%d\n",s);
+		}
+	}
+	return 0;
+}
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define M 100001
+#define abs_(a,b) a>b?(a-b):(b-a);
+int a[M],b[M],c[M],n;
+
+int min_(int a,int b,int c){
+	if(a>b)a = b;
+	if(a>c)a = c;
+	return a;
+}
+int main()
+{
+	int i,j,k,x,y,z,t,min,sum;
+	while(scanf("%d",&n)!=EOF)
+	{
+		for(i=0;i<n;i++)
+			scanf("%d%d%d",&a[i],&b[i],&c[i]);
+		sum = 0;
+		for(i=0;i<n-1;i++){
+			min = 1<<30;
+			for(j=i+1;j<n;j++){
+				x = abs_(a[i],a[j]);
+				y = abs_(b[i],b[j]);
+				z = abs_(c[i],c[j]);
+				t = min_(x,y,z);
+				if(t < min)
+					min = t;
+			}
+			sum += min;
+		}
+		printf("%d\n", sum);
+	}
+	return 0;
+}

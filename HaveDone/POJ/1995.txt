@@ -1,0 +1,34 @@
+#include <iostream>
+#include <string.h>
+#include <algorithm>
+using namespace std;
+#define ll long long
+
+ll km(ll x,ll n,ll M){
+	ll sum=1;
+	while(n){
+		if(n&1)sum = sum*x%M;
+		x = x*x%M;
+		n >>= 1;
+	}
+	return sum;
+}
+int main() {
+    int t,n,i,j;
+    ll a,b,M,z,ans;
+    scanf("%d",&t);
+    while(t--)
+    {
+        scanf("%lld",&M);
+        scanf("%d",&n);
+        ans=0;
+        for(i=0;i<n;i++)
+        {
+            scanf("%lld%lld",&a,&b);
+            z = km(a,b,M);
+            ans=(ans+z)%M;
+        }
+        printf("%lld\n",ans);
+    }
+    return 0;
+}

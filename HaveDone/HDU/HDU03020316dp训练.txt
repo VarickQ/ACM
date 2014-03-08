@@ -1,0 +1,398 @@
+//1001AC
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	int dis[101][101];
+	int i,j,t,n;
+	scanf("%d", &t) ;
+	while( t -- )
+	{
+		scanf("%d", &n);
+		for ( i=1 ; i <= n ; i++ )
+			for ( j=1 ; j <= i ; j++ )
+				scanf("%d", &dis[i][j]);
+		for( i=n-1 ; i >= 1 ; i-- )
+			for( j=1 ; j <= i ; j++ )
+				dis[i][j] += dis[i+1][j] > dis[i+1][j+1] ? dis[i+1][j] : dis[i+1][j+1];
+		printf("%d\n", dis[1][1]);
+	}
+	//system("pause");
+	return 0;
+}
+
+//1006AC
+#include <iostream>
+using namespace std;
+
+__int64 min(__int64 a,__int64 b)
+{
+	if( a > b )return b;
+	else return a;
+}
+
+__int64 s[6000];
+int main()
+{
+	__int64 n,i,p1,p2,p3,p4;
+	p1 = p2 = p3 = p4 = s[1] = 1;//p1234为4个因数
+	for( i=2 ; i < 5900 ; i++ )
+	{
+		s[i] = min( s[p1]*2, min(s[p2]*3, min(s[p3]*5, s[p4]*7) ) );//取最小的
+		if( s[i] == s[p1]*2 )p1++;
+		if( s[i] == s[p2]*3 )p2++;
+		if( s[i] == s[p3]*5 )p3++;
+		if( s[i] == s[p4]*7 )p4++;
+	}
+	while (scanf("%I64d", &n) == 1)
+	{
+		if(n == 0) break;
+		if( n%10 == 1 && n%100 != 11 )
+			printf("The %I64dst humble number is %I64d.\n", n, s[n]);
+		else if( n%10 == 2 && n%100 != 12 )
+			printf("The %I64dnd humble number is %I64d.\n", n, s[n]);
+		else if( n%10 == 3 && n%100 != 13 )
+			printf("The %I64drd humble number is %I64d.\n", n, s[n]);
+		else
+			printf("The %I64dth humble number is %I64d.\n", n, s[n]);
+	}
+	system("pause");
+	return 0;
+}
+
+//1007AC
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	int c,t,i,n,num,s,max,be,end,cas=0;
+	scanf("%d", &c);
+	while(c--)
+	{
+		scanf("%d", &n);
+		max = -2000; t = 0;
+		for( i=s=1 ; i <= n ; i++ )
+		{
+			scanf("%d", &num);
+			t += num;
+			if(t > max)
+			{
+				max = t; be = s; end = i;
+			}
+			if(t < 0)
+			{
+				s = i+1; t = 0;
+			}
+		}
+		printf("Case %d:\n%d %d %d\n", ++cas, max, be, end);
+		if(c) printf("\n");
+	}
+	//system("pause");
+	return 0;
+}
+
+//1002AC
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	int n,i,j,num[1001],dp[1001],max;
+	while(scanf("%d", &n) == 1)
+	{
+		if( n == 0 ) break;
+		for ( i=0 ; i < n ; i++ )
+			scanf("%d", &num[i]);
+		dp[0] = num[0];
+		for ( i=1 ; i < n ; i++ )//dp[i]=max{dp[j]+1}(0<j=<i)其中dp[i]表示第i个元素的最大序列和
+		{
+			dp[i] = num[i];
+			for ( j=0 ; j < i ; j++ )
+				if(num[j]<num[i] && dp[i]<dp[j]+num[i])
+					dp[i] = dp[j]+num[i];
+		}
+		max = 0;
+		for ( i=0 ; i < n ; i++ )
+			if(max < dp[i]) max = dp[i];
+		printf("%d\n", max);
+	}
+	//system("pause");
+	return 0;
+}
+
+//1005AC
+#include <iostream>
+#include <algorithm>
+#define min(a,b) a < b ? a : b
+using namespace std;
+
+int w[2001],dp[2001][1001];//dp[i][j]为前i件物品选j对的最优解
+int main()
+{
+	int n,k,i,j;
+	while(scanf("%d %d", &n, &k) == 2)
+	{
+		memset( dp, 0, sizeof(dp) );
+		for ( i=1 ; i <= n ; i++ )
+			scanf("%d", &w[i]);
+		sort( w, w+n+1);
+		for ( i=1 ; i <= n ; i++ )
+			for ( j=1 ; 2*j <= i && j <= k ; j++ )
+				if(2*j == i)
+					dp[i][j] += dp[i-2][j-1] + (w[i]-w[i-1])*(w[i]-w[i-1]);//当i=j*2时,只有一种选择即 Dp[i-2][j-1]+(w[i]-w[i-1])^2
+				else if(2*j < i)
+					dp[i][j] = min( dp[i-1][j], dp[i-2][j-1] + (w[i]-w[i-1])*(w[i]-w[i-1]));//当i>j*2时,Dp[i][j] = min(Dp[i-1][j],Dp[i-2][j-1]+(w[j]-w[j-1])^2)
+		printf("%d\n", dp[n][k]);
+	}
+	//system("pause");
+	return 0;
+}
+
+//1010AC
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	int t,n,v,i,j;
+	int f[1001],va[1001],vo[1001];
+	scanf("%d", &t);
+	while(t--)
+	{
+		memset( f, 0, sizeof(f) );
+		scanf("%d %d", &n, &v);
+		for ( i=0 ; i < n ; i++ )
+			scanf("%d", &va[i]);
+		for ( i=0 ; i < n ; i++ )
+			scanf("%d", &vo[i]);
+		for ( i=0 ; i < n ; i++ )
+			for ( j=v ; j >= vo[i] ; j-- )
+				if( f[j] < f[j-vo[i]]+va[i] )
+					f[j] = f[j-vo[i]] + va[i];
+		printf("%d\n", f[v]);
+	}
+	//system("pause");
+	return 0;
+}
+
+//POJ1742,HDOJ2844,1013-------来自internet的代码
+#include<cstdio>
+int a[120],c[120];
+bool f[100050];
+int main()
+{
+	int n,m,i,j,k,t,left,count;
+	while(scanf("%d%d",&n,&m),n||m)
+	{
+		for(i=0;i<n;i++)
+			scanf("%d",&a[i]);
+		for(i=0;i<n;i++)
+			scanf("%d",&c[i]);
+		for(i=1;i<=m;i++)
+			f[i]=false;
+		f[0]=true;
+		for(i=0;i<n;i++)
+		{
+			left=c[i];
+			for(k=1;k<=left;k<<=1)//二进制压缩-----
+			{                     //比如哦。。有13个硬币。。
+				t=k*a[i];         //把这个13分成1 2 4 和13-(1+2+4)=6;
+				for(j=m;j>=t;j--) //(也许你要想 为什么不要1248 答：因为如果取8的话 1+2+4+8>13 超过我们所要的范围了。于是只取到4.)
+					if(f[j-t])    //对于1 2 4 6的取舍就构成了0 到13之间的任何一个数。
+						f[j]=true;//也就对0 到 13之间的物品0-1背包
+				left-=k;          //比直接0到13枚举的0-1背包相对来说优化些。
+			}
+			if(left)
+			{
+				t=left*a[i];
+				for(j=m;j>=t;j--)
+						if(f[j-t])
+							f[j]=true;
+			}
+		}
+		count=0;
+		for(i=1;i<=m;i++)
+			if(f[i])
+				count++;
+		printf("%d\n",count);
+	}
+	return 0;
+}
+#include <iostream>
+using namespace std;
+
+int a[102],c[102],f[100005];//标记是否能组成
+int main()
+{
+	int n,m,i,j,temp,t,k;
+	while(scanf("%d %d", &n, &m) == 2)
+	{
+		if(n==0 && m==0) break;
+		memset( f, 0, sizeof(f) );
+		for( i=0 ; i < n ; i++ ) scanf("%d", &a[i]);
+		for( i=0 ; i < n ; i++ ) scanf("%d", &c[i]);
+		f[0] = 1;
+		for( i=0 ; i < n ; i++ )
+		{
+			temp = c[i];
+			for( j=1 ; j <= temp ; j*=2 )
+			{
+				t = j*a[i];
+				for( k=m ; k >= t ; k-- )
+					if( f[k-t] )
+						f[k] = 1;
+				temp -= j;
+			}
+			if( temp )//01 bag
+			{
+				t = temp*a[i];
+				for( k=m ; k >= t ; k-- )
+					if( f[k-t] )
+						f[k] = 1;
+			}
+		}
+		int count = 0;
+		for( i=1 ; i <= m ; i++ )
+			if( f[i] ) count ++;
+		printf("%d\n", count);
+	}
+	//system("pause");
+	return 0;
+}
+
+//1004AC
+#include <iostream>
+#define max(a,b) a > b ? a : b
+using namespace std;
+
+char s1[1000],s2[1000];
+int f[1000][1000];
+int main()
+{
+	int i,j,len1,len2;
+	while (scanf("%s %s", s1, s2) != EOF)//f(i,j)={f(i-1,j-1)+1(a[i]==b[j]), max(f(i-1,j),f(i,j-1))(a[i]!=b[j])}
+	{
+		memset( f, 0, sizeof(f) );
+		len1 = strlen(s1);
+		len2 = strlen(s2);
+		for( i=1 ; i <= len1 ; i++ )
+			for( j=1 ; j <= len2 ; j++ )
+			{
+				if(s1[i-1] == s2[j-1])
+					f[i][j] = f[i-1][j-1]+1;
+				else
+					f[i][j] = max( f[i-1][j], f[i][j-1]);
+			}
+		printf("%d\n", f[len1][len2]);
+	}
+	//system("pause");
+	return 0;
+}
+
+//1011AC
+#include <iostream>
+#define MAX 100000000
+#define min(a,b) a < b ? a : b
+using namespace std;
+
+int v[501],w[501],f[10001];
+int main()
+{
+	int t,E,F,n,W,i,j;
+	scanf("%d", &t);
+	while(t--)
+	{
+		scanf("%d %d", &E, &F);
+		W = F - E;
+		if(W == 0)
+		{
+			printf("The minimum amount of money in the piggy-bank is 0.\n");
+			continue;
+		}
+		scanf("%d", &n);
+		for( i=0 ; i < n ; i++ )
+			scanf("%d %d", &v[i], &w[i]);
+		for( f[0] = 0,i=1 ; i <= W ; i++ )
+			f[i] = MAX;
+		for( i=0 ; i < n ; i++ )
+			for( j=w[i] ; j <= W ; j++ )
+				f[j] = min( f[j], f[j-w[i]] + v[i]);
+		if(f[W] == MAX)
+			printf("This is impossible.\n");
+		else
+			printf("The minimum amount of money in the piggy-bank is %d.\n", f[W]);
+	}
+	//system("pause");
+	return 0;
+}
+
+//1012AC
+#include <iostream>
+#define max(a,b) a > b ? a : b
+using namespace std;
+
+int p[10001],w[10001],f[10001];
+int main()
+{
+    int C,k,m,n,i,j,P,h,c;
+    scanf("%d", &C);
+    while(C--)
+    {
+        memset( f, 0, sizeof(f) );
+        scanf("%d %d", &k, &m);
+        n = 0;
+        for( i=0 ; i < m ; i++ )
+        {
+            scanf("%d %d %d", &P, &h, &c);
+            for( j=n ; j < n+c ; j++ )
+            {
+                p[j] = P; w[j] = h;
+            }
+            n += c;
+        }
+        for( i=0 ; i < n ; i++ )
+            for( j=k ; j >= p[i] ; j-- )
+                f[j] = max( f[j], f[j-p[i]] + w[i]);
+        printf("%d\n", f[k]);
+    }
+    //system("pause");
+    return 0;
+}
+
+//1003AC
+#include <iostream>
+using namespace std;
+
+int max(int a,int b){
+	if(a > b) return a;
+	return b;
+}
+int f[100002][11];//倒数塔，f[i][j]：第i秒站在第j个位置的得到的最优馅饼数。
+int main()
+{
+	int n,i,j,x,t,maxt;
+	while(scanf("%d", &n) == 1)
+	{
+		if(n == 0) break;
+		memset( f, 0, sizeof(f) );
+		maxt = 0;
+		for( i=0 ; i < n ; i++ )//a[i][j]+=max(max(a[i+1][j-1],a[i+1][j]),a[i+1][j+1]);
+		{
+			scanf("%d %d", &x, &t);
+			f[t][x] ++;
+			if(t > maxt) maxt = t;
+		}
+		for( i=maxt ; i >= 0 ; i-- )
+		{
+			f[i][0] += max( f[i+1][0] , f[i+1][1] );//边界处理
+			for( j=1 ; j < 10 ; j++ )
+				f[i][j] += max( max( f[i+1][j-1], f[i+1][j] ), f[i+1][j+1] );
+			f[i][10] += max( f[i+1][9] , f[i+1][10] );//边界处理
+		}
+		printf("%d\n", f[0][5]);
+	}
+	//system("pause");
+	return 0;
+}

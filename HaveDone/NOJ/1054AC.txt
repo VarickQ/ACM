@@ -1,0 +1,48 @@
+#include <iostream>
+#include <algorithm>
+#include <math.h>
+using namespace std;
+
+int cmp(const int &a,const int &b){
+	return a > b;
+}
+
+int main()
+{
+	int a[4],b[4];
+	int n,count,i,j,aa;
+	int amax,amin;
+	while(scanf("%d", &n) == 1)
+	{		
+		while(n--){
+			scanf("%d", &aa);
+			memset(b,0,sizeof(b));
+			count = 0;
+			if(aa == 6174){
+				printf("0\n");
+				continue;
+			}
+			while(1){
+				amax = 0;
+				amin = 0;
+				for(i =3; i >= 0 ; i --){
+					a[i] = aa%10;
+					aa /= 10;
+				}
+				for(i =0 ; i < 4 ; i ++)
+					b[i] = a[i];
+				sort(a, a+4, cmp);//排出最大值
+				for(i =0,j =3; i <= 3 ; i ++,j --)
+					amax += a[i]*pow(10,j);
+				sort(b,b+4);//排出最小值
+				for(i =0,j =3; i <= 3 ; i ++,j --)
+					amin += b[i]*pow(10,j);
+				aa = amax - amin;
+				count ++;
+				if(aa == 6174)break;				
+			}
+			printf("%d\n", count);
+		}
+	}
+	return 0;
+}

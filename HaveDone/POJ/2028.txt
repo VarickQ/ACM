@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <string.h>
+
+int main()
+{
+	int n,q,m,d,a[1000],res;
+	while(scanf("%d%d",&n,&q) && (n+q))
+	{
+		memset(a,0,sizeof(a));
+		while(n--){
+			scanf("%d",&m);
+			while(m--){
+				scanf("%d", &d);
+				a[d]++;
+			}
+		}
+		res = 0;
+		int max=0;
+		for(int i=0 ; i<1000 ; i++)
+			if(max < a[i]){
+				max = a[i]; res = i;
+			}
+		if(max >= q) printf("%d\n",res);
+		else printf("0\n");
+	}
+	return 0;
+}

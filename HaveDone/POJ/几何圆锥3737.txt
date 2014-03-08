@@ -1,0 +1,17 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#define PI 3.1415926535897932384626433832795
+
+int main()
+{
+	double s,h,r,v;
+	while(scanf("%lf",&s) == 1)//输入全面积，求最大体积，高，地面半径
+	{
+		r = sqrt(s/PI)/2;
+		h = sqrt(2*s/PI);
+		v = PI*r*r*h/3;
+		printf("%.2lf\n%.2lf\n%.2lf\n",v,h,r);
+	}
+	return 0;
+}

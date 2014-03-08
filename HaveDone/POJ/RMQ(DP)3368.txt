@@ -1,0 +1,66 @@
+http://www.cppblog.com/Icyflame/archive/2009/07/01/88987.html
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define inf 1000000000
+const int N = 100005;
+
+int in[N],a[N],b[N],Max[N][20],n;
+void init_rmq(){
+	int i,j;
+	for(i=0 ; i < n ; i++)
+		Max[i][0] = a[i];
+	for(j=1 ; (1<<j) <= n ; j++)
+		for(i=0 ; i+(1<<(j-1)) < n ; i++)
+			//i ~ i+2^j区间内的最值
+			//==>(i ~ i+2^(j-1)) ~ (i+2^(j-1) ~ i+2^(j-1)+2^(j-1))中大的那个
+			Max[i][j] = max(Max[i][j-1],Max[i+(1<<(j-1))][j-1]);
+}
+int rmq(int i,int j){
+	int max1 = b[i]-a[i]+1;//在左边或者右边
+	if(a[j] > max1)
+		max1 = a[j];
+	if(max1 >= j-i+1)return j-i+1;
+
+	i = i+b[i]-a[i]+1;//在中间
+	j = j-a[j];
+	if(i >= j) return max1;
+
+	int k = log(j-i+1.0)/log(2.0);
+	int max2 = max(Max[i][k],Max[j-(1<<k)+1][k]);
+	return max(max1,max2);
+}
+int main()
+{
+	int i,x,y,q;
+	while(scanf("%d",&n) && n)
+	{
+		scanf("%d",&q);
+		for(i=0 ; i < n ; i++)
+			scanf("%d",&in[i]);
+
+		a[0] = 1;
+		for(i=1 ; i < n ; i++)
+			if(in[i] == in[i-1])
+				a[i] = a[i-1]+1;
+			else a[i] = 1;
+
+		b[n-1] = a[n-1];
+		for(i=n-2 ; i >= 0 ; i--)
+			if(in[i] == in[i+1])
+				b[i] = b[i+1];
+			else b[i] = a[i];
+
+		init_rmq();
+		for(i=0 ; i < q ; i++)
+		{
+			scanf("%d%d",&x,&y);
+			x--; y--;
+			printf("%d\n",rmq(x,y));
+		}
+	}
+	return 0;
+}

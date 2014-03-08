@@ -1,0 +1,495 @@
+//1008 Jungle Roads
+#include <stdio.h>
+#include <string.h>
+#define MAX 100000
+int sum;
+void Prim(int map[][101],int n)
+{
+    int i,j,min_i,min,sum=0;
+    int dis[101];
+    int flag[101];
+    for( i=1 ; i <= n ; i++ )
+		dis[i] = map[i][1];
+    memset( flag, 0, sizeof(flag));
+	flag[1] = 1;
+    for( i=2 ; i <= n ; i++ )
+    {
+        min = MAX;min_i=i;
+        for( j=2 ; j <= n ; j++ )
+            if(flag[j]==0 && dis[j]<min)
+            {
+                min = dis[j];
+                min_i = j;
+            }
+		if(min == MAX)break;
+		sum += min;
+        flag[min_i] = 1;
+        for( j=2 ; j <= n ; j++ )
+        {
+            if(flag[j]==0 && dis[j]>map[min_i][j])
+                dis[j] = map[min_i][j];
+        }
+    }
+	printf("%d\n", sum);
+}
+int main()
+{
+	int i,j,n,m,w,map[101][101];
+	while(scanf("%d", &n) == 1)
+	{
+		if(n==0)break;
+		for( i=1 ; i <= n ; i++ )
+			for( j=1 ; j <= n ; j++ )
+				map[i][j] = MAX;
+		char c[27];
+		int k;
+		for( i=1 ; i <= n-1 ; i++ )
+		{
+			scanf(" %c %d", &c[0], &k);
+			for( j=1 ; j <= k ; j++ )
+			{
+				scanf(" %c %d", &c[j], &w);
+				if(map[c[0]-'A'+1][c[j]-'A'+1] > w)
+					map[c[0]-'A'+1][c[j]-'A'+1] = map[c[j]-'A'+1][c[0]-'A'+1] = w;
+			}
+		}
+		Prim(map,n);
+	}
+	return 0;
+}
+
+//1007 畅通工程
+#include <stdio.h>
+#include <string.h>
+#define MAX 100000
+int map[101][101];
+int n,m,sum,num;
+void Prim(int map[][101],int n)
+{
+    int i,j,min_i,min,sum=num=0;
+    int dis[101];
+    int flag[101];
+    for( i=1 ; i <= n ; i++ )
+		dis[i] = map[i][1];
+    memset( flag, 0, sizeof(flag));
+	flag[1] = 1;
+    for( i=2 ; i <= n ; i++ )
+    {
+        min = MAX;min_i=i;
+        for( j=2 ; j <= n ; j++ )
+            if(flag[j]==0 && dis[j]<min)
+            {
+                min = dis[j];
+                min_i = j;
+            }
+		if(min == MAX)break;
+		num ++;
+		sum += min;
+        flag[min_i] = 1;
+        for( j=2 ; j <= n ; j++ )
+        {
+            if(flag[j]==0 && dis[j]>map[min_i][j])
+                dis[j] = map[min_i][j];
+        }
+    }
+	if(num == m-1)
+		printf("%d\n", sum);
+	else
+		printf("?\n");
+}
+int main()
+{
+	int i,j,x,y,w;
+	while(scanf("%d %d", &n, &m) && n)
+	{
+		for( i=1 ; i <= m ; i++ )
+			for( j=1 ; j <= m ; j++ )
+				map[i][j] = MAX;
+		for( i=0 ; i < n ; i++ )
+		{
+			scanf("%d %d %d", &x, &y, &w);
+			if(map[x][y] > w)
+				map[x][y] = map[y][x] = w;
+		}
+		if(n < m-1)
+			printf("?\n");
+		else
+			Prim(map,m);
+	}
+	return 0;
+}
+
+//1006 畅通工程再续
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#define MAX 99999.9
+double map[101][101];
+double sum,c;
+
+void Prim(double map[][101],int n)
+{
+    int i,j,min_i,num=0;
+    double dis[101],min;
+    int flag[101];
+	sum = 0.0;
+    memset( flag, 0, sizeof(flag));
+    for( i=1 ; i <= n ; i++ )
+		dis[i] = map[1][i];
+	dis[1] = 0.0;
+	flag[1] = 1;
+    for( i=2 ; i <= n ; i++ )
+    {
+        min = MAX;min_i=i;
+        for( j=2 ; j <= n ; j++ )
+            if(flag[j]==0 && dis[j]<min)
+            {
+                min = dis[j];
+                min_i = j;
+            }
+		if(min == MAX)break;
+		num ++;
+		sum += min;
+        flag[min_i] = 1;
+        for( j=2 ; j <= n ; j++ )
+        {
+            if(flag[j]==0 && dis[j]>map[min_i][j])
+                dis[j] = map[min_i][j];
+        }
+    }
+	if(num == c-1)
+		printf("%.1lf\n", sum*100.0);
+	else
+		printf("oh!\n");
+}
+int main()
+{
+	int i,j,t;
+	double w,xx,yy,x[101],y[101];
+	scanf("%d", &t);
+	while(t--){
+		scanf("%lf", &c);
+		for( i=1 ; i <= c ; i++ )
+			scanf("%lf %lf", &x[i], &y[i]);
+		for( i=1 ; i <= c ; i++ )
+			for( j=1 ; j <= c ; j++ ){
+				xx = x[j]-x[i];
+				yy = y[j]-y[i];
+				w = sqrt( xx * xx + yy * yy );
+				if( w <= 1000 && w >= 10 )
+					map[i][j] = map[j][i] = w;
+				else
+					map[i][j] = MAX;
+			}
+		Prim(map,c);
+	}
+	return 0;
+}
+
+//1005 Eddy's picture
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#define MAX 99999.9
+double map[101][101];
+double sum;
+void Prim(double map[][101],int n)
+{
+    int i,j,min_i,num=0;
+    double dis[101],min;
+    int flag[101];
+	sum = 0.0;
+    memset( flag, 0, sizeof(flag));
+    for( i=1 ; i <= n ; i++ )
+		dis[i] = map[1][i];
+	dis[1] = 0.0;
+	flag[1] = 1;
+    for( i=2 ; i <= n ; i++ )
+    {
+        min = MAX;min_i=i;
+        for( j=2 ; j <= n ; j++ )
+            if(flag[j]==0 && dis[j]<min)
+            {
+                min = dis[j];
+                min_i = j;
+            }
+		sum += min;
+        flag[min_i] = 1;
+        for( j=2 ; j <= n ; j++ )
+        {
+            if(flag[j]==0 && dis[j]>map[min_i][j])
+                dis[j] = map[min_i][j];
+        }
+    }
+	printf("%.2lf\n", sum);
+}
+int main()
+{
+	int n,i,j;
+	double x[101],y[101],xx,yy,w;
+	while(scanf("%d", &n) == 1)
+	{
+		for( i=1 ; i <= n ; i++ )
+			for( j=1 ; j <= n ; j++ )
+				map[i][j] = MAX;
+		for( i=1 ; i <= n ; i++ )
+			scanf("%lf %lf", &x[i], &y[i]);
+		for( i=1 ; i <= n ; i++ )
+			for( j=1 ; j <= n ; j++ ){
+				xx = x[j]-x[i];
+				yy = y[j]-y[i];
+				w = sqrt( xx * xx + yy * yy );
+				if(map[i][j] > w)
+					map[i][j] = map[j][i] = w;
+		}
+		Prim(map,n);
+	}
+	return 0;
+}
+
+//1004 Constructing Roads
+#include <stdio.h>
+#include <string.h>
+int v[105][105];
+int Prim(int v[][105],int n)
+{
+    int i,j,min_i,min,sum = 0;
+    int dis[105];
+    int flag[105];
+    for( i=1 ; i <= n ; i++ )
+		dis[i] = v[1][i];
+    memset( flag, 0, sizeof(flag));
+	flag[1] = 1;
+    for( i=2 ; i <= n ; i++ )
+    {
+        min=2000;
+        for( j=2 ; j <= n ; j++ )
+            if(flag[j]==0 && dis[j]<min)
+            {
+                min = dis[j];
+                min_i = j;
+            }
+        flag[min_i] = 1;
+		sum += min;
+        for( j=2 ; j <= n ; j++ )
+        {
+            if(flag[j]==0 && dis[j]>v[min_i][j])
+                dis[j] = v[min_i][j];
+        }
+    }
+	return sum;
+}
+int main()
+{
+	int n,i,j,m,x,y;
+	while(scanf("%d", &n) != EOF)
+	{
+		memset(v,0,sizeof(v));
+		for( i=1 ; i <= n ; i++ )
+			for( j=1 ; j <= n ; j++ )
+				scanf("%d", &v[i][j]);
+		scanf("%d", &m);
+		for( i=0 ; i < m ; i++ )
+		{
+			scanf("%d %d", &x, &y);
+			v[x][y] = 0;
+			v[y][x] = 0;
+		}
+		printf("%d\n", Prim(v,n));
+	}
+	return 0;
+}
+
+//1003 继续畅通工程
+#include <stdio.h>
+#include <string.h>
+#define MAX 10000
+int map[105][105];
+int Prim(int map[][105],int n)
+{
+    int i,j,min_i,min,sum = 0;
+    int dis[105];
+    int flag[105];
+    for( i=1 ; i <= n ; i++ )
+		dis[i] = map[1][i];
+    memset( flag, 0, sizeof(flag));
+	flag[1] = 1;
+    for( i=2 ; i <= n ; i++ )
+    {
+        min=MAX;
+        for( j=2 ; j <= n ; j++ )
+            if(flag[j]==0 && dis[j]<min)
+            {
+                min = dis[j];
+                min_i = j;
+            }
+        flag[min_i] = 1;
+		sum += min;
+        for( j=2 ; j <= n ; j++ )
+        {
+            if(flag[j]==0 && dis[j]>map[min_i][j])
+                dis[j] = map[min_i][j];
+        }
+    }
+	return sum;
+}
+int main()
+{
+	int n,i,j,x,y,w,yon;
+	while(scanf("%d", &n) == 1)
+	{
+		if(n==0)break;
+		for( i=1 ; i <= n ; i++ )
+			for( j=1 ; j <= n ; j++ )
+				map[i][j] = MAX;
+		for( i=0 ; i < n*(n-1)/2 ; i++ )
+		{
+			scanf("%d %d %d %d", &x, &y, &w, &yon);
+			if(yon == 0)
+				map[x][y] = map[y][x] = w;
+			else
+				map[x][y] = map[y][x] = 0;
+		}
+		printf("%d\n", Prim(map,n));
+	}
+	return 0;
+}
+
+//1002 Connect the Cities
+#include <stdio.h>  
+#include <string.h>  
+#define MAX 505  
+#define MAXCOST 100000 
+  
+int sum,num;
+void Prim(int graph[][MAX],int n)
+{
+    int i,j,min_i,min;
+    int lowcost[MAX];
+    int flag[MAX];
+    for(i=1;i<n;i++)
+        lowcost[i]=graph[0][i];//从第一个的顶点开始
+    memset(flag,0,sizeof(flag)); 
+    for(i=1;i<n;i++)
+    {
+        min=MAXCOST;
+        for(j=1;j<n;j++)
+            if(flag[j]==0 && lowcost[j]<min)
+            {
+                min=lowcost[j];
+                min_i=j;//记下最小的点
+            }     
+        flag[min_i]=1;//为true表示该权值已经是最小，为flase是还不确定，应继续更新
+        for(j=1;j<n;j++)     
+        {     
+            if(flag[j]==false && lowcost[j]>graph[min_i][j])//更新lowcost  
+                lowcost[j]=graph[min_i][j];     
+        }     
+    }     
+    for(i=1;i<n;i++)    
+    {  
+        if(lowcost[i]!=MAXCOST)  
+        {  
+            sum+=lowcost[i];  //这就是最小生成树     
+            num++;  
+        }  
+    }  
+}   
+int main()
+{
+    int n,m,i,j,x,y,a,b,c;
+    int graph[MAX][MAX],q[MAX];
+    scanf("%d", &m);
+    while (m--)
+    {
+        num=0;
+        scanf("%d %d %d", &n, &x, &y);   //顶点个数  
+        for( i=0 ; i < n ; i++ )
+            for( j=0 ; j < n ; j++ )
+                graph[i][j] = MAXCOST;
+        while(x--)
+        {
+            scanf("%d %d %d", &a, &b, &c);
+            if(graph[a-1][b-1] > c)
+                graph[a-1][b-1]=graph[b-1][a-1]=c;
+        }
+        while(y--)
+        {
+            int l,k,p;
+            scanf("%d", &p);
+            for( l=0 ; l < p ; l++ )
+            {
+                scanf("%d", &q[l]);
+                q[l]--;
+            }
+            for( k=0 ; k < p ; k++ )
+                for( l=0 ; l < p ; l++ )
+                    graph[q[k]][q[l]]=graph[q[l]][q[k]]=0;
+        }
+        sum=0;
+        Prim(graph,n);
+        if(num==n-1)
+            printf("%d\n",sum);
+        else
+            printf("-1\n");
+    }
+    return 0;
+}
+
+//1001 还是畅通工程
+#include<iostream>
+#define MAX 100000;
+using namespace std;
+
+int Prim(int a[][105],int n){
+	int i,j,sum=0,min,min_i,flag[105],lowcost[105];
+	for( i=2 ; i <= n ; i++ )
+	{
+		lowcost[i] = a[1][i];
+		flag[i] = 1;
+	}
+	flag[1] = 0;
+	for( i=2 ; i <= n ; i++ )
+	{
+		min = MAX;
+		min_i = 0;
+		for( j=2 ; j <= n ; j++ )
+		{
+			if(lowcost[j] < min && lowcost[j] != 0)
+			{
+				min = lowcost[j];
+				min_i = j;
+			}
+		}
+		sum += min;
+		lowcost[min_i] = 0;
+		for( j=2 ; j <= n ; j++ )
+		{
+			if(a[min_i][j] < lowcost[j])
+			{
+				lowcost[j] = a[min_i][j];
+				flag[j] = min_i;
+			}
+		}
+	}
+	return sum;
+}
+
+int main()
+{
+	int i,j,n,m,w,a[105][105];
+	while(scanf("%d", &n) && n)
+	{
+		for( i=1 ; i <= n ; i++ )
+			for( j=1 ; j <= n ; j++ )
+				a[i][j] = MAX;
+		int x, y;
+		for( i=1 ; i <= n*(n-1)/2 ; i++ )
+		{
+			scanf("%d %d %d", &x, &y, &w);
+			a[x][y] = w; a[y][x] = w;
+		}
+		printf("%d\n", Prim( a, n));
+	}
+	return 0;
+}

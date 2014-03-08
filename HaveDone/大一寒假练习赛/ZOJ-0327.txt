@@ -1,0 +1,98 @@
+//1001
+#include <stdio.h>
+#include <math.h>
+
+int main()
+{
+	int t;
+	double time,temp,len,maxV,maxA;
+	scanf("%d",&t);
+	while(t--)
+	{
+		scanf("\n%lf %lf %lf",&len,&maxA,&maxV);
+		if(maxV*maxV/maxA > len)
+			time = 2.0*sqrt(len/maxA);
+		else
+			time = 2.0*maxV/maxA + (len-(maxV*maxV/maxA))/maxV;
+		printf("%.16lf\n",time);
+	}
+	return 0;
+}
+
+//1006
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+struct pp{
+	int pri,id;
+}price[55];
+int num,money;
+
+int cmp( const void *a ,const void *b){
+	return (*(pp *)a).pri > (*(pp *)b).pri ? 1 : -1;
+}
+
+int main()
+{
+	int t,i,n,m,res;
+	scanf("%d",&t);
+	while(t--)
+	{
+		scanf("\n%d",&n);
+		for(i=0 ; i < n ; i++){
+			scanf("%d", &price[i].pri);
+			price[i].id = i;
+		}
+
+		scanf("%d", &m);
+		money = 0;
+		for(i=0 ; i < m ; i++){
+			scanf("%d",&num);
+			money += price[num].pri;
+		}
+
+		res = 0;
+		qsort(price,n,sizeof(price[0]),cmp);
+		for(i=0 ; i < n ; i++)
+			if(money >= price[i].pri){
+				money -= price[i].pri;
+				res++;
+			}
+
+		printf("%d\n",res);
+	}
+
+	return 0;
+}
+
+//1003WA
+#include <iostream>
+#include <map>
+using namespace std;
+
+map<long long,long long> ma;
+
+long long dfs(long long n,int p,int q){
+	if(n==0)
+		return 1;
+	if(ma[n])
+		return ma[n];
+	else
+		return ma[n]=dfs(n/p,p,q)+dfs(n/q,p,q);
+}
+
+int main()
+{
+	int t,p,q;
+	long long n;
+	scanf("%d", &t);
+	while(t--)
+	{
+		scanf("\n%lld", &n);
+		scanf("%d", &p);
+		scanf("%d", &q);
+		printf("%lld\n", dfs(n,p,q));
+	}
+	return 0;
+}

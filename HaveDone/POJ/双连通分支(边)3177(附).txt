@@ -1,0 +1,87 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <string.h>
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+#define inf 1000000000
+const int N = 5008;
+//http://www.cnblogs.com/rainydays/archive/2011/07/06/2099524.html
+//求添加多少条边可变连通图。
+//接着poj3352的看。对于这种题，我们正常的做法是求桥，删桥，求连通分支，缩点，构建新图，求叶子数。
+//    我们有一种简便方法。需要对tarjan算法做一些变化。我们之前规定low[u]是其子孙通过一条返祖边直接到达的点，
+//把这个改成是其子孙可以连续通过多条返祖边所能到达的点。那么low[u]=min(low[v],dfn[u]);
+//     这样做的缺陷是，不能求割点了，多次返祖会导致求割点的错误，在多环两两以单个点相连排成一条线，
+//且每两个连接点间只有一条边的情况中，那些连接点本应是割点，但是在dfs过程中，
+//这些连接点之间的边又恰好不是树枝边的话，low[u]可能会通过多次返祖,从一个割点不断的经过这些割点到达最上边的割点才记录下low[u]。
+//这样中间的割点就都不符合dfn(u)<=low[v]了。
+//     但是这样做有一个好处，就是所有的对于边的双连通分支都以low标记出来了，
+//即属于同一双连通分支的所有点的low都等于同一个值。因为在不遇到桥的情况下，
+//low可以返祖到该连同分支在遍历树中的最高点（dfn最小的点）。
+//     这样就相当于整理出了所有的对于边的双连通分支。我们直接遍历所有的边，观察边的两端点是否属于同一分支，
+//若不属于则修改两点的度数。然后看有多少个度数为1的点即可。
+//这题有重边，注意判断。
+struct E{
+	int v,next;
+}e[N*10];
+bool mat[N][N],vis[N];
+int heade[N],k,du[N];
+int dfn[N],low[N],index;
+//low相同的点在一个边连通分量中
+//low[i]即为第i节点所在的连通分量的标号
+void add(int u,int v){
+	e[k].v = v;
+	e[k].next = heade[u];
+	heade[u] = k++;
+	mat[u][v] = true;
+}
+void dfs(int u,int fa){
+	vis[u] = true;
+	low[u] = dfn[u] = ++index;
+	for(int i=heade[u] ; i!=-1 ; i=e[i].next)
+	{
+		int v = e[i].v;
+		if(v==fa) continue;
+		if(!vis[v])
+			dfs(v,u);
+		if(low[u] > low[v])
+			low[u] = low[v];
+	}
+}
+int main()
+{
+	int n,m,i,j,a,b;
+	while(scanf("%d%d",&n,&m) == 2)
+	{
+		memset(heade,-1,sizeof(heade));
+		memset(mat,false,sizeof(mat));
+		for(i=0,k=0 ; i < m ; i++){
+			scanf("%d%d",&a,&b);
+			//a--; b--;
+			if(mat[a][b])continue;
+			add(a,b);
+			add(b,a);
+		}
+		memset(dfn,0,sizeof(dfn));
+		memset(vis,0,sizeof(vis));
+		memset(du,0,sizeof(du));
+		index = 0;
+		dfs(1,1);
+		int ret = 0;
+		for(i=1 ; i <= n ; i++)
+			for(int j=heade[i] ; j!=-1 ; j=e[j].next)
+			{//当把边的双连通分支缩点后形成了一个有向无环图，
+			 //叶子（度为1的点）的个数为n，则需要在原图中添加(n + 1)/2条边，可以使原图变为没有桥的双连通图。
+				int v = e[j].v;
+				if(low[i] != low[v])
+					du[low[i]]++;
+			}
+		for(i=1 ; i <= n ; i++)
+			if(du[i] == 1)
+				ret++;
+		printf("%d\n",(ret+1)/2);
+	}
+	return 0;
+}

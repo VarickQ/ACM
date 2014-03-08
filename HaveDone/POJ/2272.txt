@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+double s[15];
+double fun(int begin,int end){
+	double r=0.0,sum=0.0;
+	int i;
+	for(i=begin ; i < end ; i+=2){
+		r = s[i]*s[i]+s[i+1]*s[i+1];
+		if(r <= 9) sum += 100.0;
+		else if(r > 9 && r <= 36) sum += 80.0;
+		else if(r > 36 && r <= 81) sum += 60.0;
+		else if(r > 81 && r <= 144)sum += 40.0;
+		else if(r > 144 && r <= 225)sum+= 20.0;
+	}
+	return sum;
+}
+int main()
+{
+	double sum1,sum2;
+	int i;
+	while(scanf("%lf", &s[0]) == 1)
+	{
+		if(s[0]==-100) break;
+		for(i=1 ; i < 12 ; i++)
+			scanf("%lf", &s[i]);
+		sum1 = fun(0,5);
+		sum2 = fun(6,11);
+		if(sum1 > sum2)
+			printf("SCORE: %.0lf to %.0lf, PLAYER 1 WINS.\n",sum1,sum2);
+		else if(sum2 > sum1)
+			printf("SCORE: %.0lf to %.0lf, PLAYER 2 WINS.\n",sum1,sum2);
+		else
+			printf("SCORE: %.0lf to %.0lf, TIE.\n",sum1,sum2);
+	}
+	return 0;
+}

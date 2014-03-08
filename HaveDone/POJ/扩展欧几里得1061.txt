@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <iostream>
+#include <math.h>
+using namespace std;
+
+__int64 k,t;
+__int64 exGcd(__int64 a,__int64 b){
+    if(b==0){
+        k=1;
+        t=0;
+        return a;
+    }
+    __int64 d = exGcd(b,a%b);
+    __int64 temp=k;
+    k=t;
+    t=temp-(a/b)*t;
+    return d;
+}
+
+int main()
+{
+	__int64 x,y,m,n,l,a,b,d;
+	while(scanf("%I64d %I64d %I64d %I64d %I64d",&x,&y,&m,&n,&l)!=EOF)
+	{
+		a = m-n;
+		b = y-x;
+		if(a<0)
+		{
+			a=-a; b=-b;
+		}
+		d = exGcd(a,l);
+		if((m==n) || (b%d!=0))
+			printf("Impossible\n");
+		else
+		{
+			b /= d;
+			l /= d;
+			t = k*b;
+			printf("%I64d\n",(t%l+l)%l);
+		}
+	}
+	return 0;
+}

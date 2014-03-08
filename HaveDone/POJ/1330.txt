@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int fa[10005];
+int main()
+{
+	int T,i,n,a,b;
+	scanf("%d",&T);
+	while(T--){
+		memset(fa,0,sizeof(fa));
+		scanf("%d",&n);
+		for(i=1 ; i <= n-1 ; i++){
+			scanf("%d %d",&a,&b);
+			fa[b] = a;
+		}
+		int f,temp,k;
+		scanf("%d%d",&a,&b);
+		while(a != 0){
+			k = b;
+			while(k != 0){
+				f = 0; temp = k;
+				if(a == temp){
+					printf("%d\n",a);
+					f = 1;
+					break;
+				}
+				k = fa[temp];
+			}
+			if(f) break;
+			a = fa[a];
+		}
+	}
+	return 0;
+}

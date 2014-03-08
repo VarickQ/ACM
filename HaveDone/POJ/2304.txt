@@ -1,0 +1,28 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	int a,b,c,d,ans,temp;
+	while(scanf("%d%d%d%d",&a,&b,&c,&d) && (a+b+c+d))
+	{
+		ans = 0;
+
+		temp = b-a;
+		if (temp<=0) temp=-temp;
+		else temp=40-temp;
+		ans += temp*9;
+
+		temp = c-b;
+		if (temp<0) temp=40+temp;
+		ans += temp*9;
+
+		temp = d-c;
+		if (temp<=0) temp=-temp;
+		else temp=40-temp;
+		ans += temp*9;
+
+		printf("%d\n", ans+1080);
+	}
+	return 0;
+}

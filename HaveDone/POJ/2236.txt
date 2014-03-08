@@ -1,0 +1,55 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int fa[1005];
+int x[1005],y[1005];
+bool fix[1005];
+
+int getfather(int x){
+	if(fa[x] == x)
+		return x;
+	else
+		return fa[x]=getfather(fa[x]);
+}
+void Union(int x,int y){
+    int fx = getfather(x);
+    int fy = getfather(y);
+    if(fy != fx)
+       fa[fx] = fy;
+}
+double distance(int a,int b){
+	double d = (y[a]-y[b])*(y[a]-y[b])+(x[a]-x[b])*(x[a]-x[b]);
+	return sqrt(d);
+}
+int main()
+{
+	int n,md,aa,bb,num;
+	char op[2];
+	scanf("%d%d",&n,&md);
+	memset( fix, false, sizeof(fix));
+	for(int i=1 ; i <= n ; fa[i]=i,i++ );
+	for(int i=1 ; i <= n ; i++ )
+		scanf("%d%d",&x[i],&y[i]);
+
+	while(scanf("%s", op) != EOF)
+	{
+		if(op[0]=='O')
+		{
+			scanf("%d", &num);
+			fix[num] = true;
+			for(int i=1 ; i <= n ; i++ )
+				if(fix[i] && distance(i,num)<=md)
+					Union(i,num);
+		}
+		else if(op[0]=='S')
+		{
+			scanf("%d%d",&aa,&bb);
+			if(getfather(aa)==getfather(bb))
+				printf("SUCCESS\n");
+			else
+				printf("FAIL\n");
+		}
+	}
+	return 0;
+}

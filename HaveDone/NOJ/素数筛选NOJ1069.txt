@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+#include <string>
+using namespace std;
+#define inf 1000000000
+
+bool hash[32800];
+int main()
+{
+	int n,m,i,ans;
+	scanf("%d",&m);
+	while(m--)
+	{
+		scanf("%d",&n);
+		memset(hash,false,sizeof(hash));
+		ans = 0;
+		for(i=2 ; i <= n ; i++)
+			if(n%i==0){
+				for(int j=i ; j <= n ; j+=i)
+					hash[j] = true;
+			}
+		for(i=1 ; i <= n ; i++)
+			if(!hash[i])ans++;
+		printf("%d\n",ans);
+	}
+	return 0;
+}

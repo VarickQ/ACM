@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+int op[101][101];
+int main()
+{
+	int P,T,i,j,k;
+	memset(op,0,sizeof(op));
+	scanf("%d%d", &P, &T);
+	while(scanf("%d%d", &i, &j) == 2)
+		op[i][j] = 1;
+	int ans = P;
+	for(i=1 ; i < P ; i++)
+		for(j=i+1 ; j <= P ; j++)
+		{
+			for(k=1 ; k <= T ; k++)
+				if(op[i][k] != op[j][k])
+					break;
+			if(k==T+1){
+				ans --;
+				break;
+			}
+		}
+	printf("%d\n", ans);
+	return 0;
+}

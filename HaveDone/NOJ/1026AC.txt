@@ -1,0 +1,35 @@
+/*任何一个大于一的自然数，如果是奇数，则乘以三再加一；
+如果是偶数，则除以二；
+得出的结果继续按照前面的规则进行运算，最后必定得到一*/
+#include<stdio.h>
+int main()
+{
+	int n,i,a,k;
+	while(scanf("%d",&n) == 1)
+	{
+		for(i=0;i<n;i++)
+		{
+			k=1;
+			scanf("%d",&a);
+			while(1)
+			{ 				
+				if(a==1 && k==0)
+				{	printf("\n");break;}
+				if(a==1 && k!=0)break;
+				if(a%2!=0 && k==1)
+				{   printf("%d",a);
+				    a=3*a+1;
+				    k=0;}
+				if(a%2 == 0)
+					a=a/2;
+				else
+				{   printf(" %d",a);
+				    a=3*a+1;
+				    k=0;}	
+			}
+			if(k==1)
+				printf("No number can be output !\n");		
+		}
+	}		
+	return 0;
+}

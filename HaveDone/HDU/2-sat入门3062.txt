@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define inf 2000000000
+const int N = 2010;
+const int M = 2000000;
+
+struct E{
+	int v,next;
+}e[M];
+int heade[N],k;
+int belong[N],bcnt,dfn[N],low[N],index;
+int stack[N],top;
+bool instack[N];
+
+void add(int u,int v){
+	e[k].v = v;
+	e[k].next = heade[u];
+	heade[u] = k++;
+}
+void tarjan(int u){
+	dfn[u] = low[u] = ++index;
+	instack[u] = true;
+	stack[top++] = u;
+	for(int i=heade[u] ; i!=-1 ; i=e[i].next){
+		if(!dfn[e[i].v]){
+			tarjan(e[i].v);
+			if(low[u] > low[e[i].v])
+				low[u] = low[e[i].v];
+		}else if(instack[e[i].v] && dfn[e[i].v] < low[u])
+			low[u] = dfn[e[i].v];
+	}
+	if(low[u] == dfn[u]){
+		bcnt++;
+		int temp;
+		do{
+			temp = stack[--top];
+			instack[temp] = false;
+			belong[temp] = bcnt;
+		}while(u != temp);
+	}
+}
+int main()
+{
+	int n,m,i,a1,a2,b1,b2,c1,c2;
+	while(scanf("%d%d",&n,&m) == 2)
+	{
+		k = top = index = bcnt = 0;
+		memset(heade,-1,sizeof(heade));
+		memset(dfn,0,sizeof(dfn));
+		memset(low,0,sizeof(low));
+		memset(instack,0,sizeof(instack));
+		for(int i=0 ; i < m ; ++i){
+			scanf("%d%d%d%d",&a1,&b1,&c1,&c2);
+			a1++; b1++;
+			a2 = a1+n;
+			b2 = b1+n;
+			if(c1==0 && c2==0){
+				add(a1,b2);
+				add(b1,a2);
+			}
+			else if(c1==0 && c2==1){
+				add(a1,b1);
+				add(b2,a2);
+			}
+			else if(c1==1 && c2==0){
+				add(a2,b2);
+				add(b1,a1);
+			} else {
+				add(a2,b1);
+				add(b2,a1);
+			}
+		}
+		for(i=1 ; i <= n*2 ; ++i)
+			if(!dfn[i]) tarjan(i);
+		for(i=1 ; i <= n ; ++i)
+			if(belong[i]==belong[i+n])break;
+		if(i<=n)printf("NO\n");
+		else printf("YES\n");
+	}
+	return 0;
+}

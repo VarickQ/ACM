@@ -1,0 +1,266 @@
+//1002
+#include <iostream>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+
+int main()
+{
+	int m,n,i,way[501],t,res;
+	scanf("%d", &m);
+	while( m-- )
+	{
+		scanf("%d", &n);
+		for( i=0 ; i < n ; i++ )
+			scanf("%d", &way[i]);
+		sort( way, way+n);
+		res = 0;
+		if(n%2 == 0) t = way[n/2];
+		else t = way[(n-1)/2];
+		for( i=0 ; i < n ; i++ )
+			res += abs(way[i]-t);
+		printf("%d\n", res);
+	}
+	//system("pause");
+    return 0;
+}
+
+//1003
+#include <iostream>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+
+int main()
+{
+	__int64 n,f[51];
+	f[0] = 0;f[1] = 1;
+	for(int i=2 ; i <= 50 ; i++ )
+		f[i] = f[i-1] + f[i-2];
+	while( scanf("%I64d", &n) == 1 )
+	{
+		if(n == -1) break;
+		printf("%I64d\n", f[n]);
+	}
+	//system("pause");
+    return 0;
+}
+
+//1006
+#include <iostream>
+using namespace std;
+
+int gcd(int a,int b)
+{
+	if(b == 0) return a;
+	else return gcd(b,a%b);
+}
+int main()
+{
+	int t,m,num,res;
+	while( scanf("%d", &m) == 1 )
+	{
+		res = 1;
+		while(m--)
+		{
+			scanf("%d", &num);
+			res = num/gcd( num, res)*res;
+		}
+		printf("%d\n", res);
+	}
+	//system("pause");
+	return 0;
+}
+
+//1012
+#include <iostream>
+using namespace std;
+
+int gcd(int a,int b)
+{
+	if(b == 0) return a;
+	else return gcd(b,a%b);
+}
+int main()
+{
+	int t,a,b,c;
+	scanf("%d", &t);
+	while(  t-- )
+	{
+		scanf("%d %d", &a, &b);
+		c = 2*b;
+		while(gcd(a,c) != b)
+			c += b;
+		printf("%d\n", c);
+	}
+	//system("pause");
+	return 0;
+}
+
+//1011
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int main()
+{
+	int t;
+	double n;
+	scanf("%d", &t);
+	while(  t-- )
+	{
+		scanf("%lf", &n);
+		if(n==1) printf("1\n");
+		else printf("%.0lf\n", pow(2.0,n-1.0)+pow(2.0,n-2.0)*(n-1.0));
+	}
+	//system("pause");
+	return 0;
+}
+
+//1001
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	int n,num[51],sum,res,cs=0;
+	while(  scanf("%d", &n) && n )
+	{
+		sum = 0;
+		for(int i=0 ; i < n ; i++ )
+		{
+			scanf("%d", &num[i]);
+			sum += num[i];
+		}
+		sum /= n;res = 0;
+		for(int i=0 ; i < n ; i++ )
+			if(num[i] > sum)
+				res += num[i] - sum;
+		printf("Set #%d\nThe minimum number of moves is %d.\n\n", ++cs, res);
+	}
+	//system("pause");
+	return 0;
+}
+
+//1004
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	int c,c1,c5,c10,c25,c50;
+	int d[251]={0};
+	for( c=1 ; c <= 250 ; c++ )
+	for( c1=0 ; c1 <= 250 ; c1++ )
+		for( c5=0 ; c5 <= (c-c1)/5 ; c5++ )
+			for( c10=0 ; c10 <= (c-c1-5*c5)/10 ; c10++ )
+				for( c25=0 ; c25 <= (c-c1-5*c5-10*c10)/25 ; c25++ )
+					for( c50=0 ; c50 <= (c-c1-5*c5-10*c10-25*c25)/50 ; c50++ )
+						if(c1+5*c5+10*c10+25*c25+50*c50==c && c1+c5+c10+c25+c50<=100)
+							d[c]++;
+	int n;
+	while(scanf("%d", &n) == 1)
+	{
+		if( n == 0 ) printf("1\n");
+		else printf("%d\n", d[n]);
+	}
+	//system("pause");
+	return 0;
+}
+
+//1005
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	__int64 a,b,sum;
+	while(scanf("%I64X %I64X", &a, &b) == 2)
+	{
+		sum = a+b;
+		if(sum >= 0)
+			printf("%I64X\n", sum);
+		else
+			printf("-%I64X\n", -sum);
+	}
+	return 0;
+}
+
+//1007
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+double fun(double x){
+	return 8.0*x*x*x*x + 7.0*x*x*x + 2.0*x*x + 3.0*x + 6.0;
+}
+int main()
+{
+	int n;
+	double x,y,temp1,temp2,t;
+	scanf("%d", &n);
+	while(n--)
+	{
+		scanf("%lf", &y);
+		if( 6.0 > y || fun(100.0) < y )
+			printf("No solution!\n");
+		else
+		{
+			temp1 = 0.0;
+			temp2 = 100.0;
+			while(temp2-temp1 > 1e-8)
+			{
+				t = (temp1+temp2)/2.0;
+				x = fun( t );
+				if(x > y)
+					temp2 = t;
+				else
+					temp1 = t;
+			}
+			printf("%.4lf\n", t);
+		}
+	}
+	return 0;
+}
+
+//1008
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+double fun0(double x,double y){//F(x) = 6 * x^7+8*x^6+7*x^3+5*x^2-y*x (0 <= x <=100)
+	return 6.0*pow(x,7.0) + 8.0*pow(x,6.0) + 7.0*x*x*x + 5.0*x*x - y*x;
+}
+double fun(double x){//F(x)'+y = 42 * x^6+48*x^5+21*x^2+10*x (0 <= x <=100)
+	return 42.0*pow(x,6.0) + 48.0*pow(x,5.0) + 21.0*x*x + 10.0*x;
+}
+int main()
+{
+	int n;
+	double y,temp1,temp2,t;
+	scanf("%d", &n);
+	while(n--)
+	{
+		scanf("%lf", &y);
+		if(fun(0.0)-y >= 0)
+			printf("%.4lf\n", fun0(0.0,y));
+		else if(fun(100.0)-y <= 0)
+			printf("%.4lf\n", fun0(100.0,y));
+		else
+		{
+			temp1 = 0.0;
+			temp2 = 100.0;
+			while(temp2-temp1 > 1e-8)
+			{
+				t = (temp1+temp2)/2.0;
+				if(fun( t )-y >= 0)
+					temp2 = t;
+				else
+					temp1 = t;
+			}
+			printf("%.4lf\n", fun0((temp1+temp2)/2.0,y));
+		}
+	}
+	//system("pause");
+	return 0;
+}

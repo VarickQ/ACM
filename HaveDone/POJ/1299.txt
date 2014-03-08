@@ -1,0 +1,30 @@
+#include <iostream>
+#include <string>
+using namespace std;
+#include <stdio.h>
+#include <string.h>
+#define inf 1<<30
+#define PI 3.14159
+
+int main()
+{
+	int r,g,d;
+	double l;
+	char str[20];
+	while(scanf("%s",str)==1)
+	{
+		if(strcmp(str,"ENDOFINPUT")==0) break;
+		if(strcmp(str,"START")==0){
+			scanf("%d%d%d",&r,&g,&d);
+			if(d>180)d=360-d;
+		}
+		else if(strcmp(str,"END")==0){
+			l = 2*PI*r*d/360*2;
+			if(5*g >= l)
+				printf("YES %d\n",int(g-l/5));
+			else
+				printf("NO %d\n",g*5);
+		}
+	}
+	return 0;
+}

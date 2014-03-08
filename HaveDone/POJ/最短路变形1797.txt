@@ -1,0 +1,47 @@
+#include <iostream>
+#include <queue>
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
+using namespace std;
+#define inf 10000000
+
+int n,map[1005][1005];
+int v[1005],d[1005];
+void dijkstra(){
+	memset(v,0,sizeof(v));
+	for(int i=2 ; i<=n ; d[i]=map[1][i],i++ );
+	d[1]=0;
+	v[1]=0;
+	for(int i=1 ; i<=n ; i++ )
+	{
+		int x,m = 0;
+		for(int y=1 ; y<=n ; y++)
+			if(!v[y] && d[y]>m)
+				m = d[x=y];
+		if(x==0)break;
+		v[x]=1;
+		d[x]=m;
+		for(int y=1 ; y<=n ; y++)
+			if(!v[y] && min(d[x],map[x][y]) > d[y])
+				d[y] = min(d[x],map[x][y]);
+	}
+}
+int main()
+{
+	int T,m,a,b,l,i,j,cs=1;
+	scanf("%d",&T);
+	while(T--)
+	{
+		scanf("%d%d",&n,&m);
+		memset(map,0,sizeof(map));
+		for(i=0 ; i < m ; i++){
+			scanf("%d%d%d",&a,&b,&l);
+			map[a][b]=map[b][a]=l;
+		}
+		dijkstra();
+		printf("Scenario #%d:\n%d\n\n",cs++,d[n]);
+	}
+	return 0;
+}

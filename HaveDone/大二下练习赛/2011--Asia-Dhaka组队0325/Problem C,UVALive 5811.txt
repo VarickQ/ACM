@@ -1,0 +1,109 @@
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+double dp[16][16][16][16][5][5];   
+//状态(四种花色的当前数量，且两个大王分别代替什么 0表示还没摸到)  到目标的期望步数
+
+int A,B,C,D;
+void dfs(int a,int b,int c,int d,int f1,int f2){
+    if(dp[a][b][c][d][f1][f2]>=-0.00001) return ;
+    dp[a][b][c][d][f1][f2]=0;
+    if(a>=A&&b>=B&&c>=C&&d>=D) return ;
+    int ta,tb,tc,td;
+    ta=13-a;
+    tb=13-b;
+    tc=13-c;
+    td=13-d;
+
+    int tt=0;
+    if(f1==1) ta++;
+    else if(f1==2) tb++;
+    else if(f1==3) tc++;
+    else if(f1==4) td++;
+    else tt++;
+
+    if(f2==1) ta++;
+    else if(f2==2) tb++;
+    else if(f2==3) tc++;
+    else if(f2==4) td++;
+    else tt++;
+
+
+    if(ta>0){
+        dfs(a+1,b,c,d,f1,f2);
+        dp[a][b][c][d][f1][f2]+=dp[a+1][b][c][d][f1][f2]*ta/(ta+tb+tc+td+tt);
+    }
+    if(tb>0){
+        dfs(a,b+1,c,d,f1,f2);
+        dp[a][b][c][d][f1][f2]+=dp[a][b+1][c][d][f1][f2]*tb/(ta+tb+tc+td+tt);
+    }
+    if(tc>0){
+        dfs(a,b,c+1,d,f1,f2);
+        dp[a][b][c][d][f1][f2]+=dp[a][b][c+1][d][f1][f2]*tc/(ta+tb+tc+td+tt);
+    }
+    if(td>0){
+        dfs(a,b,c,d+1,f1,f2);
+        dp[a][b][c][d][f1][f2]+=dp[a][b][c][d+1][f1][f2]*td/(ta+tb+tc+td+tt);
+    }
+
+
+    if(tt==2){
+       double temp=1000000;
+        dfs(a,b,c,d+1,4,f2);
+        temp=min(temp,dp[a][b][c][d+1][4][f2]);
+       
+        dfs(a,b,c+1,d,3,f2);
+        temp=min(temp,dp[a][b][c+1][d][3][f2]);
+       
+        dfs(a,b+1,c,d,2,f2);
+        temp=min(temp,dp[a][b+1][c][d][2][f2]);
+       
+        dfs(a+1,b,c,d,1,f2);
+        temp=min(temp,dp[a+1][b][c][d][1][f2]);
+       
+       dp[a][b][c][d][f1][f2]+=temp*tt/(ta+tb+tc+td+tt);
+    }
+    else if(tt==1){
+        double temp=1000000;
+        dfs(a,b,c,d+1,f1,4);
+        temp=min(temp,dp[a][b][c][d+1][f1][4]);
+        
+        dfs(a,b,c+1,d,f1,3);
+        temp=min(temp,dp[a][b][c+1][d][f1][3]);
+        
+        dfs(a,b+1,c,d,f1,2);
+        temp=min(temp,dp[a][b+1][c][d][f1][2]);
+        
+        dfs(a+1,b,c,d,f1,1);
+        temp=min(temp,dp[a+1][b][c][d][f1][1]);
+        
+        dp[a][b][c][d][f1][f2]+=temp*tt/(ta+tb+tc+td+tt);
+    }
+	dp[a][b][c][d][f1][f2]++;
+}
+int main(){
+    int T,cs=0;
+    scanf("%d",&T);
+    while(T--){
+        for(int a=0;a<=15;++a) for(int b=0;b<=15;++b)
+            for(int c=0;c<=15;++c) for(int d=0;d<=15;++d) 
+                for(int f1=0;f1<5;++f1) for(int f2=0;f2<5;++f2)
+                dp[a][b][c][d][f1][f2]=-1;
+        scanf("%d%d%d%d",&A,&B,&C,&D);
+        int ans=0;
+        if(A>13) ans+=A-13;
+        if(B>13) ans+=B-13;
+        if(C>13) ans+=C-13;
+        if(D>13) ans+=D-13;
+        if(ans>2){
+            printf("Case %d: %.3f\n",++cs,-1.0);
+            continue;
+        }
+        dfs(0,0,0,0,0,0);
+        printf("Case %d: %.3f\n",++cs,dp[0][0][0][0][0][0]);
+    }
+}

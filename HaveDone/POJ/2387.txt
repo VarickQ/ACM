@@ -1,0 +1,39 @@
+#include <iostream>
+#define INF 1000000
+using namespace std;
+
+int n,x,y,dis,w[1001][1001];
+int v[1001],d[1001];
+void dijkstra(){
+	memset(v,0,sizeof(v));
+	d[1]=1;
+	for(int i=1 ; i<=n ; d[i]=w[1][i],i++ );
+	for(int i=1 ; i<=n ; i++ )
+	{
+		int x,m = INF;
+		for(int y=1 ; y<=n ; y++)
+			if(!v[y] && d[y]<=m)
+				m = d[x=y];
+		v[x]=1;
+		for(int y=1 ; y<=n ; y++)
+			if(!v[y] && d[x]+w[x][y] < d[y])
+				d[y] = d[x]+w[x][y];
+	}
+	printf("%d\n", d[n]);
+}
+int main()
+{
+	int t;
+	while(scanf("%d%d", &t, &n)==2)
+	{
+		for(int i=1 ; i<=n ; i++ )
+			for(int j=1 ; j<=n ; j++ )
+				w[i][j]=INF;
+		while(t--){
+			scanf("%d %d %d",&x,&y,&dis);
+			if(dis < w[x][y]) w[x][y]=w[y][x]=dis;
+		}
+		dijkstra();
+	}
+	return 0;
+}

@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <string>
+#include <iostream>
+#include <map>
+#include <algorithm>
+using namespace std;
+#define inf 1<<30
+
+int a[12],yh[12][12];
+int main()
+{
+	int n,i,j,sum;
+	for(i=1 ; i <= 10 ; i++)
+		for(j=1 ; j <= i ; j++)
+			if(i==1 || j==i) yh[i][j]=1;
+			else yh[i][j]=yh[i-1][j]+yh[i-1][j-1];
+	while(scanf("%d%d",&n,&sum) == 2)
+	{
+		for(i=1 ; i <= n ; i++)
+			a[i-1] = i;
+		do{
+			int ans=0;
+			for(i=1 ; i <= n ; i++)
+				ans += a[i-1]*yh[n][i];
+			if(ans==sum){
+				for(i=0 ; i < n ; i++)
+					if(i==n-1)printf("%d\n",a[i]);
+					else printf("%d ",a[i]);
+				break;
+			}
+		}while(next_permutation(a,a+n));
+	}
+	return 0;
+}

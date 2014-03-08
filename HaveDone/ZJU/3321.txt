@@ -1,0 +1,47 @@
+#include <iostream>
+#include <stdio.h>
+#include <string.h>
+using namespace std;
+
+int n,m,x,y;
+int father[21];
+int v[21];
+int getfather(int x){
+	if(father[x] == x)
+		return x;
+	else
+		return father[x]=getfather(father[x]);
+}
+void Union(int x,int y){
+    int fx = getfather(x);
+    int fy = getfather(y);
+    if(fy != fx)
+       father[fx] = fy;
+}
+
+int main()
+{
+	while(scanf("%d%d", &n, &m) == 2)
+	{
+		memset(v,0,sizeof(v));
+		for(int i=1 ; i <= m ; father[i]=i,i++ );
+		for(int i=1 ; i <= m ; i++ ){
+			scanf("%d%d", &x, &y);
+			v[x]++; v[y]++;
+			Union(x,y);
+		}
+		if(n!=m || n<3){
+			printf("NO\n"); continue;
+		}
+		int flag = 0;
+		for(int i=1 ; i <= n ; i++ )
+			//每个节点被使用两次且与他们的祖先相连
+			if(v[i]!=2 || father[i]!=father[1])
+			{
+				flag=1; break;
+			}
+		if(flag) printf("NO\n");
+		else printf("YES\n");
+	}
+	return 0;
+}

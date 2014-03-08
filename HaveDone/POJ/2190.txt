@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main()
+{
+	char num[15];
+	int i,w,t;
+	while(gets(num))
+	{
+		int k = 0,sum = 0;
+		for(i=10 ; i >= 1 ; i--,k++){
+			if(num[k]>='1' && num[k]<='9')
+				sum += (num[k]-'0')*i;
+			if(num[k]=='X') sum += 10;
+			if(num[k]=='?') w = k,t = i;
+		}
+		if(w==9 && (sum+10*t)%11 == 0)
+			printf("X\n");
+		else
+			for(i=0 ; i <= 9 ; i++)
+				if((sum+i*t)%11 == 0){
+					printf("%d\n", i); break;
+				}
+		if(i==10) printf("-1\n");
+	}
+	return 0;
+}

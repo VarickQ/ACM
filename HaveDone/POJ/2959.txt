@@ -1,0 +1,21 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define inf 100000000
+#define PI 3.14159265358979323846
+
+int main()
+{
+	int t;
+	double D,d,s;
+	scanf("%d",&t);
+	while(t--)
+	{
+		scanf("%lf%lf%lf",&D,&d,&s);
+		printf("%.0lf\n",floor(PI/(asin((s+d)/(D-d)))));
+	}
+	return 0;
+}

@@ -1,0 +1,18 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	char n[2000];
+	int sum,i;
+	while(scanf("%s", n) != EOF)
+	{
+		if(n[0] == '0') break;
+		for( i=0,sum=0 ; n[i] ; i++ )
+			sum += n[i]-'0';
+		while(sum > 9)
+			sum = sum/10+sum%10;
+		printf("%d\n", sum);
+	}
+	return 0;
+}

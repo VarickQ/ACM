@@ -1,0 +1,348 @@
+//1007
+#include <iostream>
+using namespace std;
+
+int n,c[21],v[21];
+int primelist[38] = {0,0,1,1,0,1,0,1,0,0,0,1,0,1,0,0,0,1,0,1,0,0,0,1,0,0,0,0,0,1,0,1,0,0,0,0,0,1};//
+void dfs(int loc)
+{
+    if(loc == n && primelist[c[0] + c[n-1]])
+    {
+        for(int i=0 ; i < n-1 ; i++ )
+            printf("%d ", c[i]);
+		printf("%d\n", c[n-1]);
+    }
+    else for(int i=2 ; i <= n ; i++ )
+	{
+        if(!v[i] && primelist[i + c[loc-1]])
+        {
+            c[loc] = i;
+            v[i] = 1;
+            dfs(loc + 1);
+            v[i] = 0;//还原
+		}
+	}
+}
+
+int main()
+{
+	int cases=1;
+	while(scanf("%d", &n) == 1)
+	{
+		memset(v,0,sizeof(v));
+		printf("Case %d:\n", cases++);
+		c[0] = 1;
+		dfs(1);
+		printf("\n");
+	}
+	return 0;
+}
+
+//1005
+#include <iostream>
+#include <queue>
+using namespace std;
+
+int a,b,c,t,cs;
+int g[51][51][51];
+int dist[51][51][51];
+int dir[6][3]={{-1,0,0},{0,1,0},{1,0,0},{0,-1,0},{0,0,1},{0,0,-1}};
+int check(int x,int y,int z)  
+{
+    if(x>=1 && x<=a && y>=1 && y<=b && z>=1 && z<=c && !g[x][y][z] && dist[x][y][z]==-1)
+        return 1;
+    else
+        return 0;
+}
+int bfs()
+{
+    memset(dist,-1,sizeof dist);
+    queue<int>q;
+    dist[1][1][1]=0;
+    q.push(1);
+    q.push(1);
+    q.push(1);
+    while(!q.empty())
+    {
+        int x=q.front();q.pop();
+        int y=q.front();q.pop();
+        int z=q.front();q.pop();
+        if( x==a && y==b && z==c )
+            return dist[x][y][z];
+        if( a+b+c-x-y-z > t )
+            return -1;
+        for(int i=0 ; i < 6 ; i++ )
+        {
+            int new_x = x+dir[i][0];
+            int new_y = y+dir[i][1];
+            int new_z = z+dir[i][2];
+            if( check( new_x, new_y, new_z) )
+            {
+                q.push(new_x);
+                q.push(new_y);
+                q.push(new_z);
+                dist[new_x][new_y][new_z] = dist[x][y][z]+1;
+            }
+        }
+    }
+    return -1;
+}
+int main()
+{
+    scanf("%d", &cs);
+    while(cs--)
+    {
+        scanf("%d %d %d %d", &a, &b, &c, &t);
+        for(int i=1 ; i <= a ; i++ )
+            for(int j=1 ; j <= b ; j++ )
+                for(int k=1 ; k <= c ; k++ )
+                    scanf("%d", &g[i][j][k]);
+        if(a+b+c-3 > t){
+            printf("-1\n");
+            continue;
+        }
+
+        int res = bfs();
+
+        if(res <= t)
+            printf("%d\n", res);
+        else
+			printf("-1\n");
+    }
+}
+
+//1004
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int s[21];
+int used[21];
+int m,aver;
+int cmp(int a,int b){
+	return b > a;
+}
+int dfs(int found,int filen,int nstart)
+{
+	int i;
+	if(found == 3) return 1;
+	for( i=nstart ; i < m ; i++ )
+	{
+		if(!used[i] && filen+s[i] <= aver)
+		{
+			used[i] = 1;
+			if(filen+s[i] == aver)
+			{
+				if(dfs(found+1,0,0)) return 1;
+			}
+			else if(filen+s[i] < aver)
+			{
+				if(dfs(found,filen+s[i],i+1)) return 1;
+			}
+			used[i] = 0;
+		}
+	}
+	return 0;
+}
+int main()
+{
+	int n;
+	scanf("%d", &n);
+	while(n--)
+	{
+		int sum = 0;
+		scanf("%d", &m);
+		for(int i=0 ; i < m ; i++ )
+		{
+			scanf("%d", &s[i]);
+			sum += s[i];
+		}
+		sort(s,s+m,cmp);
+		if(sum%4 != 0 || s[0]>sum/4)
+		{
+			printf("no\n"); continue;
+		}
+		aver = sum/4;
+		memset(used,0,sizeof(used));
+		if( dfs(0,0,0) )
+			printf("yes\n");
+		else
+			printf("no\n");
+	}
+	return 0;
+}
+
+//1001
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+char map[8][8];
+int n,m,t;
+int begx,begy,endx,endy;
+int v[4][2]={{1,0},{-1,0},{0,1},{0,-1}};
+bool flag;
+
+void dfs(int x,int y,int time)
+{
+	if(time==t && x==endx && y==endy)
+	{
+		flag = 1; return ;
+	}
+	if((abs(endx-x)+abs(endy-y))%2 != (t-time)%2) return ;//时间和门所在点的奇偶性不同不可能到达
+	for(int i=0 ; i < 4 ; i++ )
+	{
+		int a=x+v[i][0];
+		int b=y+v[i][1];
+		if( a>=0 && a<n && b>=0 && b<m && map[a][b]!='X' && time<t)
+		{
+			map[x][y] = 'X';
+			dfs(a,b,time+1);
+			map[x][y] = '.';
+		}
+		if(flag) return ;
+	}
+	return ;
+}
+
+int main()
+{
+	int num;
+	while(scanf("%d %d %d", &n, &m, &t) && (n+m+t))
+	{
+		num = 0;
+		for(int i=0 ; i < n ; i++ )
+			for(int j=0 ; j < m ; j++ )
+			{
+				scanf(" %c", &map[i][j]);
+				if(map[i][j] == 'S')
+				{
+					begx = i; begy = j;
+				}
+				else if(map[i][j] == 'D')
+				{
+					endx = i; endy = j;
+					num ++;
+				}
+				else num ++;
+			}
+		if(num < t)
+		{
+			printf("NO\n"); continue;
+		}
+		map[begx][begy] = 'X';
+		flag = 0;
+		dfs(begx,begy,0);
+		if(flag) printf("YES\n");
+		else printf("NO\n");
+	}
+	return 0;
+}
+
+//1003------------internet
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int a[11];
+int move[11];
+int best;
+void dfs(int step,int dis)
+{
+	if(dis >= best) return ;
+	if(step==9)
+	{
+		best = dis; return ;
+	}
+	for(int i=1 ; i <= 10 ; i++ )
+		if(!move[i])
+		{
+			move[i] = 1;
+			for(int j=i+1 ; j <= 10 ; j++ )
+				if(!move[j])
+				{
+					dfs(step+1,dis+abs(a[j]-a[i]));
+					break;
+				}
+			move[i] = 0;
+		}
+}
+int main()
+{
+	int t,n;
+	scanf("%d", &t);
+	while(t--)
+	{
+		for(int i=1 ; i <= 10 ; i++ )
+		{
+			scanf("%d", &n);
+			a[n] = i;
+		}
+		memset(move,0,sizeof(move));
+		best = 1 << 20;
+		dfs(0,0);
+		printf("%d\n", best);
+	}
+	return 0;
+}
+
+/////////////////////////////////////
+#include <iostream>
+#include <queue>
+using namespace std;
+
+struct Node{
+	int x,y;
+};
+int m,n,k,x1,x2,y1,y2;
+char map[101][101];
+int turn[101][101];
+int v[4][2] = {{0,1},{1,0},{-1,0},{0,-1}};
+
+bool bfs()
+{
+	int t;
+	queue<int> qu;
+	Node now,next;
+	now.x = x1;
+	now.y = y1;
+	qu.push(now);
+	while( !qu.empty() )
+	{
+		now = qu.front(); qu.pop();
+		turn = turn[now.x][now.y]+1;
+		for(int i=0 ; i < 4 ; i++ )
+		{
+			next.x = now.x+v[i][0];
+			next.y = now.y+v[i][1];
+			while(next.x>=1 && next.x<=m && next.y>=1 && next.y<=n && turn[next.x][next.y] != '*')
+			{
+			}
+		}
+	}
+}
+
+int main()
+{
+	int t;
+	scanf("%d", &t);
+	while(t--)
+	{
+		scanf("%d %d", &m, &n);
+		for(int i=1 ; i <= m ; i++ )
+			for(int j=1 ; j <= n ; j++ )
+			{
+				scanf(" %c", &map[i][j]);
+				turn[i][j] = -1;
+			}
+
+		scanf("%d%d%d%d%d", &k, &x1, &y1, &x2, &y2);
+		if(x1==x2 && y1==y1)
+		{
+			printf("yes\n"); continue;
+		}
+		if( bfs() ) printf("yes\n");
+		else printf("no\n");
+	}
+	return 0;
+}

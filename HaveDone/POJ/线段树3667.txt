@@ -1,0 +1,115 @@
+#include <iostream>
+#include <stdio.h>
+#include <string>
+#include <math.h>
+#include <string.h>
+using namespace std;
+#define N 50001
+
+struct Node{
+	int left,right;
+	int maxlen,llen,rlen;//区间最大长度,左数最大,右数最大
+}node[3*N];
+
+inline int Getmax(int a,int b){
+	return a>b?a:b;
+}
+void creatTree(int l,int r,int id)
+{
+	node[id].left=l;
+	node[id].right=r;
+	node[id].maxlen = node[id].right-node[id].left+1;
+	node[id].llen = node[id].rlen = node[id].maxlen;
+
+	if(node[id].left==node[id].right)return ;
+
+	int mid = (l+r)/2;
+	creatTree(l,mid,2*id);
+	creatTree(mid+1,r,2*id+1);
+}
+int search(int need,int id)
+{
+	if(node[id].maxlen < need) return 0;
+	if(node[id].left == node[id].right) return node[id].left;
+	if(node[id].llen >= need) return node[id].left;
+
+	if(node[id*2].maxlen >= need)
+		return search(need,2*id);
+	else{
+		if(node[id*2].rlen+node[id*2+1].llen >= need)
+			return node[id*2].right-node[id*2].rlen+1;
+		else
+			return search(need,2*id+1);
+	}
+}
+void check(int l,int r,int id,int status)
+{
+	int len = node[id].right - node[id].left + 1;
+	if(node[id].left>=l && node[id].right<=r)
+	{
+		node[id].maxlen = status*len;
+		node[id].llen = node[id].rlen = node[id].maxlen;
+		return ;
+	}
+
+	if(node[id].maxlen==len || node[id].maxlen==0)
+	{
+		int st = 0;
+		if(node[id].maxlen != 0)st = 1;
+
+		node[2*id].maxlen=st*(node[2*id].right-node[2*id].left+1);
+		node[2*id].llen = node[2*id].rlen = node[2*id].maxlen;
+
+		node[2*id+1].maxlen=st*(node[2*id+1].right-node[2*id+1].left+1);
+		node[2*id+1].llen = node[2*id+1].rlen = node[2*id+1].maxlen;
+	}
+
+	int mid = (node[id].left+node[id].right)/2;
+	if(r <= mid)
+		check(l,r,2*id,status);
+	else{
+		if(mid < l)
+			check(l,r,2*id+1,status);
+		else{
+			check(l,mid,2*id,status);
+			check(mid+1,r,2*id+1,status);
+		}
+	}
+
+	node[id].llen = node[2*id].llen;
+	len=node[id*2].right-node[id*2].left+1;
+	if(node[id].llen == len)
+		node[id].llen += node[id*2+1].llen;
+
+	node[id].rlen = node[2*id+1].rlen;
+	len=node[id*2+1].right-node[id*2+1].left+1;
+	if(node[id].rlen == len)
+		node[id].rlen += node[id*2].rlen;
+
+	len=node[2*id].rlen+node[2*id+1].llen;
+	node[id].maxlen=Getmax(len,node[2*id+1].maxlen);
+	node[id].maxlen=Getmax(node[id].maxlen,node[2*id].maxlen);
+
+}
+int main()
+{
+	int n,m,f,d,x;
+	scanf("%d%d",&n,&m);
+	creatTree(1,n,1);
+	while(m--)
+	{
+		scanf("%d",&f);
+		if(f==1){
+			scanf("%d",&d);
+			int r = search(d,1);
+			printf("%d\n",r);
+			if(r){
+				check(r,r+d-1,1,0);
+			}
+		} else {
+			scanf("%d%d",&x,&d);
+			check(x,x+d-1,1,1);
+		}
+	}
+	return 0;
+}

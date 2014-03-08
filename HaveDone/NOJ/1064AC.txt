@@ -1,0 +1,15 @@
+/*输入：输入一个整数N（0<=N<2^31），输出是奇数还是偶数。
+输出：如果N是奇数则输出Odd，否则输出Even*/
+#include<stdio.h>
+int main()
+{
+	long int n;
+	while(scanf("%ld",&n) == 1)
+	{
+		if(n%2 == 0)
+			printf("Even\n");
+		else
+			printf("Odd\n");
+	}
+	return 0;
+}

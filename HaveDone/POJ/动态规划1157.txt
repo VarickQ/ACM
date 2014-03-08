@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#define inf 100000000;
+#define max(a,b) a>b?a:b
+
+int a[110][110];
+int q[110][110];
+int main()
+{
+	int f,v,i,j;
+//http://wenku.baidu.com/view/8334b92d7375a417866f8f07.html
+	while(scanf("%d %d",&f,&v) != EOF){
+		memset(a,0,sizeof(a));
+		memset(q,0,sizeof(q));
+		for(i=1 ; i <= f ; i++)
+			for(j=1 ; j <= v ; j++)
+				scanf("%d", &a[i][j]);
+		q[0][0]=0;
+		for(i=1 ; i <= f+1 ; i++) q[i][0] = -inf;
+		
+		for(i=1 ; i <= f ; i++)
+			for(j=1 ; j <= v ; j++)
+				q[i][j]=max(q[i][j-1],q[i-1][j-1]+a[i][j]);
+		printf("%d\n",q[f][v]);
+	}
+	return 0;
+}

@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <string.h>
+#define max(a,b) a > b ? a : b
+
+char s[5001],s1[5001],s2[5001];
+short f[5001][5001];
+void changeF(char *a){
+	int i,j,len = strlen(a);
+	char temp;
+	for(i =0,j=len-1 ; i < j ; i ++,j --){
+		temp = a[i];
+		a[i] = a[j];
+		a[j] = temp;
+	}
+}
+int main()
+{
+	int i,j,len1,len2,n;
+	while( scanf("%d", &n) == 1 )
+	{
+		scanf("%s", s);
+		strcpy(s1,s);
+		changeF(s);
+		strcpy(s2,s);
+		memset( f, 0, sizeof(f) );
+		len1 = strlen(s1);
+		len2 = strlen(s2);
+		for( i=1 ; i <= len1 ; i++ )
+			for( j=1 ; j <= len2 ; j++ )
+			{
+				if(s1[i-1] == s2[j-1])
+					f[i][j] = f[i-1][j-1]+1;
+				else
+					f[i][j] = max( f[i-1][j], f[i][j-1]);
+			}
+		printf("%d\n", n-f[len1][len2]);
+	}
+	return 0;
+}
